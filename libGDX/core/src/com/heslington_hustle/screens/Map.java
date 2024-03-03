@@ -5,17 +5,27 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
+import com.heslington_hustle.game.Building;
+import com.heslington_hustle.game.EnergyBar;
 import com.heslington_hustle.game.HeslingtonHustle;
+import com.heslington_hustle.game.Minigame;
 import com.heslington_hustle.game.Player;
 
 public class Map implements Screen{
 	
 	private HeslingtonHustle game;
-	public Player player;
+	public Texture background;
+	public Object[] objects = new Object[6];
 	
 	public Map (HeslingtonHustle game) {
 		this.game = game;
-		player = new Player(new Texture("placeholderCharacter.png"));
+		game.player = new Player(new Texture("placeholderCharacter.png"));
+		game.energyBar = new EnergyBar(new Texture("placeholderCharacter.png"), 100f);
+		game.day = 1;
+		this.background = new Texture("placeholderCharacter.png");
+		
+		// Add objects to array
+		objects[0] = new Building(game, "test building", new Texture("placeholderCharacter.png"), 30, 30, game.minigames[0]);
 	}
 	
 	@Override
@@ -31,22 +41,22 @@ public class Map implements Screen{
 		
 		game.batch.begin();
 		
-		game.batch.draw(player.sprite, player.x, player.y);
+		game.batch.draw(game.player.sprite, game.player.x, game.player.y);
 		
 		game.batch.end();
 		
 		
 		if(Gdx.input.isKeyPressed(Keys.W)) {
-			player.moveUp();
+			game.player.moveUp();
 		}
 		if(Gdx.input.isKeyPressed(Keys.A)) {
-			player.moveLeft();
+			game.player.moveLeft();
 		}
 		if(Gdx.input.isKeyPressed(Keys.S)) {
-			player.moveDown();
+			game.player.moveDown();
 		}
 		if(Gdx.input.isKeyPressed(Keys.D)) {
-			player.moveRight();
+			game.player.moveRight();
 		}
 	}
 

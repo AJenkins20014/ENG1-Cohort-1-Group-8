@@ -146,7 +146,7 @@ public class StartScreen implements Screen {
 	
 	private void startGame() {
 		this.dispose();
-		game.setScreen(new Map(game));
+		game.setScreen(new CharacterSelectScreen(game));
 	}
 	
 	private void exit() {
