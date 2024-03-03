@@ -1,0 +1,49 @@
+@startuml
+class Player {
+  energy : Float
+  sprite : Sprite
+  speed : Float
+  x : Float
+  y : Float
+  moveRight()
+  moveLeft()
+  moveUp()
+  moveDown()
+  interact()
+}
+
+class ObjectType {
+  type : String
+  energyChange : Float
+}
+
+class Object {
+  name : String
+  sprite : Sprite
+  minigame : Minigame
+  onInteract()
+}
+
+class Menu{
+
+}
+
+class Minigame {
+  difficultyScalar : Float
+  load()
+  
+}
+
+class Stacker {
+  fallSpeed : Float
+}
+
+class Pong {
+  ballSpeed : Float
+}
+
+Player -- LocationType
+Stacker <|-- Minigame
+Pong <|-- Minigame
+Object <|-- ObjectType
+@enduml
