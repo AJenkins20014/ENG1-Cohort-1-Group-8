@@ -145,7 +145,7 @@ public class StartScreen implements Screen {
 	}
 	
 	private void startGame() {
-		this.dispose();
+		//this.dispose();
 		game.setScreen(new CharacterSelectScreen(game));
 	}
 	

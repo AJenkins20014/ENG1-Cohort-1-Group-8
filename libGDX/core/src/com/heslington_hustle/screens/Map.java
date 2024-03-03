@@ -5,11 +5,11 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
-import com.heslington_hustle.game.Building;
 import com.heslington_hustle.game.EnergyBar;
 import com.heslington_hustle.game.HeslingtonHustle;
-import com.heslington_hustle.game.Minigame;
 import com.heslington_hustle.game.Player;
+import com.heslington_hustle.objects.Building;
+import com.heslington_hustle.objects.Object;
 
 public class Map implements Screen{
 	
@@ -19,18 +19,13 @@ public class Map implements Screen{
 	
 	public Map (HeslingtonHustle game) {
 		this.game = game;
-		game.player = new Player(new Texture("placeholderCharacter.png"));
-		game.energyBar = new EnergyBar(new Texture("placeholderCharacter.png"), 100f);
+		game.player = new Player(new Texture("PlaceholderCharacter.png"));
+		game.energyBar = new EnergyBar(new Texture("PlaceholderCharacter.png"), 100f);
 		game.day = 1;
-		this.background = new Texture("placeholderCharacter.png");
+		this.background = new Texture("PlaceholderCharacter.png");
 		
 		// Add objects to array
-		objects[0] = new Building(game, "test building", new Texture("placeholderCharacter.png"), 30, 30, game.minigames[0]);
-	}
-	
-	@Override
-	public void show() {
-		
+		initialiseObjects();
 	}
 
 	@Override
@@ -41,8 +36,19 @@ public class Map implements Screen{
 		
 		game.batch.begin();
 		
+		// Draw objects
+		for(int i = 0; i < objects.length; i++) {
+			if(objects[i] != null) {
+				game.batch.draw(objects[i].sprite, objects[i].x, objects[i].y);
+			}
+		}
+		
+		// Draw player
 		game.batch.draw(game.player.sprite, game.player.x, game.player.y);
 		
+		// Check for whether the player has touched an object
+		checkPlayerObjectCollision();
+
 		game.batch.end();
 		
 		
@@ -58,6 +64,40 @@ public class Map implements Screen{
 		if(Gdx.input.isKeyPressed(Keys.D)) {
 			game.player.moveRight();
 		}
+		
+		
+	}
+	
+	private void initialiseObjects() {
+		objects[0] = new Building(game, "CS Building", new Texture("PlaceholderBuilding.png"), 100*HeslingtonHustle.pixelArtScalar, 100*HeslingtonHustle.pixelArtScalar, "E: Study", game.minigames[0]);
+		// etc...
+	}
+	
+	private void checkPlayerObjectCollision() {
+		for(int i = 0; i < objects.length; i++) {
+			if(objects[i] != null) {
+				if(game.player.x + game.player.sprite.getWidth()/2 > (objects[i].x - objects[i].sprite.getWidth()/2) && game.player.x - game.player.sprite.getWidth()/2 < (objects[i].x + objects[i].sprite.getWidth()/2) && 
+						game.player.y + game.player.sprite.getHeight()/2 > (objects[i].y - objects[i].sprite.getHeight()/2) && game.player.y - game.player.sprite.getHeight()/2 < (objects[i].y + objects[i].sprite.getHeight()/2)){
+					// Draw tooltips
+					game.font.draw(game.batch, objects[i].tooltip, objects[i].x, objects[i].y + objects[i].sprite.getHeight()*1.5f, objects[i].sprite.getWidth(), 1, false);
+					game.font.draw(game.batch, objects[i].name, objects[i].x, objects[i].y - objects[i].sprite.getHeight()/2, objects[i].sprite.getWidth(), 1, false);
+					
+					// Check if interact key (E) is pressed
+					if(Gdx.input.isKeyPressed(Keys.E)) {
+						if(objects[i] instanceof Building) {
+							((Building) objects[i]).interact();
+						}
+						// else if...
+						
+					}
+				}
+			}
+		}
+	}
+	
+	@Override
+	public void show() {
+		
 	}
 
 	@Override
