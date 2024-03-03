@@ -9,14 +9,12 @@ public class Player {
 	public float speed;
 	public float x;
 	public float y;
-	public float energy;
 	
 	public Player (Texture sprite) {
 		this.sprite = sprite;
 		this.speed = 400;
 		this.x = HeslingtonHustle.windowWidth/2;
 		this.y = HeslingtonHustle.windowHeight/2;
-		this.energy = 100;
 	}
 	
 	public void moveUp() {

@@ -59,10 +59,6 @@ public class StartScreen implements Screen {
 		exitButtonInactive = new Texture("exitInactive.png");
 		
 		
-		updateCoordinates();
-	}
-	
-	private void updateCoordinates() {
 		gameLogoWidth = gameLogo.getWidth()*HeslingtonHustle.pixelArtScalar;
 		gameLogoHeight = gameLogo.getHeight()*HeslingtonHustle.pixelArtScalar;
 		
@@ -136,7 +132,7 @@ public class StartScreen implements Screen {
 			game.batch.draw(exitButtonActive, menuButtonX, exitButtonY, exitButtonWidth, exitButtonHeight);
 			if(Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
 				// exit button clicked
-				Gdx.app.exit();
+				exit();
 			}
 		}
 		else {
@@ -151,6 +147,10 @@ public class StartScreen implements Screen {
 	private void startGame() {
 		this.dispose();
 		game.setScreen(new Map(game));
+	}
+	
+	private void exit() {
+		Gdx.app.exit();
 	}
 
 	@Override
