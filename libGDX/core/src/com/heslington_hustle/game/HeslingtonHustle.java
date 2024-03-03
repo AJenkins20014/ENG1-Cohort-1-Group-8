@@ -1,37 +1,40 @@
 package com.heslington_hustle.game;
 
-import com.badlogic.gdx.ApplicationAdapter;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.utils.ScreenUtils;
+import com.heslington_hustle.screens.StartScreen;
 
-public class HeslingtonHustle extends ApplicationAdapter {
-	SpriteBatch batch;
-	Texture img;
+public class HeslingtonHustle extends Game {
 	
-	BitmapFont font;
+	// Default values
+	public static int windowWidth = 1920;
+	public static int windowHeight = 1080;
+	public static float pixelArtScalar = 3;
 	
+	public SpriteBatch batch;
 	
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
-		font = new BitmapFont();
-		img = new Texture("badlogic.jpg");
+				
+		// Set windowHeight and windowWidth to the monitor's resolution
+		windowWidth = Gdx.graphics.getWidth();
+		windowHeight = Gdx.graphics.getHeight();
+		
+		// Scale pixel art based on screen resolution
+		pixelArtScalar = windowWidth/640f;
+		
+		this.setScreen(new StartScreen(this));
 	}
 
 	@Override
 	public void render () {
-		ScreenUtils.clear(1, 0, 0, 1);
-		batch.begin();
-		batch.draw(img, 0, 0);
-		font.draw(batch, "Hello World!", 300, 300);
-		batch.end();
+		super.render();
 	}
 	
 	@Override
 	public void dispose () {
-		batch.dispose();
-		img.dispose();
+
 	}
 }
