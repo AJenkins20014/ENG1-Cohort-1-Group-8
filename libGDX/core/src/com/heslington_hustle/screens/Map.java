@@ -11,7 +11,6 @@ import com.heslington_hustle.game.Player;
 public class Map implements Screen{
 	
 	private HeslingtonHustle game;
-	
 	public Player player;
 	
 	public Map (HeslingtonHustle game) {
