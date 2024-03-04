@@ -2,7 +2,6 @@ package com.heslington_hustle.game;
 
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
-import com.heslington_hustle.game.HeslingtonHustle;
 
 // Please note that on macOS your application needs to be started with the -XstartOnFirstThread JVM argument
 public class DesktopLauncher {
@@ -11,7 +10,6 @@ public class DesktopLauncher {
 		config.setForegroundFPS(60);
 		config.setTitle("Heslington Hustle");
 		config.setResizable(false);
-		//config.setWindowedMode(HeslingtonHustle.windowWidth, HeslingtonHustle.windowHeight); //If game is to be started in windowed mode
 		config.setFullscreenMode(Lwjgl3ApplicationConfiguration.getDisplayMode());
 		new Lwjgl3Application(new HeslingtonHustle(), config);
 	}

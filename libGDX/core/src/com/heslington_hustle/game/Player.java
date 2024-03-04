@@ -5,20 +5,23 @@ import com.badlogic.gdx.graphics.Texture;
 
 public class Player {
 	
+	private HeslingtonHustle game;
+	
 	public Texture sprite;
 	public float speed;
 	public float x;
 	public float y;
 	
-	public Player (Texture sprite) {
+	public Player (HeslingtonHustle game, Texture sprite) {
+		this.game = game;
 		this.sprite = sprite;
 		this.speed = 400;
-		this.x = HeslingtonHustle.windowWidth/2;
-		this.y = HeslingtonHustle.windowHeight/2;
+		this.x = game.camera.viewportWidth/2;
+		this.y = game.camera.viewportHeight/2;
 	}
 	
 	public void moveUp() {
-		if(y < HeslingtonHustle.windowHeight - sprite.getHeight()) {
+		if(y < game.camera.viewportHeight - sprite.getHeight()) {
 			y += speed*Gdx.graphics.getDeltaTime();
 		}
 	}
@@ -36,7 +39,7 @@ public class Player {
 	}
 	
 	public void moveRight() {
-		if( x < HeslingtonHustle.windowWidth - sprite.getWidth()) {
+		if( x < game.camera.viewportWidth - sprite.getWidth()) {
 			x += speed*Gdx.graphics.getDeltaTime();
 		}
 	}

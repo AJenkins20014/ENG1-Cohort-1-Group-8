@@ -5,6 +5,7 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.utils.Align;
 import com.heslington_hustle.game.EnergyBar;
 import com.heslington_hustle.game.HeslingtonHustle;
 import com.heslington_hustle.game.Player;
@@ -19,7 +20,7 @@ public class Map implements Screen{
 	
 	public Map (HeslingtonHustle game) {
 		this.game = game;
-		game.player = new Player(new Texture("PlaceholderCharacter.png"));
+		game.player = new Player(game, new Texture("PlaceholderCharacter.png"));
 		game.energyBar = new EnergyBar(new Texture("PlaceholderCharacter.png"), 100f);
 		game.day = 1;
 		this.background = new Texture("PlaceholderCharacter.png");
@@ -30,9 +31,14 @@ public class Map implements Screen{
 
 	@Override
 	public void render(float delta) {
-		Gdx.gl.glClearColor(0, 0.65f, 0, 1);
+		// Clear the screen
+		Gdx.gl.glClearColor(70/255f, 130/255f, 50/255f, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		
+		// Set projection matrix of the batch to the camera
+		game.batch.setProjectionMatrix(game.camera.combined);
+		game.camera.update();
+				
 		
 		game.batch.begin();
 		
@@ -69,7 +75,7 @@ public class Map implements Screen{
 	}
 	
 	private void initialiseObjects() {
-		objects[0] = new Building(game, "CS Building", new Texture("PlaceholderBuilding.png"), 100*HeslingtonHustle.pixelArtScalar, 100*HeslingtonHustle.pixelArtScalar, "E: Study", game.minigames[0]);
+		objects[0] = new Building(game, "CS Building", new Texture("PlaceholderBuilding.png"), 100, 100, "E: Study", game.minigames[0]);
 		// etc...
 	}
 	
@@ -79,8 +85,9 @@ public class Map implements Screen{
 				if(game.player.x + game.player.sprite.getWidth()/2 > (objects[i].x - objects[i].sprite.getWidth()/2) && game.player.x - game.player.sprite.getWidth()/2 < (objects[i].x + objects[i].sprite.getWidth()/2) && 
 						game.player.y + game.player.sprite.getHeight()/2 > (objects[i].y - objects[i].sprite.getHeight()/2) && game.player.y - game.player.sprite.getHeight()/2 < (objects[i].y + objects[i].sprite.getHeight()/2)){
 					// Draw tooltips
-					game.font.draw(game.batch, objects[i].tooltip, objects[i].x, objects[i].y + objects[i].sprite.getHeight()*1.5f, objects[i].sprite.getWidth(), 1, false);
-					game.font.draw(game.batch, objects[i].name, objects[i].x, objects[i].y - objects[i].sprite.getHeight()/2, objects[i].sprite.getWidth(), 1, false);
+					game.font.getData().setScale(0.5f); // Set font size
+					game.font.draw(game.batch, objects[i].tooltip, objects[i].x, objects[i].y + objects[i].sprite.getHeight()*1.5f, objects[i].sprite.getWidth(), Align.center, false);
+					game.font.draw(game.batch, objects[i].name, objects[i].x, objects[i].y - objects[i].sprite.getHeight()/2, objects[i].sprite.getWidth(), Align.center, false);
 					
 					// Check if interact key (E) is pressed
 					if(Gdx.input.isKeyPressed(Keys.E)) {
