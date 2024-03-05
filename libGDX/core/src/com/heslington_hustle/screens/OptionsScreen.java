@@ -131,8 +131,8 @@ public class OptionsScreen implements Screen {
 					game.batch.end();
 					HeslingtonHustle.windowWidth = resolutionWidths.get(resolutionIndex-1);
 					HeslingtonHustle.windowHeight = resolutionHeights.get(resolutionIndex-1);
-					Gdx.graphics.setUndecorated(false);
 					Gdx.graphics.setWindowedMode(resolutionWidths.get(resolutionIndex-1), resolutionHeights.get(resolutionIndex-1));
+					Gdx.graphics.setUndecorated(false);
 					windowModeIndex = 2;
 					resolutionIndex--;
 					game.prefs.putBoolean("fullscreen", false);
@@ -183,6 +183,7 @@ public class OptionsScreen implements Screen {
 					game.batch.end();
 					Gdx.graphics.setUndecorated(true);
 					Gdx.graphics.setWindowedMode(resolutionWidths.get(resolutionIndex), resolutionHeights.get(resolutionIndex));
+					findResolution();
 					windowModeIndex = 1;
 					game.prefs.putBoolean("fullscreen", false);
 					game.prefs.putBoolean("borderless", true);
@@ -205,6 +206,7 @@ public class OptionsScreen implements Screen {
 					game.batch.end();
 					Gdx.graphics.setUndecorated(false);
 					Gdx.graphics.setWindowedMode(resolutionWidths.get(resolutionIndex), resolutionHeights.get(resolutionIndex));
+					findResolution();
 					windowModeIndex = 2;
 					game.prefs.putBoolean("fullscreen", false);
 					game.prefs.putBoolean("borderless", false);
