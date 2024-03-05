@@ -48,7 +48,7 @@ public class StartScreen implements Screen {
 			game.layout.setText(game.font, "Play", new Color(232/255f, 193/255f, 112/255f, 1), 100, Align.bottomLeft, false);
 			if(Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
 				// Play button clicked
-				startGame();
+				loadCharacterSelect();
 			}
 		}
 		game.font.draw(game.batch, game.layout, 10, 220);
@@ -88,7 +88,7 @@ public class StartScreen implements Screen {
 
 	}
 	
-	private void startGame() {
+	private void loadCharacterSelect() {
 		//this.dispose();
 		game.setScreen(new CharacterSelectScreen(game));
 	}

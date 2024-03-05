@@ -1,21 +1,32 @@
 package com.heslington_hustle.objects;
 
-import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.utils.Align;
 import com.heslington_hustle.game.HeslingtonHustle;
+import com.heslington_hustle.game.PopUpText;
+import com.heslington_hustle.screens.MinigameScreen;
 
 public class Building extends Object {
 
-	public Screen minigameScreen;
+	public MinigameScreen minigame;
 	public float requiredEnergy;
 	
-	public Building(HeslingtonHustle game, String name, Texture sprite, float x, float y, String tooltip, Screen minigameScreen) {
+	public Building(HeslingtonHustle game, String name, Texture sprite, float x, float y, String tooltip, MinigameScreen minigameScreen, Float requiredEnergy) {
 		super(game, name, sprite, x, y, tooltip);
-		this.minigameScreen = minigameScreen;
+		this.minigame = minigameScreen;
+		this.requiredEnergy = requiredEnergy;
 	}
 	
 	public void interact() {
-		game.setScreen(minigameScreen);
+		if(game.energyBar.energy >= requiredEnergy) {
+			game.energyBar.addEnergy(-requiredEnergy);
+			//minigame.difficultyScalar = ??? // Set minigame difficulty
+			game.setScreen(minigame);
+		}
+		else {
+			game.addPopUpText(new PopUpText("Insufficient Energy!", 250, 300, 100, Align.center, false, 0.4f, new Color(1,1,1,1)), 2);
+		}
 	}
 
 }

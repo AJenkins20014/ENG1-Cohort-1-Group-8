@@ -15,7 +15,7 @@ public class Player {
 	public Player (HeslingtonHustle game, Texture sprite) {
 		this.game = game;
 		this.sprite = sprite;
-		this.speed = 400;
+		this.speed = 200;
 		this.x = game.camera.viewportWidth/2;
 		this.y = game.camera.viewportHeight/2;
 	}
