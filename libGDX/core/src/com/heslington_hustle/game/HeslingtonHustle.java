@@ -18,6 +18,7 @@ public class HeslingtonHustle extends Game {
 	// Default values
 	public static int windowWidth = 1920;
 	public static int windowHeight = 1080;
+	public float volume;
 	
 	public OrthographicCamera camera;
 	public SpriteBatch batch;
@@ -38,9 +39,13 @@ public class HeslingtonHustle extends Game {
 		windowWidth = Gdx.graphics.getWidth();
 		windowHeight = Gdx.graphics.getHeight();
 		
+		// Load save data
+		loadData();
+				
 		// Create camera of dimensions 640x360 (pixel art canvas size)
 		camera = new OrthographicCamera(640, 360);
 		camera.position.set(camera.viewportWidth/2, camera.viewportHeight/2, 0); // Set camera centre to bottom left corner
+		camera.update();
 		
 		// Add minigames to array
 		initialiseMinigames();
@@ -56,9 +61,6 @@ public class HeslingtonHustle extends Game {
 		// Load font
 		font = new BitmapFont(Gdx.files.internal("Yoster.fnt"));
 		
-		// Load save data
-		LoadData();
-		
 		// Display start menu
 		this.setScreen(new StartScreen(this));
 	}
@@ -68,9 +70,11 @@ public class HeslingtonHustle extends Game {
 		// etc...
 	}
 	
-	private void LoadData() {
+	public void loadData() {
+		// Load save data
 		prefs = Gdx.app.getPreferences("User Data");
 		
+		// Load saved display settings
 		if(prefs.getBoolean("fullscreen", true)) {
 			Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode());
 		}
@@ -81,8 +85,14 @@ public class HeslingtonHustle extends Game {
 			else {
 				Gdx.graphics.setUndecorated(false);
 			}
-			Gdx.graphics.setWindowedMode(prefs.getInteger("windowWidth", 1920), prefs.getInteger("windowHeight", 1080));
+			Gdx.graphics.setWindowedMode(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		}
+		
+		// Load saved FPS limit
+		Gdx.graphics.setForegroundFPS(prefs.getInteger("framerate", 60));
+		
+		// Load saved volume
+		volume = prefs.getFloat("volume", 1.0f);
 	}
 
 	@Override

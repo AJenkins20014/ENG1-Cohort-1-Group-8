@@ -30,9 +30,9 @@ public class StartScreen implements Screen {
 		// Get mouse position in world coordinates
 		Vector3 mousePos = game.camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 1f));
 		
-		
 		game.batch.begin();
 		
+
 		// Draw logo
 		game.font.getData().setScale(1.2f); // Set font size
 		game.font.setColor(new Color(222/255f, 158/255f, 65/255f, 1));
@@ -46,7 +46,7 @@ public class StartScreen implements Screen {
 		game.layout.setText(game.font, "Play", new Color(1, 1, 1, 1), 100, Align.bottomLeft, false);
 		if(mousePos.x < 10 + game.layout.width && mousePos.x > 10 && mousePos.y < 220 && mousePos.y > 220 - game.layout.height) {
 			game.layout.setText(game.font, "Play", new Color(232/255f, 193/255f, 112/255f, 1), 100, Align.bottomLeft, false);
-			if(Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
+			if(Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
 				// Play button clicked
 				startGame();
 			}
@@ -56,7 +56,7 @@ public class StartScreen implements Screen {
 		game.layout.setText(game.font, "Options", new Color(1, 1, 1, 1), 100, Align.bottomLeft, false);
 		if(mousePos.x < 10 + game.layout.width && mousePos.x > 10 && mousePos.y < 160 && mousePos.y > 160 - game.layout.height) {
 			game.layout.setText(game.font, "Options", new Color(232/255f, 193/255f, 112/255f, 1), 100, Align.bottomLeft, false);
-			if(Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
+			if(Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
 				// Options button clicked
 				loadOptions();
 			}
@@ -66,7 +66,7 @@ public class StartScreen implements Screen {
 		game.layout.setText(game.font, "About", new Color(1, 1, 1, 1), 100, Align.bottomLeft, false);
 		if(mousePos.x < 10 + game.layout.width && mousePos.x > 10 && mousePos.y < 100 && mousePos.y > 100 - game.layout.height) {
 			game.layout.setText(game.font, "About", new Color(232/255f, 193/255f, 112/255f, 1), 100, Align.bottomLeft, false);
-			if(Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
+			if(Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
 				// About button clicked
 				Gdx.net.openURI("https://nicholaslambert03.github.io/ENG1Website.io/"); // Opens link to website
 				resize(0, 0); // Minimises game window
@@ -77,13 +77,12 @@ public class StartScreen implements Screen {
 		game.layout.setText(game.font, "Exit", new Color(1, 1, 1, 1), 100, Align.bottomLeft, false);
 		if(mousePos.x < 10 + game.layout.width && mousePos.x > 10 && mousePos.y < 40 && mousePos.y > 40 - game.layout.height) {
 			game.layout.setText(game.font, "Exit", new Color(232/255f, 193/255f, 112/255f, 1), 100, Align.bottomLeft, false);
-			if(Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
+			if(Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
 				// Exit button clicked
 				exit();
 			}
 		}
 		game.font.draw(game.batch, game.layout, 10, 40);
-	
 		
 		game.batch.end();
 

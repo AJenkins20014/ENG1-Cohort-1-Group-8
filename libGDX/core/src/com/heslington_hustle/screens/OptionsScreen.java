@@ -20,9 +20,12 @@ public class OptionsScreen implements Screen {
 	private int maxScreenHeight;
 	private int resolutionIndex;
 	private int windowModeIndex; // 0 = fullscreen, 1 = borderless, 2 = windowed
+	private int framerateIndex;
 	
 	private ArrayList<Integer> resolutionWidths = new ArrayList<>();
 	private ArrayList<Integer> resolutionHeights = new ArrayList<>();
+	
+	private ArrayList<Integer> framerates = new ArrayList<>();
 
 	public OptionsScreen(HeslingtonHustle game) {
 		this.game = game;
@@ -39,7 +42,15 @@ public class OptionsScreen implements Screen {
 		resolutionWidths.add(1920);
 		resolutionHeights.add(1080);
 		
-		// Get the current monitor's supported display settings, and add any larger display settings to the array
+		// Add standard FPS limit values to the array
+		framerates.add(30);
+		framerates.add(60);
+		framerates.add(75);
+		framerates.add(120);
+		framerates.add(144);
+		framerates.add(240);
+		
+		// Get the current monitor's supported display settings, and add any other supported display settings to the array
 		DisplayMode[] displayModes = Gdx.graphics.getDisplayModes();
 		for(int i = 0; i < displayModes.length; i++) {
 			if(displayModes[i].width > maxScreenWidth && displayModes[i].width%640f == 0 && displayModes[i].height > maxScreenHeight && displayModes[i].height%360f == 0) {
@@ -47,6 +58,15 @@ public class OptionsScreen implements Screen {
 				maxScreenHeight = displayModes[i].height;
 				resolutionWidths.add(displayModes[i].width);
 				resolutionHeights.add(displayModes[i].height);
+			}
+			if(!framerates.contains(displayModes[i].refreshRate) && displayModes[i].refreshRate > framerates.get(framerates.size()-1)) {
+				framerates.add(displayModes[i].refreshRate);
+			}
+		}
+		
+		for(int i = 0; i < framerates.size(); i++) {
+			if(game.prefs.getInteger("framerate", 60) == framerates.get(i)) {
+				framerateIndex = i;
 			}
 		}
 		
@@ -115,6 +135,8 @@ public class OptionsScreen implements Screen {
 					Gdx.graphics.setWindowedMode(resolutionWidths.get(resolutionIndex-1), resolutionHeights.get(resolutionIndex-1));
 					windowModeIndex = 2;
 					resolutionIndex--;
+					game.prefs.putBoolean("fullscreen", false);
+					game.prefs.putBoolean("borderless", false);
 					return;
 				}
 			}
@@ -137,6 +159,8 @@ public class OptionsScreen implements Screen {
 					Gdx.graphics.setWindowedMode(resolutionWidths.get(resolutionIndex+1), resolutionHeights.get(resolutionIndex+1));
 					windowModeIndex = 2;
 					resolutionIndex++;
+					game.prefs.putBoolean("fullscreen", false);
+					game.prefs.putBoolean("borderless", false);
 					return;
 				}
 			}
@@ -160,6 +184,8 @@ public class OptionsScreen implements Screen {
 					Gdx.graphics.setUndecorated(true);
 					Gdx.graphics.setWindowedMode(resolutionWidths.get(resolutionIndex), resolutionHeights.get(resolutionIndex));
 					windowModeIndex = 1;
+					game.prefs.putBoolean("fullscreen", false);
+					game.prefs.putBoolean("borderless", true);
 					return;
 				}
 			}
@@ -180,6 +206,8 @@ public class OptionsScreen implements Screen {
 					Gdx.graphics.setUndecorated(false);
 					Gdx.graphics.setWindowedMode(resolutionWidths.get(resolutionIndex), resolutionHeights.get(resolutionIndex));
 					windowModeIndex = 2;
+					game.prefs.putBoolean("fullscreen", false);
+					game.prefs.putBoolean("borderless", false);
 					return;
 				}
 			}
@@ -202,6 +230,8 @@ public class OptionsScreen implements Screen {
 					HeslingtonHustle.windowHeight = Gdx.graphics.getDisplayMode().height;
 					findResolution();
 					windowModeIndex = 0;
+					game.prefs.putBoolean("fullscreen", true);
+					game.prefs.putBoolean("borderless", false);
 					return;
 				}
 			}
@@ -210,6 +240,106 @@ public class OptionsScreen implements Screen {
 				game.font.draw(game.batch, game.layout, 10, 200);
 			}
 		}
+		
+		// Framerate settings
+		game.layout.setText(game.font, "Framerate:   " + Integer.toString(framerates.get(framerateIndex)), new Color(1, 1, 1, 1), 100, Align.bottomLeft, false);
+		game.font.draw(game.batch, game.layout, 10, 150);
+		if(framerateIndex > 0) {
+			if(mousePos.x < 185 && mousePos.x > 165 && mousePos.y < 150 && mousePos.y > 150 - game.layout.height) {
+				game.layout.setText(game.font, "<", new Color(232/255f, 193/255f, 112/255f, 1), 100, Align.bottomLeft, false);
+				game.font.draw(game.batch, game.layout, 165, 150);
+				if(Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
+					// Lower framerate
+					game.batch.end();
+					Gdx.graphics.setForegroundFPS(framerates.get(framerateIndex-1));
+					game.prefs.putInteger("framerate", framerates.get(framerateIndex-1));
+					framerateIndex--;
+					return;
+				}
+			}
+			else {
+				game.layout.setText(game.font, "<", new Color(1, 1, 1, 1), 100, Align.bottomLeft, false);
+				game.font.draw(game.batch, game.layout, 165, 150);
+			}
+		}
+		
+		if(framerateIndex < framerates.size()-1) {
+			if(mousePos.x < 280 && mousePos.x > 250 && mousePos.y < 150 && mousePos.y > 150 - game.layout.height) {
+				game.layout.setText(game.font, ">", new Color(232/255f, 193/255f, 112/255f, 1), 100, Align.bottomLeft, false);
+				game.font.draw(game.batch, game.layout, 250, 150);
+				if(Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
+					// Raise framerate
+					game.batch.end();
+					Gdx.graphics.setForegroundFPS(framerates.get(framerateIndex+1));
+					game.prefs.putInteger("framerate", framerates.get(framerateIndex+1));
+					framerateIndex++;
+					return;
+				}
+			}
+			else {
+				game.layout.setText(game.font, ">", new Color(1, 1, 1, 1), 100, Align.bottomLeft, false);
+				game.font.draw(game.batch, game.layout, 250, 150);
+			}
+		}
+		
+		// Volume settings
+		game.layout.setText(game.font, "Volume:   " + Integer.toString(Math.round(game.volume*10)), new Color(1, 1, 1, 1), 100, Align.bottomLeft, false);
+		game.font.draw(game.batch, game.layout, 10, 100);
+		if(game.volume > 0) {
+			if(mousePos.x < 135 && mousePos.x > 115 && mousePos.y < 100 && mousePos.y > 100 - game.layout.height) {
+				game.layout.setText(game.font, "<", new Color(232/255f, 193/255f, 112/255f, 1), 100, Align.bottomLeft, false);
+				game.font.draw(game.batch, game.layout, 115, 100);
+				if(Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
+					// Lower volume
+					game.batch.end();
+					game.volume -= 0.1f;
+					game.prefs.putFloat("volume", game.volume);
+					return;
+				}
+			}
+			else {
+				game.layout.setText(game.font, "<", new Color(1, 1, 1, 1), 100, Align.bottomLeft, false);
+				game.font.draw(game.batch, game.layout, 115, 100);
+			}
+		}
+				
+		if(game.volume < 1) {
+			if(mousePos.x < 210 && mousePos.x > 180 && mousePos.y < 100 && mousePos.y > 100 - game.layout.height) {
+				game.layout.setText(game.font, ">", new Color(232/255f, 193/255f, 112/255f, 1), 100, Align.bottomLeft, false);
+				game.font.draw(game.batch, game.layout, 180, 100);
+				if(Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
+					// Raise volume
+					game.batch.end();
+					game.volume += 0.1f;
+					game.prefs.putFloat("volume", game.volume);
+					return;
+				}
+			}
+			else {
+				game.layout.setText(game.font, ">", new Color(1, 1, 1, 1), 100, Align.bottomLeft, false);
+				game.font.draw(game.batch, game.layout, 180, 100);
+			}
+		}
+		
+		// Back and apply settings
+		game.layout.setText(game.font, "Back", new Color(232/255f, 193/255f, 112/255f, 1), 100, Align.bottomLeft, false);
+		game.font.draw(game.batch, game.layout, 10, 50);
+		if(game.volume > 0) {
+			if(mousePos.x < 10 + game.layout.width && mousePos.x > 10 && mousePos.y < 50 && mousePos.y > 50 - game.layout.height) {
+				game.font.draw(game.batch, game.layout, 10, 50);
+				if(Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
+					// Go back to start screen and save setting to prefs
+					game.prefs.flush();
+					game.setScreen(new StartScreen(game));
+				}
+			}
+			else {
+				game.layout.setText(game.font, "Back", new Color(1, 1, 1, 1), 100, Align.bottomLeft, false);
+				game.font.draw(game.batch, game.layout, 10, 50);
+			}
+		}
+
+		
 		
 		game.batch.end();
 	}
