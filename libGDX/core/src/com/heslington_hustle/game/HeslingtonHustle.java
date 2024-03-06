@@ -19,7 +19,7 @@ import com.badlogic.gdx.utils.Align;
 import com.heslington_hustle.screens.Map;
 import com.heslington_hustle.screens.MinigameScreen;
 import com.heslington_hustle.screens.StartScreen;
-import com.heslington_hustle.screens.minigames.BugFixer.Bugfixer;
+import com.heslington_hustle.screens.minigames.BugFixer.BugFixer;
 
 public class HeslingtonHustle extends Game {
 	
@@ -84,7 +84,7 @@ public class HeslingtonHustle extends Game {
 	}
 	
 	private void initialiseMinigames() {
-		minigames[0] = new Bugfixer(this, 100);
+		minigames[0] = new BugFixer(this, 100);
 		// etc...
 	}
 	

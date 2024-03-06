@@ -22,7 +22,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.heslington_hustle.game.HeslingtonHustle;
 import com.heslington_hustle.screens.MinigameScreen;
 
-public class Bugfixer extends MinigameScreen implements Screen {
+public class BugFixer extends MinigameScreen implements Screen {
 
 	private World world;
 	private Box2DDebugRenderer debugRenderer;
@@ -33,7 +33,7 @@ public class Bugfixer extends MinigameScreen implements Screen {
 	
 	private Sprite cursorShip;
 	
-	public Bugfixer(HeslingtonHustle game, float difficultyScalar) {
+	public BugFixer(HeslingtonHustle game, float difficultyScalar) {
 		super(game, difficultyScalar);
 		world = new World(new Vector2(0, 0), true); // Create world with no gravity
 		debugRenderer = new Box2DDebugRenderer();
