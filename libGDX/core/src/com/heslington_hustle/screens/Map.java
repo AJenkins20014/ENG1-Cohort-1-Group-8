@@ -15,11 +15,14 @@ import com.heslington_hustle.objects.Object;
 public class Map implements Screen{
 	
 	private HeslingtonHustle game;
-	public Object[] objects = new Object[6];
+	public Object[] objects = new Object[8];
+	
+	public int screen; // 1 = bottom left, 2 = bottom right, 3 = top left, 4 = top right
 
-	public Map(HeslingtonHustle game) {
+	public Map(HeslingtonHustle game, int screen) {
 		this.game = game;
 		game.map = this;
+		this.screen = screen;
 		
 		// Add objects to array
 		initialiseObjects();
@@ -39,9 +42,9 @@ public class Map implements Screen{
 		
 		game.batch.begin();
 		
-		// Draw objects
+		// Draw objects on current screen
 		for(int i = 0; i < objects.length; i++) {
-			if(objects[i] != null) {
+			if(objects[i] != null && objects[i].screen == screen) {
 				game.batch.draw(objects[i].sprite, objects[i].x, objects[i].y);
 			}
 		}
@@ -82,7 +85,10 @@ public class Map implements Screen{
 	}
 	
 	private void initialiseObjects() {
-		objects[0] = new Building(game, "CS Building", new Texture("Objects/PlaceholderBuilding.png"), 100, 100, "E: Study", game.minigames[0], 25f);
+		objects[0] = new Building(game, "CS Building", new Texture("Objects/PlaceholderBuilding.png"), 100, 100, 1, "E: Study", game.minigames[0], 60f);
+		objects[1] = new Building(game, "Library", new Texture("Objects/PlaceholderBuilding.png"), 200, 200, 2, "E: Study", game.minigames[0], 60f);
+		objects[2] = new Building(game, "Student Hub", new Texture("Objects/PlaceholderBuilding.png"), 150, 175, 4, "E: Study", game.minigames[0], 60f);
+		objects[3] = new Building(game, "Lake", new Texture("Objects/PlaceholderBuilding.png"), 300, 120, 3, "E: Relax", game.minigames[0], 0f);
 		// etc...
 	}
 	
@@ -101,7 +107,8 @@ public class Map implements Screen{
 		for(int i = 0; i < objects.length; i++) {
 			if(objects[i] != null) {
 				if(game.player.x + game.player.sprite.getWidth()/2 > objects[i].x && game.player.x - game.player.sprite.getWidth() < (objects[i].x + objects[i].sprite.getWidth()/2) && 
-						game.player.y > (objects[i].y - objects[i].sprite.getHeight()/2) && game.player.y - game.player.sprite.getHeight()/2 < (objects[i].y + objects[i].sprite.getHeight()/2)){
+						game.player.y > (objects[i].y - objects[i].sprite.getHeight()/2) && game.player.y - game.player.sprite.getHeight()/2 < (objects[i].y + objects[i].sprite.getHeight()/2) 
+								&& screen == objects[i].screen){
 					// Draw tooltips
 					if(objects[i] instanceof Building) {
 						game.font.getData().setScale(0.3f); // Set font size

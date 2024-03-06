@@ -6,8 +6,8 @@ import com.heslington_hustle.game.HeslingtonHustle;
 public class Bed extends Object {
 	public Float energyChange;
 	
-	public Bed(HeslingtonHustle game, String name, Texture sprite, float x, float y, String tooltip, Float energyChange) {
-		super(game, name, sprite, x, y, tooltip);
+	public Bed(HeslingtonHustle game, String name, Texture sprite, float x, float y, int screen, String tooltip, Float energyChange) {
+		super(game, name, sprite, x, y, screen, tooltip);
 		this.energyChange = energyChange;
 	}
 	

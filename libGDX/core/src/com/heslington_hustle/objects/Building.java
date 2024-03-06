@@ -12,8 +12,8 @@ public class Building extends Object {
 	public MinigameScreen minigame;
 	public float requiredEnergy;
 	
-	public Building(HeslingtonHustle game, String name, Texture sprite, float x, float y, String tooltip, MinigameScreen minigameScreen, Float requiredEnergy) {
-		super(game, name, sprite, x, y, tooltip);
+	public Building(HeslingtonHustle game, String name, Texture sprite, float x, float y, int screen, String tooltip, MinigameScreen minigameScreen, Float requiredEnergy) {
+		super(game, name, sprite, x, y, screen, tooltip);
 		this.minigame = minigameScreen;
 		this.requiredEnergy = requiredEnergy;
 	}

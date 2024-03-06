@@ -10,14 +10,16 @@ public class Object {
 	public Texture sprite;
 	public float x;
 	public float y;
+	public int screen;
 	public String tooltip;
 	
-	public Object(HeslingtonHustle game, String name, Texture sprite, float x, float y, String tooltip) {
+	public Object(HeslingtonHustle game, String name, Texture sprite, float x, float y, int screen, String tooltip) {
 		this.game = game;
 		this.name = name;
 		this.sprite = sprite;
 		this.x = x;
 		this.y = y;
+		this.screen = screen;
 		this.tooltip = tooltip;
 	}
 }
