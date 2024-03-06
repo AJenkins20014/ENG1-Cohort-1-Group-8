@@ -19,7 +19,7 @@ import com.badlogic.gdx.utils.Align;
 import com.heslington_hustle.screens.Map;
 import com.heslington_hustle.screens.MinigameScreen;
 import com.heslington_hustle.screens.StartScreen;
-import com.heslington_hustle.screens.minigames.BugfixerMinigame;
+import com.heslington_hustle.screens.minigames.BugFixer.Bugfixer;
 
 public class HeslingtonHustle extends Game {
 	
@@ -27,6 +27,7 @@ public class HeslingtonHustle extends Game {
 	public static int windowWidth = 1920;
 	public static int windowHeight = 1080;
 	public float volume;
+	public boolean isBorderless; // Some minigames may set to fullscreen mode
 	
 	public OrthographicCamera camera;
 	public SpriteBatch batch;
@@ -83,7 +84,7 @@ public class HeslingtonHustle extends Game {
 	}
 	
 	private void initialiseMinigames() {
-		minigames[0] = new BugfixerMinigame(this, 100);
+		minigames[0] = new Bugfixer(this, 100);
 		// etc...
 	}
 	
@@ -98,9 +99,11 @@ public class HeslingtonHustle extends Game {
 		else {
 			if(prefs.getBoolean("borderless", false)) {
 				Gdx.graphics.setUndecorated(true);
+				isBorderless = true;
 			}
 			else {
 				Gdx.graphics.setUndecorated(false);
+				isBorderless = false;
 			}
 			Gdx.graphics.setWindowedMode(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		}

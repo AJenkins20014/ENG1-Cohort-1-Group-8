@@ -1,1 +1,7 @@
 /com/
+/Box2d-Editor.jar
+/BodyEditorLoader$CircleModel.class
+/BodyEditorLoader$Model.class
+/BodyEditorLoader$PolygonModel.class
+/BodyEditorLoader$RigidBodyModel.class
+/BodyEditorLoader.class

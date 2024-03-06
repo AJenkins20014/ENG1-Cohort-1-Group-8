@@ -332,6 +332,8 @@ public class OptionsScreen implements Screen {
 				if(Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
 					// Go back to start screen and save setting to prefs
 					game.prefs.flush();
+					if(windowModeIndex == 1) game.isBorderless = true;
+					else game.isBorderless = false;
 					game.setScreen(new StartScreen(game));
 				}
 			}
