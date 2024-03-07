@@ -88,7 +88,7 @@ public class Map implements Screen{
 		objects[0] = new Building(game, "CS Building", new Texture("Objects/PlaceholderBuilding.png"), 100, 100, 1, "E: Study", game.minigames[0], 60f);
 		objects[1] = new Building(game, "Library", new Texture("Objects/PlaceholderBuilding.png"), 200, 200, 2, "E: Study", game.minigames[0], 60f);
 		objects[2] = new Building(game, "Student Hub", new Texture("Objects/PlaceholderBuilding.png"), 150, 175, 4, "E: Study", game.minigames[0], 60f);
-		objects[3] = new Building(game, "Lake", new Texture("Objects/PlaceholderBuilding.png"), 300, 120, 3, "E: Relax", game.minigames[0], 0f);
+		objects[3] = new Building(game, "Lake", new Texture("Objects/PlaceholderBuilding.png"), 300, 120, 3, "E: Relax", game.minigames[1], 0f);
 		// etc...
 	}
 	

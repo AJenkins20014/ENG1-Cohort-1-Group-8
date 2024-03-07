@@ -22,7 +22,7 @@ public class Building extends Object {
 		if(game.energyBar.energy >= requiredEnergy) {
 			game.energyBar.addEnergy(-requiredEnergy);
 			//minigame.difficultyScalar = ??? // Set minigame difficulty
-			game.setScreen(minigame);
+			minigame.startGame();
 		}
 		else {
 			game.addPopUpText(new PopUpText("Insufficient Energy!", 250, 300, 100, Align.center, false, 0.4f, new Color(1,1,1,1)), 2);

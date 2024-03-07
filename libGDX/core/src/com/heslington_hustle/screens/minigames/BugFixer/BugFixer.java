@@ -20,6 +20,7 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.heslington_hustle.game.HeslingtonHustle;
+import com.heslington_hustle.screens.Map;
 import com.heslington_hustle.screens.MinigameScreen;
 
 public class BugFixer extends MinigameScreen implements Screen {
@@ -33,10 +34,15 @@ public class BugFixer extends MinigameScreen implements Screen {
 	
 	private Sprite cursorShip;
 	
+	private float studyPointsGained;
+	private float maxStudyPointsGained;
+	
 	public BugFixer(HeslingtonHustle game, float difficultyScalar) {
 		super(game, difficultyScalar);
 		world = new World(new Vector2(0, 0), true); // Create world with no gravity
 		debugRenderer = new Box2DDebugRenderer();
+		this.studyPointsGained = 20f; // From worst possible performance
+		this.maxStudyPointsGained = 100f; // From best possible performance
 		
 		// Set custom cursor - TODO
 		Pixmap pixmap = new Pixmap(Gdx.files.internal("UI/Cursor.png")); // TODO (crosshair?)
@@ -56,6 +62,35 @@ public class BugFixer extends MinigameScreen implements Screen {
 		}
 	}
 	
+	@Override
+	public void startGame() {
+		// Code to restart the game
+		studyPointsGained = 20f;
+		
+		// Display game screen
+		game.setScreen(this);
+		
+		// Temporary - TODO REMOVE
+		endGame();
+	}
+	
+	private void endGame() {
+		if(game.isBorderless) {
+			Gdx.graphics.setUndecorated(true);
+			Gdx.graphics.setWindowedMode(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		}
+		
+		if(game.studyPoints.containsKey("BugFixer")) {
+			game.studyPoints.put("BugFixer", (game.studyPoints.get("BugFixer") + studyPointsGained));
+		}
+		else {
+			game.studyPoints.put("BugFixer", studyPointsGained);
+		}
+		
+		
+		game.setScreen(game.map);
+	}
+	
 	private void logicStep(float delta) {
 		world.step(delta, 3, 3);
 	}
@@ -63,6 +98,7 @@ public class BugFixer extends MinigameScreen implements Screen {
 	@Override
 	public void render(float delta) {
 		if(minimised) return;
+		
 		// Clear the screen
 		Gdx.gl.glClearColor(16/255f, 20/255f, 31/255f, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -75,8 +111,6 @@ public class BugFixer extends MinigameScreen implements Screen {
 		Vector3 mousePos = game.camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 1f));
 		playerToMouse = (float) Math.atan2(player.getPosition().x - mousePos.x, mousePos.y - player.getPosition().y);
 		
-		// Call parent render method
-		super.render(delta);
 		
 		game.batch.begin();
 		
@@ -179,13 +213,7 @@ public class BugFixer extends MinigameScreen implements Screen {
 		player.setTransform(player.getPosition().x, player.getPosition().y, playerToMouse);
 	}
 	
-	private void endGame() {
-		if(game.isBorderless) {
-			Gdx.graphics.setUndecorated(true);
-			Gdx.graphics.setWindowedMode(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-		}
-		game.setScreen(game.map);
-	}
+	
 	
 	@Override
 	public void resize(int width, int height) {

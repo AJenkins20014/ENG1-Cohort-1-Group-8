@@ -15,6 +15,11 @@ public class MinigameScreen implements Screen {
 		this.energyChange = 100; // Default - should be modified in each individual minigame
 	}
 	
+	public void startGame() {
+		// Should be overrided in specific minigames
+		// Set all minigames back to their start state
+	}
+	
 	@Override
 	public void render(float delta) {
 		

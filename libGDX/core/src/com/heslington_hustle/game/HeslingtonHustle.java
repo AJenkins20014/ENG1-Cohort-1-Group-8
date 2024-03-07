@@ -1,6 +1,7 @@
 package com.heslington_hustle.game;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
@@ -19,6 +20,7 @@ import com.badlogic.gdx.utils.Align;
 import com.heslington_hustle.screens.Map;
 import com.heslington_hustle.screens.MinigameScreen;
 import com.heslington_hustle.screens.StartScreen;
+import com.heslington_hustle.screens.minigames.RecreationMinigame1;
 import com.heslington_hustle.screens.minigames.BugFixer.BugFixer;
 
 public class HeslingtonHustle extends Game {
@@ -40,6 +42,7 @@ public class HeslingtonHustle extends Game {
 	public Player player;
 	public EnergyBar energyBar;
 	public int day;
+	public HashMap<String, Float> studyPoints = new HashMap<>();
 	
 	public MinigameScreen[] minigames = new MinigameScreen[7];
 	
@@ -84,7 +87,8 @@ public class HeslingtonHustle extends Game {
 	}
 	
 	private void initialiseMinigames() {
-		minigames[0] = new BugFixer(this, 100);
+		minigames[0] = new BugFixer(this, 1);
+		minigames[1] = new RecreationMinigame1(this, 1);
 		// etc...
 	}
 	
