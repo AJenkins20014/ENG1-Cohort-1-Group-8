@@ -42,6 +42,7 @@ public class HeslingtonHustle extends Game {
 	public Player player;
 	public EnergyBar energyBar;
 	public int day;
+	public int time; // Hour
 	public HashMap<String, Float> studyPoints = new HashMap<>();
 	
 	public MinigameScreen[] minigames = new MinigameScreen[7];

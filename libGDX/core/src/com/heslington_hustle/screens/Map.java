@@ -9,7 +9,9 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Align;
 import com.heslington_hustle.game.HeslingtonHustle;
+import com.heslington_hustle.objects.Bed;
 import com.heslington_hustle.objects.Building;
+import com.heslington_hustle.objects.Foodhall;
 import com.heslington_hustle.objects.Object;
 
 public class Map implements Screen{
@@ -85,10 +87,14 @@ public class Map implements Screen{
 	}
 	
 	private void initialiseObjects() {
-		objects[0] = new Building(game, "CS Building", new Texture("Objects/PlaceholderBuilding.png"), 100, 100, 1, "E: Study", game.minigames[0], 60f);
-		objects[1] = new Building(game, "Library", new Texture("Objects/PlaceholderBuilding.png"), 200, 200, 2, "E: Study", game.minigames[0], 60f);
-		objects[2] = new Building(game, "Student Hub", new Texture("Objects/PlaceholderBuilding.png"), 150, 175, 4, "E: Study", game.minigames[0], 60f);
-		objects[3] = new Building(game, "Lake", new Texture("Objects/PlaceholderBuilding.png"), 300, 120, 3, "E: Relax", game.minigames[1], 0f);
+		objects[0] = new Building(game, "CS Building", new Texture("Objects/PlaceholderBuilding.png"), 100, 100, 1, "E: Study", game.minigames[0], 60f, 3);
+		objects[1] = new Building(game, "Library", new Texture("Objects/PlaceholderBuilding.png"), 200, 200, 2, "E: Study", game.minigames[0], 60f, 3);
+		objects[2] = new Building(game, "Student Hub", new Texture("Objects/PlaceholderBuilding.png"), 150, 175, 4, "E: Study", game.minigames[0], 60f, 3);
+		objects[3] = new Building(game, "Lake", new Texture("Objects/PlaceholderBuilding.png"), 300, 120, 3, "E: Relax", game.minigames[1], 0f, 2);
+		objects[4] = new Building(game, "Pub", new Texture("Objects/PlaceholderBuilding.png"), 330, 200, 4, "E: Relax", game.minigames[1], 0f, 2);
+		objects[5] = new Building(game, "Arcade", new Texture("Objects/PlaceholderBuilding.png"), 90, 60, 3, "E: Relax", game.minigames[1], 0f, 2);
+		objects[6] = new Bed(game, "Accomodation", new Texture("Objects/PlaceholderBuilding.png"), 320, 100, 1, "E: Sleep");
+		objects[7] = new Foodhall(game, "Greggs", new Texture("Objects/PlaceholderBuilding.png"), 100, 80, 2, "E: Eat", 40f, 1);
 		// etc...
 	}
 	
@@ -101,6 +107,21 @@ public class Map implements Screen{
 		
 		game.font.getData().setScale(0.25f); // Set font size
 		game.font.draw(game.batch, Integer.toString((int)Math.round(game.energyBar.energy)), -17, 328, 100, Align.center, false);
+		
+		// Draw time and day
+		game.font.getData().setScale(0.5f); // Set font size
+		game.font.draw(game.batch, "Day: " + Integer.toString(game.day), 520, 290, 100, Align.center, false);
+		// If midnight, display time as 00:00
+		if(game.time == 24) {
+			game.font.draw(game.batch, "00:00", 520, 330, 100, Align.center, false);
+		}
+		// Add 0 to single digit time (display 7am as 07:00 instead of 7:00)
+		else if(Integer.toString(game.time).length() == 1) {
+			game.font.draw(game.batch, "0" + Integer.toString(game.time) + " : 00", 520, 330, 100, Align.center, false);
+		}
+		else {
+			game.font.draw(game.batch, Integer.toString(game.time) + " : 00", 520, 330, 100, Align.center, false);
+		}
 	}
 	
 	private void checkPlayerObjectCollision() {
@@ -142,8 +163,12 @@ public class Map implements Screen{
 						if(objects[i] instanceof Building) {
 							((Building) objects[i]).interact();
 						}
-						// else if...
-						
+						else if(objects[i] instanceof Bed) {
+							((Bed) objects[i]).startNewDay();
+						}
+						else if(objects[i] instanceof Foodhall) {
+							((Foodhall) objects[i]).eat();
+						}
 					}
 				}
 			}

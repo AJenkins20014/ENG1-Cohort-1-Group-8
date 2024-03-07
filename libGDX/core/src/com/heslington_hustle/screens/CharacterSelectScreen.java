@@ -118,6 +118,7 @@ public class CharacterSelectScreen implements Screen{
 		game.player = new Player(game, avatars[avatarIndex]);
 		game.energyBar = new EnergyBar(new Texture("Avatars/PlaceholderCharacter.png"), 100f);
 		game.day = 1;
+		game.time = 8;
 		game.setScreen(new Map(game, 1));
 	}
 

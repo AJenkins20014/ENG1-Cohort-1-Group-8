@@ -11,21 +11,30 @@ public class Building extends Object {
 
 	public MinigameScreen minigame;
 	public float requiredEnergy;
+	public int timeSpent;
 	
-	public Building(HeslingtonHustle game, String name, Texture sprite, float x, float y, int screen, String tooltip, MinigameScreen minigameScreen, Float requiredEnergy) {
+	public Building(HeslingtonHustle game, String name, Texture sprite, float x, float y, int screen, String tooltip, MinigameScreen minigameScreen, Float requiredEnergy, int timeSpent) {
 		super(game, name, sprite, x, y, screen, tooltip);
 		this.minigame = minigameScreen;
 		this.requiredEnergy = requiredEnergy;
+		this.timeSpent = timeSpent;
 	}
 	
 	public void interact() {
-		if(game.energyBar.energy >= requiredEnergy) {
+		// Check if player has enough time
+		if (game.time + timeSpent > 24){
+			game.addPopUpText(new PopUpText("It's too late to do this now!", 250, 300, 100, Align.center, false, 0.4f, new Color(1,1,1,1)), 2);
+		}
+		// Check if player has enough energy
+		else if(game.energyBar.energy < requiredEnergy) {
+			game.addPopUpText(new PopUpText("Insufficient Energy!", 250, 300, 100, Align.center, false, 0.4f, new Color(1,1,1,1)), 2);
+		}
+		// Subtract energy, add time and start minigame
+		else {
 			game.energyBar.addEnergy(-requiredEnergy);
+			game.time += timeSpent;
 			//minigame.difficultyScalar = ??? // Set minigame difficulty
 			minigame.startGame();
-		}
-		else {
-			game.addPopUpText(new PopUpText("Insufficient Energy!", 250, 300, 100, Align.center, false, 0.4f, new Color(1,1,1,1)), 2);
 		}
 	}
 
