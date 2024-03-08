@@ -11,6 +11,7 @@ public class DesktopLauncher {
 		config.setForegroundFPS(60);
 		config.setIdleFPS(30);
 		config.setTitle("Heslington Hustle");
+		config.setWindowIcon("UI/GameIcon.png");
 		config.setResizable(false);
 		config.setFullscreenMode(Lwjgl3ApplicationConfiguration.getDisplayMode());
 		new Lwjgl3Application(new HeslingtonHustle(), config);

@@ -1,8 +1,9 @@
-package com.heslington_hustle.screens.minigames.BugFixer;
+package com.heslington_hustle.screens.minigames;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Cursor;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Pixmap;
@@ -13,6 +14,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.Fixture;
@@ -20,6 +22,7 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.heslington_hustle.game.HeslingtonHustle;
+import com.heslington_hustle.game.PopUpText;
 import com.heslington_hustle.screens.Map;
 import com.heslington_hustle.screens.MinigameScreen;
 
@@ -80,6 +83,7 @@ public class BugFixer extends MinigameScreen implements Screen {
 			Gdx.graphics.setWindowedMode(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		}
 		
+		// Add studyPoints score to total score for this minigame
 		if(game.studyPoints.containsKey("BugFixer")) {
 			game.studyPoints.put("BugFixer", (game.studyPoints.get("BugFixer") + studyPointsGained));
 		}
@@ -87,8 +91,28 @@ public class BugFixer extends MinigameScreen implements Screen {
 			game.studyPoints.put("BugFixer", studyPointsGained);
 		}
 		
+		// Update amount of times studied today
+		game.timesStudied[game.day-1] += 1;
+		
 		
 		game.setScreen(game.map);
+		
+		// TODO - Change accordingly
+		if(studyPointsGained < 30f) {
+			game.addPopUpText(new PopUpText("You don't feel very productive...", 250, 300, 100, Align.center, false, 0.4f, new Color(1,1,1,1)), 2);
+		}
+		else if(studyPointsGained < 50f) {
+			game.addPopUpText(new PopUpText("You feel slightly productive", 250, 300, 100, Align.center, false, 0.4f, new Color(1,1,1,1)), 2);
+		}
+		else if(studyPointsGained < 70f) {
+			game.addPopUpText(new PopUpText("You feel productive", 250, 300, 100, Align.center, false, 0.4f, new Color(1,1,1,1)), 2);
+		}
+		else if(studyPointsGained < 90f) {
+			game.addPopUpText(new PopUpText("You feel very productive", 250, 300, 100, Align.center, false, 0.4f, new Color(1,1,1,1)), 2);
+		}
+		else {
+			game.addPopUpText(new PopUpText("You feel extremely productive", 250, 300, 100, Align.center, false, 0.4f, new Color(1,1,1,1)), 2);
+		}
 	}
 	
 	private void logicStep(float delta) {

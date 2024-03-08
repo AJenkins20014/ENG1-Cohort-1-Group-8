@@ -17,11 +17,12 @@ import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Align;
+import com.heslington_hustle.screens.GameOverScreen;
 import com.heslington_hustle.screens.Map;
 import com.heslington_hustle.screens.MinigameScreen;
 import com.heslington_hustle.screens.StartScreen;
+import com.heslington_hustle.screens.minigames.BugFixer;
 import com.heslington_hustle.screens.minigames.RecreationMinigame1;
-import com.heslington_hustle.screens.minigames.BugFixer.BugFixer;
 
 public class HeslingtonHustle extends Game {
 	
@@ -43,7 +44,9 @@ public class HeslingtonHustle extends Game {
 	public EnergyBar energyBar;
 	public int day;
 	public int time; // Hour
-	public HashMap<String, Float> studyPoints = new HashMap<>();
+	public HashMap<String, Float> studyPoints = new HashMap<>(); // Is used to calculate final score and alter exam difficulty (Minigame Name | Study Points)
+	public int[] timesStudied = new int[7]; // Number of times studied per day.
+	public int timesEatenToday;
 	
 	public MinigameScreen[] minigames = new MinigameScreen[7];
 	
@@ -246,6 +249,10 @@ public class HeslingtonHustle extends Game {
 		clock += Gdx.graphics.getDeltaTime();
 		
 		batch.begin();
+		
+		if(this.getScreen() instanceof GameOverScreen || this.getScreen() instanceof StartScreen) {
+			popUps.clear();
+		}
 		
 		if(popUps.size() > 0) {
 			if(clock > popUpTimers.get(0)) {
