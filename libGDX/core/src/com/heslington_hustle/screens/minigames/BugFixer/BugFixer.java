@@ -1,6 +1,10 @@
-package com.heslington_hustle.screens.minigames;
+package com.heslington_hustle.screens.minigames.BugFixer;
+
+import java.util.ArrayList;
+import java.util.Random;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
@@ -9,12 +13,14 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.utils.Align;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.Fixture;
@@ -23,29 +29,45 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.heslington_hustle.game.HeslingtonHustle;
 import com.heslington_hustle.game.PopUpText;
-import com.heslington_hustle.screens.Map;
 import com.heslington_hustle.screens.MinigameScreen;
 
 public class BugFixer extends MinigameScreen implements Screen {
 
-	private World world;
+	public World world;
 	private Box2DDebugRenderer debugRenderer;
 	private boolean minimised;
 	
-	private Body player;
+	public Body player;
 	private float playerToMouse;
+	private float timeSinceAttack;
+	private float attackCooldown;
+	private ArrayList<Bullet> bullets = new ArrayList<>();
+	public ArrayList<Bullet> enemyBullets = new ArrayList<>();
 	
+	private float clock;
+	private float enemySpawnClock;
+	private float spawnTimer;
+	private Random random;
+	
+	public float health;
 	private Sprite cursorShip;
+	
+	public int rows = 32;
+	public int columns = 17;
+	public Object[][] enemyGrid = new Object[rows][columns];
 	
 	private float studyPointsGained;
 	private float maxStudyPointsGained;
+	public int score;
 	
 	public BugFixer(HeslingtonHustle game, float difficultyScalar) {
 		super(game, difficultyScalar);
 		world = new World(new Vector2(0, 0), true); // Create world with no gravity
 		debugRenderer = new Box2DDebugRenderer();
-		this.studyPointsGained = 20f; // From worst possible performance
+		this.studyPointsGained = 15f; // From worst possible performance
 		this.maxStudyPointsGained = 100f; // From best possible performance
+		this.random = new Random();
+		this.attackCooldown = 0.2f;
 		
 		// Set custom cursor - TODO
 		Pixmap pixmap = new Pixmap(Gdx.files.internal("UI/Cursor.png")); // TODO (crosshair?)
@@ -55,33 +77,64 @@ public class BugFixer extends MinigameScreen implements Screen {
 		// Load textures
 		Texture texture = new Texture("BugFixerMinigame/Cursor.png");
 		cursorShip = new Sprite(texture);
-		
-		createShip();
-		createWalls();
-		
-		// If in borderless, set to fullscreen to pause game if unfocused
-		if(game.isBorderless) {
-			Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode());
-		}
 	}
 	
 	@Override
 	public void startGame() {
 		// Code to restart the game
-		studyPointsGained = 20f;
+		studyPointsGained = 15f;
+		clock = 0f;
+		enemySpawnClock = 0f;
+		spawnTimer = 2f;
+		timeSinceAttack = 1f;
+		health = 100f;
+		enemyGrid = new Object[rows][columns];
+		bullets.clear();
+		enemyBullets.clear();
+		score = 0;
+		
+		// If in borderless, set to fullscreen to pause game if unfocused
+		if(game.isBorderless) {
+			Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode());
+		}
+		
+		Array<Body> bodies = new Array<Body>();
+	    world.getBodies(bodies);
+	    for(Body body: bodies){
+	        world.destroyBody(body);
+	    }
+	    
+	    createShip();
+	    createWalls();
 		
 		// Display game screen
 		game.setScreen(this);
-		
-		// Temporary - TODO REMOVE
-		endGame();
 	}
 	
 	private void endGame() {
+		// Calculate final score
+		studyPointsGained += clock/3;
+		studyPointsGained += score/10;
+		
+		// Check BugFixer high score
+		if(game.prefs.getInteger("bugFixerHighScore", 0) < score) {
+			game.prefs.putInteger("bugFixerHighScore", score);
+			game.prefs.flush();
+		}
+		
+		if(studyPointsGained > maxStudyPointsGained) {
+			studyPointsGained = maxStudyPointsGained;
+		}
+		
 		if(game.isBorderless) {
 			Gdx.graphics.setUndecorated(true);
 			Gdx.graphics.setWindowedMode(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		}
+		
+		// Reset custom cursor - TODO
+		Pixmap pixmap = new Pixmap(Gdx.files.internal("UI/Cursor.png")); // TODO (crosshair?)
+		Cursor cursor = Gdx.graphics.newCursor(pixmap, 0, 0);
+		Gdx.graphics.setCursor(cursor);
 		
 		// Add studyPoints score to total score for this minigame
 		if(game.studyPoints.containsKey("BugFixer")) {
@@ -111,7 +164,7 @@ public class BugFixer extends MinigameScreen implements Screen {
 			game.addPopUpText(new PopUpText("You feel very productive", 250, 300, 100, Align.center, false, 0.4f, new Color(1,1,1,1)), 2);
 		}
 		else {
-			game.addPopUpText(new PopUpText("You feel extremely productive", 250, 300, 100, Align.center, false, 0.4f, new Color(1,1,1,1)), 2);
+			game.addPopUpText(new PopUpText("You feel extremely productive!", 250, 300, 100, Align.center, false, 0.4f, new Color(1,1,1,1)), 2);
 		}
 	}
 	
@@ -149,15 +202,60 @@ public class BugFixer extends MinigameScreen implements Screen {
 		if(game.paused) {
 			game.pauseMenu();
 		}
-				
-		game.batch.end();
 		
+		game.batch.end();
+				
+		if(game.paused) return;
 		
 		movePlayer();
 		
-		if(game.paused) return;
-		debugRenderer.render(world, game.camera.combined);
+		game.batch.begin();
+		if(Gdx.input.isButtonPressed(Input.Buttons.LEFT) && timeSinceAttack > attackCooldown) {
+			attack(new Vector2(mousePos.x, mousePos.y));
+		}
+		
+		for(int i = 0; i < bullets.size(); i++) {
+			bullets.get(i).update();
+			if(bullets.get(i).checkOutOfBounds()) {
+				bullets.remove(i);
+			}
+		}
+		
+		for(int i = 0; i < enemyBullets.size(); i++) {
+			enemyBullets.get(i).update();
+			if(enemyBullets.get(i).checkOutOfBounds()) {
+				enemyBullets.remove(i);
+			}
+		}
+		
+		game.batch.end();	
+		
+		// Uncomment this to display hitboxes
+		//debugRenderer.render(world, game.camera.combined);
+		
 		logicStep(delta);
+		clock += Gdx.graphics.getDeltaTime();
+		enemySpawnClock += Gdx.graphics.getDeltaTime();
+		timeSinceAttack += Gdx.graphics.getDeltaTime();
+		checkEnemySpawn();
+		for (int i = 0; i < rows; i++) {
+			for (int j = 0; j < columns; j++) {
+				if (enemyGrid[i][j] instanceof SniperBug) {
+					((SniperBug) enemyGrid[i][j]).update();
+			    } 
+				else if (enemyGrid[i][j] instanceof ScatterBug) {
+					((ScatterBug) enemyGrid[i][j]).update();
+			    }
+			 }
+		}
+		
+		game.batch.begin();
+		drawUI();
+		game.batch.end();
+		
+		if(health <= 0f) {
+			displayFinalScore();
+		}
 	}
 	
 	private void createShip() {
@@ -237,7 +335,101 @@ public class BugFixer extends MinigameScreen implements Screen {
 		player.setTransform(player.getPosition().x, player.getPosition().y, playerToMouse);
 	}
 	
+	private void drawUI() {
+		// Draw energy bar
+		game.batch.draw(new Texture("BugFixerMinigame/HealthBar1.png"), game.camera.viewportWidth/2 - new Texture("BugFixerMinigame/HealthBar1.png").getWidth()/2, 350);
+		TextureRegion region = new TextureRegion(new Texture("BugFixerMinigame/HealthBar2.png"), (int)Math.round(284f*(health/100f)), new Texture("BugFixerMinigame/HealthBar2.png").getHeight());
+		game.batch.draw(region, game.camera.viewportWidth/2 - new Texture("BugFixerMinigame/HealthBar1.png").getWidth()/2, 350);
+		game.batch.draw(new Texture("BugFixerMinigame/HealthBar3.png"), game.camera.viewportWidth/2 - new Texture("BugFixerMinigame/HealthBar1.png").getWidth()/2, 350);
+		
+		// Draw Score
+		game.font.getData().setScale(0.3f); // Set font size
+		game.font.draw(game.batch, "Score: " + Integer.toString(score), 540, 350, 100, Align.center, false);
+	}
 	
+	private void displayFinalScore() {
+		endGame();
+	}
+	
+	private void checkEnemySpawn() {
+		// Decrease time between enemy spawns as game progresses
+		if(clock < 3f) {
+			spawnTimer = 2f;
+		}
+		else if (clock < 7f) {
+			spawnTimer = 1f;
+		}
+		else if (clock < 13f) {
+			spawnTimer = 0.75f;
+		}
+		else if (clock < 20f) {
+			spawnTimer = 0.5f;
+		}
+		else if (clock < 30f) {
+			spawnTimer = 0.25f;
+		}
+		else {
+			spawnTimer = 1f/((clock+10f)/10f);
+		}
+		
+		
+		// For first 10 seconds only spawn SniperBugs
+		if(clock < 10f) {
+			if(enemySpawnClock > spawnTimer) {
+				spawnBug("SniperBug");
+				enemySpawnClock = 0f;
+			}
+		}
+		// After 10 seconds spawn ScatterBugs also
+		else {
+			int randomNumber = random.nextInt(10);
+			if(enemySpawnClock > spawnTimer) {
+				if(randomNumber < 3) {
+					spawnBug("ScatterBug");
+				}
+				else {
+					spawnBug("SniperBug");
+				}
+				enemySpawnClock = 0f;
+			}
+		}
+		
+	}
+	
+	private boolean spawnBug(String type) {
+		// Spawn bug in a random, unoccupied slot
+		int maxAttempts = 100; // Maximum attempts to avoid an infinite loop
+        int attempts = 0;
+
+        while (attempts < maxAttempts) {
+            int randomRow = random.nextInt(rows);
+            int randomColumn = random.nextInt(columns);
+
+            if (enemyGrid[randomRow][randomColumn] == null) {
+            	double distance = Math.sqrt(Math.pow((randomRow+1)*20-10 - player.getPosition().x, 2) + Math.pow((randomColumn+1)*20-10 - player.getPosition().y, 2));
+                if (distance >= 50) {
+                	if(type == "SniperBug") {
+                		enemyGrid[randomRow][randomColumn] = new SniperBug(game, this, (randomRow+1)*20-10, (randomColumn+1)*20-10);
+                	}
+                	else if(type == "ScatterBug") {
+                		enemyGrid[randomRow][randomColumn] = new ScatterBug(game, this, (randomRow+1)*20-10, (randomColumn+1)*20-10);
+                	}
+                    return true; // Enemy successfully spawned
+                }
+            }
+
+            attempts++;
+        }
+
+        System.out.println("Unable to find a valid spawn point after " + maxAttempts + " attempts. \n");
+        return false; // No spawn location found
+	}
+	
+	private void attack(Vector2 mousePos) {
+		timeSinceAttack = 0f;
+		
+		bullets.add(new Bullet(game, this, player.getPosition().cpy().x, player.getPosition().cpy().y, mousePos, true));
+	}
 	
 	@Override
 	public void resize(int width, int height) {
