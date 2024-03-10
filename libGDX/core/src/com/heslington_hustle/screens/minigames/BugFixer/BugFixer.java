@@ -58,7 +58,7 @@ public class BugFixer extends MinigameScreen implements Screen {
 	
 	public int rows = 32;
 	public int columns = 17;
-	public Object[][] enemyGrid = new Object[rows][columns];
+	public java.lang.Object[][] enemyGrid = new java.lang.Object[rows][columns];
 	
 	private float studyPointsGained;
 	private float maxStudyPointsGained;
@@ -280,7 +280,7 @@ public class BugFixer extends MinigameScreen implements Screen {
 		game.batch.end();
 		
 		if(health <= 0f) {
-			displayFinalScore();
+			endGame();
 		}
 	}
 	
@@ -371,10 +371,6 @@ public class BugFixer extends MinigameScreen implements Screen {
 		// Draw Score
 		game.font.getData().setScale(0.3f); // Set font size
 		game.font.draw(game.batch, "Score: " + Integer.toString(score), 540, 350, 100, Align.center, false);
-	}
-	
-	private void displayFinalScore() {
-		endGame();
 	}
 	
 	private void checkEnemySpawn() {
