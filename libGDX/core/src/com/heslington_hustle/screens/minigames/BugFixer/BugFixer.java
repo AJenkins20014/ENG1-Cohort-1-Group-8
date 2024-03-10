@@ -31,10 +31,10 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.heslington_hustle.game.HeslingtonHustle;
 import com.heslington_hustle.game.PopUpText;
+import com.heslington_hustle.screens.InformationScreen;
 import com.heslington_hustle.screens.MinigameScreen;
 
 public class BugFixer extends MinigameScreen implements Screen {
-
 	public World world;
 	private Box2DDebugRenderer debugRenderer;
 	private boolean minimised;
@@ -118,15 +118,20 @@ public class BugFixer extends MinigameScreen implements Screen {
 	    
 	    createShip();
 	    createWalls();
-		
-		// Display game screen
-		game.setScreen(this);
+	    
+	    // Display tutorial
+	    game.setScreen(new InformationScreen(game, "bugFixerTutorial", this));
 	}
 	
 	private void endGame() {
+		// Add difficulty modifier to score
+		score = (int) (score*(1/difficultyScalar));
+		
 		// Calculate final score
 		studyPointsGained += clock/3;
 		studyPointsGained += score/10;
+		
+		System.out.print(studyPointsGained + "\n");
 		
 		// Check BugFixer high score
 		if(game.prefs.getInteger("bugFixerHighScore", 0) < score) {
@@ -163,7 +168,8 @@ public class BugFixer extends MinigameScreen implements Screen {
 		// Stop music
 		backgroundMusic.stop();
 		
-		game.setScreen(game.map);
+		// Display final score
+		game.setScreen(new InformationScreen(game, "bugFixerScore", game.map));
 		
 		// TODO - Change accordingly
 		if(studyPointsGained < 30f) {
@@ -180,6 +186,10 @@ public class BugFixer extends MinigameScreen implements Screen {
 		}
 		else {
 			game.addPopUpText(new PopUpText("You feel extremely productive!", 250, 300, 100, Align.center, false, 0.4f, new Color(1,1,1,1)), 2);
+		}
+		
+		if(game.timesStudied[game.day-1] > 2) {
+			game.addPopUpText(new PopUpText("You feel stressed...", 250, 300, 100, Align.center, false, 0.4f, new Color(1,1,1,1)), 2);
 		}
 	}
 	
@@ -227,7 +237,7 @@ public class BugFixer extends MinigameScreen implements Screen {
 		movePlayer();
 		
 		game.batch.begin();
-		if(Gdx.input.isButtonPressed(Input.Buttons.LEFT) && timeSinceAttack > attackCooldown) {
+		if(Gdx.input.isButtonPressed(Input.Buttons.LEFT) && timeSinceAttack > attackCooldown && clock > 0.2f) {
 			attack(new Vector2(mousePos.x, mousePos.y));
 		}
 		
@@ -370,28 +380,28 @@ public class BugFixer extends MinigameScreen implements Screen {
 		
 		// Draw Score
 		game.font.getData().setScale(0.3f); // Set font size
-		game.font.draw(game.batch, "Score: " + Integer.toString(score), 540, 350, 100, Align.center, false);
+		game.font.draw(game.batch, "Score: " + Integer.toString((int) (score*(1/difficultyScalar))), 540, 350, 100, Align.center, false);
 	}
 	
 	private void checkEnemySpawn() {
 		// Decrease time between enemy spawns as game progresses
 		if(clock < 3f) {
-			spawnTimer = 2f;
+			spawnTimer = 2f/difficultyScalar;
 		}
 		else if (clock < 7f) {
-			spawnTimer = 1f;
+			spawnTimer = 1f/difficultyScalar;
 		}
 		else if (clock < 13f) {
-			spawnTimer = 0.75f;
+			spawnTimer = 0.75f/difficultyScalar;
 		}
 		else if (clock < 20f) {
-			spawnTimer = 0.5f;
+			spawnTimer = 0.5f/difficultyScalar;
 		}
 		else if (clock < 30f) {
-			spawnTimer = 0.25f;
+			spawnTimer = 0.25f/difficultyScalar;
 		}
 		else {
-			spawnTimer = 1f/((clock+10f)/10f);
+			spawnTimer = (1f/((clock+10f)/10f))/difficultyScalar;
 		}
 		
 		

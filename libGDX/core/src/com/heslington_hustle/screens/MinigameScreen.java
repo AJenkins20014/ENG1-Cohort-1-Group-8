@@ -8,6 +8,7 @@ public class MinigameScreen implements Screen {
 	public HeslingtonHustle game;
 	public float energyChange;
 	public float difficultyScalar;
+	public boolean exam;
 	
 	public MinigameScreen(HeslingtonHustle game, float difficultyScalar){
 		this.game = game;

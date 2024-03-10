@@ -92,6 +92,10 @@ public class StudyGame1 extends MinigameScreen implements Screen {
 		else {
 			game.addPopUpText(new PopUpText("You feel extremely productive!", 250, 300, 100, Align.center, false, 0.4f, new Color(1,1,1,1)), 2);
 		}
+		
+		if(game.timesStudied[game.day-1] > 2) {
+			game.addPopUpText(new PopUpText("You feel stressed...", 250, 300, 100, Align.center, false, 0.4f, new Color(1,1,1,1)), 2);
+		}
 	}
 	
 	@Override

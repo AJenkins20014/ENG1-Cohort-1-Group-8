@@ -123,7 +123,7 @@ public class CharacterSelectScreen implements Screen{
 		game.energyBar = new EnergyBar(new Texture("Avatars/PlaceholderCharacter.png"), 100f);
 		game.day = 1;
 		game.time = 8;
-		game.setScreen(new Map(game, 1));
+		game.setScreen(new InformationScreen(game, "mainTutorial", new Map(game, 1)));
 	}
 
 	@Override

@@ -33,9 +33,11 @@ public class Building extends Object {
 		else {
 			game.energyBar.addEnergy(-requiredEnergy);
 			game.time += timeSpent;
-			//minigame.difficultyScalar = ??? // Set minigame difficulty
+			
+			// Set minigame difficulty
+			minigame.difficultyScalar = game.timesStudied[game.day-1]*0.25f + 1f;
+			minigame.exam = false;
 			minigame.startGame();
 		}
 	}
-
 }

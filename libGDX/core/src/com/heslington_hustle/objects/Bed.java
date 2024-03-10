@@ -28,6 +28,7 @@ public class Bed extends Object {
 		// If not eaten that day, start next day with less energy
 		if(game.timesEatenToday < 1) {
 			game.energyBar.addEnergy(-30f);
+			game.addPopUpText(new PopUpText("You feel hungry...", 250, 300, 100, Align.center, false, 0.4f, new Color(1,1,1,1)), 2);
 		}
 		
 		game.time = 8; // Set time to 8am

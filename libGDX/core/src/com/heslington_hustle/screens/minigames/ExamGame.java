@@ -48,9 +48,9 @@ public class ExamGame extends MinigameScreen implements Screen {
 			float studyPoints = game.studyPoints.get(minigames[i]);
 			studyPointsTotal += studyPoints;
 			
-			/* Ideas: Either studying a minigame will make it easier when it shows up in the exam
+			/* Either studying a minigame will make it easier when it shows up in the exam?
 			 * OR
-			 * Studying a minigame will give you a multiplier to your score with difficulty remaining constant		
+			 * Studying a minigame will give you a multiplier to your score with difficulty remaining constant?		
 			 */
 			
 			
@@ -157,8 +157,22 @@ public class ExamGame extends MinigameScreen implements Screen {
 		
 	}
 	
+	private void loadNextMinigame() {
+		
+	}
+	
 	@Override
 	public void render(float delta) {
+		
+	}
+	
+	@Override 
+	public void show() {
+		
+	}
+	
+	@Override
+	public void hide() {
 		
 	}
 	
