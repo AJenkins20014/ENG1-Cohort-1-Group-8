@@ -54,6 +54,7 @@ public class StartScreen implements Screen {
 			game.layout.setText(game.font, "Play", new Color(232/255f, 193/255f, 112/255f, 1), 100, Align.bottomLeft, false);
 			if(Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
 				// Play button clicked
+				game.menuClick.play(game.volume);
 				loadCharacterSelect();
 			}
 		}
@@ -64,6 +65,7 @@ public class StartScreen implements Screen {
 			game.layout.setText(game.font, "Options", new Color(232/255f, 193/255f, 112/255f, 1), 100, Align.bottomLeft, false);
 			if(Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
 				// Options button clicked
+				game.menuClick.play(game.volume);
 				loadOptions();
 			}
 		}
@@ -74,6 +76,7 @@ public class StartScreen implements Screen {
 			game.layout.setText(game.font, "About", new Color(232/255f, 193/255f, 112/255f, 1), 100, Align.bottomLeft, false);
 			if(Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
 				// About button clicked
+				game.menuClick.play(game.volume);
 				Gdx.net.openURI("https://nicholaslambert03.github.io/ENG1Website.io/"); // Opens link to website
 				resize(0, 0); // Minimises game window
 			}
@@ -85,6 +88,7 @@ public class StartScreen implements Screen {
 			game.layout.setText(game.font, "Exit", new Color(232/255f, 193/255f, 112/255f, 1), 100, Align.bottomLeft, false);
 			if(Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
 				// Exit button clicked
+				game.menuClick.play(game.volume);
 				exit();
 			}
 		}
@@ -115,7 +119,7 @@ public class StartScreen implements Screen {
 	
 	@Override
 	public void show() {
-	
+		game.menuMusic.play();
 	}
 	
 	@Override
@@ -135,6 +139,6 @@ public class StartScreen implements Screen {
 
 	@Override
 	public void hide() {
-		
+		game.menuMusic.pause();
 	}
 }

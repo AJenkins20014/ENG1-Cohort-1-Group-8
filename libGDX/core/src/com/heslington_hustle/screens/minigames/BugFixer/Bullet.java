@@ -17,6 +17,7 @@ public class Bullet {
 	private float speed;
 	private float directionX;
 	private float directionY;
+	private float rotation;
 	private boolean playerBullet;
 	
 	private Animation<TextureRegion> animation;
@@ -58,6 +59,7 @@ public class Bullet {
 		
 		// Calculate the direction vector
         float directionLength = (float) Math.sqrt((this.destination.x - this.x) * (this.destination.x - this.x) + (this.destination.y - this.y) * (this.destination.y - this.y));
+        rotation = (float) Math.atan2(this.x - this.destination.x, this.destination.y - this.y);
 
         if (directionLength != 0) {
             this.directionX = (this.destination.x - this.x) / directionLength;
@@ -86,7 +88,6 @@ public class Bullet {
 		TextureRegion currentFrame = animation.getKeyFrame(clock, true);
 		Sprite sprite = new Sprite(currentFrame);
 		
-		float rotation = (float) Math.atan2(x - destination.x, destination.y - y);
 		sprite.setRotation((float) Math.toDegrees(rotation));
 		sprite.setX(x-5);
 		sprite.setY(y-5);

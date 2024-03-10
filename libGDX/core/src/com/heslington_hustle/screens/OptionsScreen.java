@@ -128,6 +128,7 @@ public class OptionsScreen implements Screen {
 				game.font.draw(game.batch, game.layout, 170, 250);
 				if(Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
 					// Lower resolution
+					game.menuClick.play(game.volume);
 					game.batch.end();
 					HeslingtonHustle.windowWidth = resolutionWidths.get(resolutionIndex-1);
 					HeslingtonHustle.windowHeight = resolutionHeights.get(resolutionIndex-1);
@@ -152,6 +153,7 @@ public class OptionsScreen implements Screen {
 				game.font.draw(game.batch, game.layout, 365, 250);
 				if(Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
 					// Raise resolution
+					game.menuClick.play(game.volume);
 					game.batch.end();
 					HeslingtonHustle.windowWidth = resolutionWidths.get(resolutionIndex+1);
 					HeslingtonHustle.windowHeight = resolutionHeights.get(resolutionIndex+1);
@@ -180,6 +182,7 @@ public class OptionsScreen implements Screen {
 				game.font.draw(game.batch, game.layout, 10, 200);
 				if(Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
 					// Change to borderless mode
+					game.menuClick.play(game.volume);
 					game.batch.end();
 					Gdx.graphics.setUndecorated(true);
 					Gdx.graphics.setWindowedMode(resolutionWidths.get(resolutionIndex), resolutionHeights.get(resolutionIndex));
@@ -203,6 +206,7 @@ public class OptionsScreen implements Screen {
 				game.font.draw(game.batch, game.layout, 10, 200);
 				if(Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
 					// Change to windowed mode
+					game.menuClick.play(game.volume);
 					game.batch.end();
 					Gdx.graphics.setUndecorated(false);
 					Gdx.graphics.setWindowedMode(resolutionWidths.get(resolutionIndex), resolutionHeights.get(resolutionIndex));
@@ -226,6 +230,7 @@ public class OptionsScreen implements Screen {
 				game.font.draw(game.batch, game.layout, 10, 200);
 				if(Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
 					// Change to fullscreen mode
+					game.menuClick.play(game.volume);
 					game.batch.end();
 					Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode());
 					HeslingtonHustle.windowWidth = Gdx.graphics.getDisplayMode().width;
@@ -252,6 +257,7 @@ public class OptionsScreen implements Screen {
 				game.font.draw(game.batch, game.layout, 165, 150);
 				if(Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
 					// Lower framerate
+					game.menuClick.play(game.volume);
 					game.batch.end();
 					Gdx.graphics.setForegroundFPS(framerates.get(framerateIndex-1));
 					game.prefs.putInteger("framerate", framerates.get(framerateIndex-1));
@@ -271,6 +277,7 @@ public class OptionsScreen implements Screen {
 				game.font.draw(game.batch, game.layout, 250, 150);
 				if(Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
 					// Raise framerate
+					game.menuClick.play(game.volume);
 					game.batch.end();
 					Gdx.graphics.setForegroundFPS(framerates.get(framerateIndex+1));
 					game.prefs.putInteger("framerate", framerates.get(framerateIndex+1));
@@ -293,8 +300,14 @@ public class OptionsScreen implements Screen {
 				game.font.draw(game.batch, game.layout, 115, 100);
 				if(Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
 					// Lower volume
+					game.menuClick.play(game.volume);
 					game.batch.end();
-					game.volume -= 0.1f;
+					if(game.volume-0.1f < 0) {
+						game.volume = 0f;
+					}
+					else {
+						game.volume -= 0.1f;
+					}
 					game.prefs.putFloat("volume", game.volume);
 					return;
 				}
@@ -311,6 +324,7 @@ public class OptionsScreen implements Screen {
 				game.font.draw(game.batch, game.layout, 180, 100);
 				if(Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
 					// Raise volume
+					game.menuClick.play(game.volume);
 					game.batch.end();
 					game.volume += 0.1f;
 					game.prefs.putFloat("volume", game.volume);
@@ -331,6 +345,7 @@ public class OptionsScreen implements Screen {
 				game.font.draw(game.batch, game.layout, 10, 50);
 				if(Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
 					// Go back to start screen and save setting to prefs
+					game.menuClick.play(game.volume);
 					game.prefs.flush();
 					if(windowModeIndex == 1) game.isBorderless = true;
 					else game.isBorderless = false;
@@ -350,7 +365,7 @@ public class OptionsScreen implements Screen {
 	
 	@Override
 	public void show() {
-		
+		game.menuMusic.play();
 	}
 
 	@Override
@@ -370,7 +385,7 @@ public class OptionsScreen implements Screen {
 
 	@Override
 	public void hide() {
-		
+		game.menuMusic.pause();
 	}
 
 	@Override

@@ -29,7 +29,7 @@ public class CharacterSelectScreen implements Screen{
 
 	@Override
 	public void show() {
-		
+		game.menuMusic.play();
 	}
 
 	@Override
@@ -61,6 +61,7 @@ public class CharacterSelectScreen implements Screen{
 			game.layout.setText(game.font, "Start!", new Color(232/255f, 193/255f, 112/255f, 1), 100, Align.bottomLeft, false);
 			if(Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
 				// Start game
+				game.menuClick.play(game.volume);
 				newGame();
 			}
 		}
@@ -77,6 +78,7 @@ public class CharacterSelectScreen implements Screen{
 				game.font.draw(game.batch, game.layout, 30, 100);
 				if(Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
 					// Previous Avatar
+					game.menuClick.play(game.volume);
 					avatarIndex--;
 				}
 			}
@@ -92,6 +94,7 @@ public class CharacterSelectScreen implements Screen{
 				game.font.draw(game.batch, game.layout, 170 + new Texture("Avatars/PlaceholderCharacter.png").getWidth()/2, 100);
 				if(Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
 					// Next Avatar
+					game.menuClick.play(game.volume);
 					avatarIndex++;
 				}
 			}
@@ -106,6 +109,7 @@ public class CharacterSelectScreen implements Screen{
 			game.layout.setText(game.font, "Back", new Color(232/255f, 193/255f, 112/255f, 1), 100, Align.bottomLeft, false);
 			if(Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
 				// Back to main menu
+				game.menuClick.play(game.volume);
 				game.setScreen(new StartScreen(game));
 			}
 		}
@@ -139,7 +143,7 @@ public class CharacterSelectScreen implements Screen{
 
 	@Override
 	public void hide() {
-		
+		game.menuMusic.pause();
 	}
 
 	@Override

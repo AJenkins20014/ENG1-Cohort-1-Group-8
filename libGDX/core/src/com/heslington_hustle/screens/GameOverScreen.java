@@ -55,6 +55,7 @@ public class GameOverScreen implements Screen {
 			game.layout.setText(game.font, "Back to Main Menu", new Color(232/255f, 193/255f, 112/255f, 1), 100, Align.center, false);
 			if(Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
 				// Button clicked
+				game.menuClick.play(game.volume);
 				backToMenu();
 			}
 		}
@@ -78,7 +79,7 @@ public class GameOverScreen implements Screen {
 	
 	@Override
 	public void show() {
-		
+		game.menuMusic.play();
 	}
 
 	@Override
@@ -98,7 +99,7 @@ public class GameOverScreen implements Screen {
 
 	@Override
 	public void hide() {
-		
+		game.menuMusic.pause();
 	}
 
 	@Override

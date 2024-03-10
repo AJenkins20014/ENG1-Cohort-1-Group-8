@@ -7,6 +7,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Cursor;
 import com.badlogic.gdx.graphics.GL20;
@@ -36,6 +38,8 @@ public class BugFixer extends MinigameScreen implements Screen {
 	public World world;
 	private Box2DDebugRenderer debugRenderer;
 	private boolean minimised;
+	private float accumulator = 0f;
+	private float fixedTimeStep = 1 / 144f; // Adjust as needed
 	
 	public Body player;
 	private float playerToMouse;
@@ -60,6 +64,11 @@ public class BugFixer extends MinigameScreen implements Screen {
 	private float maxStudyPointsGained;
 	public int score;
 	
+	private Music backgroundMusic;
+	private Sound playerShot;
+	public Sound enemyShot;
+	private Sound enemySpawn;
+	
 	public BugFixer(HeslingtonHustle game, float difficultyScalar) {
 		super(game, difficultyScalar);
 		world = new World(new Vector2(0, 0), true); // Create world with no gravity
@@ -69,14 +78,17 @@ public class BugFixer extends MinigameScreen implements Screen {
 		this.random = new Random();
 		this.attackCooldown = 0.2f;
 		
-		// Set custom cursor - TODO
-		Pixmap pixmap = new Pixmap(Gdx.files.internal("UI/Cursor.png")); // TODO (crosshair?)
-		Cursor cursor = Gdx.graphics.newCursor(pixmap, 0, 0);
-		Gdx.graphics.setCursor(cursor);
-		
 		// Load textures
 		Texture texture = new Texture("BugFixerMinigame/Cursor.png");
 		cursorShip = new Sprite(texture);
+		
+		// Load sounds
+		backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("Music/BugFixerMusic.ogg"));
+		backgroundMusic.setLooping(true);
+		
+		playerShot = Gdx.audio.newSound(Gdx.files.internal("BugFixerMinigame/PlayerShot.mp3"));
+		enemyShot = Gdx.audio.newSound(Gdx.files.internal("BugFixerMinigame/EnemyShot.mp3"));
+		enemySpawn = Gdx.audio.newSound(Gdx.files.internal("BugFixerMinigame/EnemySpawn.mp3"));
 	}
 	
 	@Override
@@ -148,6 +160,9 @@ public class BugFixer extends MinigameScreen implements Screen {
 		game.timesStudied[game.day-1] += 1;
 		
 		
+		// Stop music
+		backgroundMusic.stop();
+		
 		game.setScreen(game.map);
 		
 		// TODO - Change accordingly
@@ -169,7 +184,7 @@ public class BugFixer extends MinigameScreen implements Screen {
 	}
 	
 	private void logicStep(float delta) {
-		world.step(delta, 3, 3);
+		world.step(Math.min(Gdx.graphics.getDeltaTime(), 0.15f), 3, 3);
 	}
 	
 	@Override
@@ -187,6 +202,8 @@ public class BugFixer extends MinigameScreen implements Screen {
 		// Get mouse position in world coordinates
 		Vector3 mousePos = game.camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 1f));
 		playerToMouse = (float) Math.atan2(player.getPosition().x - mousePos.x, mousePos.y - player.getPosition().y);
+		
+		updateMusicVolume();
 		
 		
 		game.batch.begin();
@@ -233,7 +250,16 @@ public class BugFixer extends MinigameScreen implements Screen {
 		// Uncomment this to display hitboxes
 		//debugRenderer.render(world, game.camera.combined);
 		
-		logicStep(delta);
+		// Accumulate the time
+	    accumulator += delta;
+
+	    // Update the physics world with a fixed timestep
+	    while (accumulator >= fixedTimeStep) {
+	        logicStep(fixedTimeStep);
+	        accumulator -= fixedTimeStep;
+	    }
+	    
+	    
 		clock += Gdx.graphics.getDeltaTime();
 		enemySpawnClock += Gdx.graphics.getDeltaTime();
 		timeSinceAttack += Gdx.graphics.getDeltaTime();
@@ -318,16 +344,16 @@ public class BugFixer extends MinigameScreen implements Screen {
 	
 	private void movePlayer() {
 		// Apply impulse to body
-		if (Gdx.input.isKeyPressed(Keys.W) && player.getLinearVelocity().y < 10000) {			
+		if (Gdx.input.isKeyPressed(Keys.W) && player.getLinearVelocity().y < 100000) {			
 		     player.applyLinearImpulse(0, 200000*Gdx.graphics.getDeltaTime(), player.getPosition().x, player.getPosition().y, true);
 		}
-		if (Gdx.input.isKeyPressed(Keys.S) && player.getLinearVelocity().y > -10000) {			
+		if (Gdx.input.isKeyPressed(Keys.S) && player.getLinearVelocity().y > -100000) {			
 		     player.applyLinearImpulse(0, -200000*Gdx.graphics.getDeltaTime(), player.getPosition().x, player.getPosition().y, true);
 		}
-		if (Gdx.input.isKeyPressed(Keys.A) && player.getLinearVelocity().x > -10000) {			
+		if (Gdx.input.isKeyPressed(Keys.A) && player.getLinearVelocity().x > -100000) {			
 		     player.applyLinearImpulse(-200000*Gdx.graphics.getDeltaTime(), 0, player.getPosition().x, player.getPosition().y, true);
 		}
-		if (Gdx.input.isKeyPressed(Keys.D) && player.getLinearVelocity().x < 10000) {			
+		if (Gdx.input.isKeyPressed(Keys.D) && player.getLinearVelocity().x < 100000) {			
 		     player.applyLinearImpulse(200000*Gdx.graphics.getDeltaTime(), 0, player.getPosition().x, player.getPosition().y, true);
 		}
 		
@@ -414,6 +440,7 @@ public class BugFixer extends MinigameScreen implements Screen {
                 	else if(type == "ScatterBug") {
                 		enemyGrid[randomRow][randomColumn] = new ScatterBug(game, this, (randomRow+1)*20-10, (randomColumn+1)*20-10);
                 	}
+                	enemySpawn.play(game.volume);
                     return true; // Enemy successfully spawned
                 }
             }
@@ -429,6 +456,12 @@ public class BugFixer extends MinigameScreen implements Screen {
 		timeSinceAttack = 0f;
 		
 		bullets.add(new Bullet(game, this, player.getPosition().cpy().x, player.getPosition().cpy().y, mousePos, true));
+		playerShot.play(game.volume);
+	}
+	
+	private void updateMusicVolume() {
+		float musicVolume = game.volume/2;
+		backgroundMusic.setVolume(musicVolume);
 	}
 	
 	@Override
@@ -440,6 +473,28 @@ public class BugFixer extends MinigameScreen implements Screen {
 		else {
 			minimised = false;
 		}
+	}
+	
+	@Override
+	public void hide() {
+		// Reset custom cursor
+		Pixmap pixmap = new Pixmap(Gdx.files.internal("UI/Cursor.png"));
+		Cursor cursor = Gdx.graphics.newCursor(pixmap, 0, 0);
+		Gdx.graphics.setCursor(cursor);
+		
+		// Stop music
+		backgroundMusic.stop();
+	}
+	
+	@Override
+	public void show() {
+		// Set custom cursor
+		Pixmap pixmap = new Pixmap(Gdx.files.internal("BugFixerMinigame/Crosshair.png"));
+		Cursor cursor = Gdx.graphics.newCursor(pixmap, 16, 16);
+		Gdx.graphics.setCursor(cursor);
+				
+		// Play music
+		backgroundMusic.play();
 	}
 
 	@Override

@@ -177,7 +177,7 @@ public class Map implements Screen{
 	
 	@Override
 	public void show() {
-		
+		game.mapMusic.play();
 	}
 
 	@Override
@@ -197,7 +197,7 @@ public class Map implements Screen{
 
 	@Override
 	public void hide() {
-		
+		game.mapMusic.stop();
 	}
 
 	@Override

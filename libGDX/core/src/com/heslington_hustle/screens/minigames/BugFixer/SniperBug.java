@@ -135,6 +135,7 @@ public class SniperBug {
 		timeSinceAttack = 0f;
 		
 		bugFixer.enemyBullets.add(new Bullet(game, bugFixer, x, y, bugFixer.player.getPosition().cpy(), false));
+		bugFixer.enemyShot.play(game.volume);
 	}
 	
 	public void destroy() {

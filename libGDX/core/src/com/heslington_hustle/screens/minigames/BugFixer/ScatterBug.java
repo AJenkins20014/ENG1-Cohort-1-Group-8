@@ -143,6 +143,7 @@ public class ScatterBug {
 		bugFixer.enemyBullets.add(new Bullet(game, bugFixer, x, y, new Vector2(x-100, y+100), false));
 		bugFixer.enemyBullets.add(new Bullet(game, bugFixer, x, y, new Vector2(x+100, y-100), false));
 		bugFixer.enemyBullets.add(new Bullet(game, bugFixer, x, y, new Vector2(x-100, y-100), false));
+		bugFixer.enemyShot.play(game.volume);
 	}
 	
 	public void destroy() {

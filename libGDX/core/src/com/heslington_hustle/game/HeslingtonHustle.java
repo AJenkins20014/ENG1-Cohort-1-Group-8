@@ -7,6 +7,8 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Preferences;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Cursor;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -59,6 +61,10 @@ public class HeslingtonHustle extends Game {
 	private ArrayList<Float> popUpTimers = new ArrayList<>();
 	private float popUpAlpha;
 	
+	public Music menuMusic;
+	public Music mapMusic;
+	public Sound menuClick;
+	
 	@Override
 	public void create () {	
 		// Set windowHeight and windowWidth to the monitor's resolution
@@ -86,6 +92,15 @@ public class HeslingtonHustle extends Game {
 		
 		// Load font
 		font = new BitmapFont(Gdx.files.internal("UI/Yoster.fnt"));
+
+		// Load sounds
+		menuMusic = Gdx.audio.newMusic(Gdx.files.internal("Music/MenuMusic.ogg"));
+		menuMusic.setLooping(true);
+		
+		mapMusic = Gdx.audio.newMusic(Gdx.files.internal("Music/MapMusic.ogg"));
+		mapMusic.setLooping(true);
+		
+		menuClick = Gdx.audio.newSound(Gdx.files.internal("UI/ButtonClick.mp3"));
 		
 		// Display start menu
 		this.setScreen(new StartScreen(this));
@@ -122,7 +137,7 @@ public class HeslingtonHustle extends Game {
 		Gdx.graphics.setForegroundFPS(prefs.getInteger("framerate", 60));
 		
 		// Load saved volume
-		volume = prefs.getFloat("volume", 1.0f);
+		volume = prefs.getFloat("volume", 0.5f);
 	}
 	
 	public void togglePause() {
@@ -154,7 +169,13 @@ public class HeslingtonHustle extends Game {
 				font.draw(batch, layout, 345, 180);
 				if(Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
 					// Lower volume
-					volume -= 0.1f;
+					menuClick.play(volume);
+					if(volume-0.1f < 0) {
+						volume = 0f;
+					}
+					else {
+						volume -= 0.1f;
+					}
 					prefs.putFloat("volume", volume);
 					prefs.flush();
 				}
@@ -170,6 +191,7 @@ public class HeslingtonHustle extends Game {
 				font.draw(batch, layout, 420, 180);
 				if(Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
 					// Raise volume
+					menuClick.play(volume);
 					volume += 0.1f;
 					prefs.putFloat("volume", volume);
 					prefs.flush();
@@ -190,11 +212,13 @@ public class HeslingtonHustle extends Game {
 			font.draw(batch, layout, 160, 120);
 			if(Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
 				// Confirm quit
+				menuClick.play(volume);
 				if(confirmQuit) {
 					this.dispose();
 					setScreen(new StartScreen(this));
 					confirmQuit = false;
 					paused = false;
+					menuMusic.play();
 				}
 				else {
 					confirmQuit = true;
@@ -244,6 +268,12 @@ public class HeslingtonHustle extends Game {
 		
 		font.setColor(new Color(1,1,1,1)); // Reset font color
 	}
+	
+	private void updateMusicVolume() {
+		float musicVolume = volume/2;
+		menuMusic.setVolume(musicVolume);
+		mapMusic.setVolume(musicVolume);
+	}
 
 	@Override
 	public void render () {
@@ -272,7 +302,7 @@ public class HeslingtonHustle extends Game {
 		
 		batch.end();
 		
-		
+		updateMusicVolume();
 	}
 	
 	@Override
