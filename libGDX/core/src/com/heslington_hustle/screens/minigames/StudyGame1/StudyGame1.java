@@ -9,12 +9,14 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Align;
 import com.heslington_hustle.game.HeslingtonHustle;
 import com.heslington_hustle.game.PopUpText;
+import com.heslington_hustle.screens.InformationScreen;
 import com.heslington_hustle.screens.MinigameScreen;
 
 public class StudyGame1 extends MinigameScreen implements Screen {
 	private boolean minimised;
 	private float studyPointsGained;
 	private float maxStudyPointsGained;
+	private int score;
 	
 	public StudyGame1(HeslingtonHustle game, float difficultyScalar) {
 		super(game, difficultyScalar);
@@ -32,11 +34,13 @@ public class StudyGame1 extends MinigameScreen implements Screen {
 			Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode());
 		}
 		
-		// Display game screen
+		// Display tutorial - TODO: create a tutorial in InformationScreen and rename the string in the constructor below to fit
+	    //game.setScreen(new InformationScreen(game, "THISMINIGAMETutorial", this));
+	    
+		// Display game screen - TODO: Remove, uncomment out for testing purposes
 		game.setScreen(this);
 		
-		
-		//TEMPORARY - TODO: REMOVE
+		// Temporary - TODO: REMOVE
 		endGame();
 	}
 	
@@ -74,28 +78,8 @@ public class StudyGame1 extends MinigameScreen implements Screen {
 		game.timesStudied[game.day-1] += 1;
 		
 		
-		game.setScreen(game.map);
-		
-		// TODO - Change accordingly
-		if(studyPointsGained < 30f) {
-			game.addPopUpText(new PopUpText("You don't feel very productive...", 250, 300, 100, Align.center, false, 0.4f, new Color(1,1,1,1)), 2);
-		}
-		else if(studyPointsGained < 50f) {
-			game.addPopUpText(new PopUpText("You feel slightly productive", 250, 300, 100, Align.center, false, 0.4f, new Color(1,1,1,1)), 2);
-		}
-		else if(studyPointsGained < 70f) {
-			game.addPopUpText(new PopUpText("You feel productive", 250, 300, 100, Align.center, false, 0.4f, new Color(1,1,1,1)), 2);
-		}
-		else if(studyPointsGained < 90f) {
-			game.addPopUpText(new PopUpText("You feel very productive", 250, 300, 100, Align.center, false, 0.4f, new Color(1,1,1,1)), 2);
-		}
-		else {
-			game.addPopUpText(new PopUpText("You feel extremely productive!", 250, 300, 100, Align.center, false, 0.4f, new Color(1,1,1,1)), 2);
-		}
-		
-		if(game.timesStudied[game.day-1] > 2) {
-			game.addPopUpText(new PopUpText("You feel stressed...", 250, 300, 100, Align.center, false, 0.4f, new Color(1,1,1,1)), 2);
-		}
+		// Display final score
+		game.setScreen(new InformationScreen(game, "studyGameScore", game.map, score, studyPointsGained));
 	}
 	
 	@Override

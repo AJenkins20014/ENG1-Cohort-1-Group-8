@@ -39,7 +39,7 @@ public class StartScreen implements Screen {
 		game.font.draw(game.batch, "Heslington", 470, 330, 140, Align.right, false);
 		game.font.draw(game.batch, "Hustle", 470, 275, 140, Align.right, false);
 		
-		// Draw high scores
+		// Draw high scores - TODO: Add high scores for other minigames
 		game.font.getData().setScale(0.4f); // Set font size
 		game.font.setColor(new Color(232/255f, 193/255f, 112/255f, 1));
 		game.font.draw(game.batch, "High Score: " + Integer.toString(game.prefs.getInteger("highScore", 0)), 470, 190, 140, Align.right, false);

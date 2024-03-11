@@ -1,14 +1,11 @@
 package com.heslington_hustle.game;
 
-import com.badlogic.gdx.graphics.Texture;
 
 public class EnergyBar {
 	public float energy;
-	public Texture sprite;
 	
-	public EnergyBar(Texture sprite, float energy) {
+	public EnergyBar(float energy) {
 		this.energy = energy;
-		this.sprite = sprite;
 	}
 	
 	public void setEnergy(float energy) {

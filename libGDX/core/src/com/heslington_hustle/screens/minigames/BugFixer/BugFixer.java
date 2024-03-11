@@ -169,28 +169,7 @@ public class BugFixer extends MinigameScreen implements Screen {
 		backgroundMusic.stop();
 		
 		// Display final score
-		game.setScreen(new InformationScreen(game, "bugFixerScore", game.map));
-		
-		// TODO - Change accordingly
-		if(studyPointsGained < 30f) {
-			game.addPopUpText(new PopUpText("You don't feel very productive...", 250, 300, 100, Align.center, false, 0.4f, new Color(1,1,1,1)), 2);
-		}
-		else if(studyPointsGained < 50f) {
-			game.addPopUpText(new PopUpText("You feel slightly productive", 250, 300, 100, Align.center, false, 0.4f, new Color(1,1,1,1)), 2);
-		}
-		else if(studyPointsGained < 70f) {
-			game.addPopUpText(new PopUpText("You feel productive", 250, 300, 100, Align.center, false, 0.4f, new Color(1,1,1,1)), 2);
-		}
-		else if(studyPointsGained < 90f) {
-			game.addPopUpText(new PopUpText("You feel very productive", 250, 300, 100, Align.center, false, 0.4f, new Color(1,1,1,1)), 2);
-		}
-		else {
-			game.addPopUpText(new PopUpText("You feel extremely productive!", 250, 300, 100, Align.center, false, 0.4f, new Color(1,1,1,1)), 2);
-		}
-		
-		if(game.timesStudied[game.day-1] > 2) {
-			game.addPopUpText(new PopUpText("You feel stressed...", 250, 300, 100, Align.center, false, 0.4f, new Color(1,1,1,1)), 2);
-		}
+		game.setScreen(new InformationScreen(game, "studyGameScore", game.map, score, studyPointsGained));
 	}
 	
 	private void logicStep(float delta) {

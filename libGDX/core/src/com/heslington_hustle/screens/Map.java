@@ -51,14 +51,43 @@ public class Map implements Screen{
 			}
 		}
 		
-		// Draw player
-		game.batch.draw(game.player.sprite, game.player.x, game.player.y);
-		
-		// Draw UI elements
-		drawUI();
 		
 		// Check for whether the player has touched an object
 		checkPlayerObjectCollision();
+		
+		if(!Gdx.input.isKeyPressed(Keys.W) && !Gdx.input.isKeyPressed(Keys.S) && !Gdx.input.isKeyPressed(Keys.A) && !Gdx.input.isKeyPressed(Keys.D)) {
+			game.player.idleAnimation();
+		}
+		else {
+			if(game.player.direction == "R") {
+				TextureRegion currentFrame = game.player.walkRAnimation.getKeyFrame(game.player.clock, true);
+				game.batch.draw(currentFrame, game.player.x-16, game.player.y-16);
+			}
+			else if(game.player.direction == "L") {
+				TextureRegion currentFrame = game.player.walkLAnimation.getKeyFrame(game.player.clock, true);
+				game.batch.draw(currentFrame, game.player.x-16, game.player.y-16);
+			}
+		}
+		
+		if(!game.paused) {
+			if(Gdx.input.isKeyPressed(Keys.W)) {
+				game.player.moveUp();
+			}
+			else if(Gdx.input.isKeyPressed(Keys.S)) {
+				game.player.moveDown();
+			}
+			if(Gdx.input.isKeyPressed(Keys.A)) {
+				game.player.moveLeft();
+			}
+			else if(Gdx.input.isKeyPressed(Keys.D)) {
+				game.player.moveRight();
+			}
+		}
+		
+		game.player.clock += Gdx.graphics.getDeltaTime();
+		
+		// Draw UI elements
+		drawUI();
 		
 		// Check if player has paused the game
 		if(Gdx.input.isKeyJustPressed(Keys.ESCAPE)) {
@@ -69,21 +98,6 @@ public class Map implements Screen{
 		}
 		
 		game.batch.end();
-		
-		if(!game.paused) {
-			if(Gdx.input.isKeyPressed(Keys.W)) {
-				game.player.moveUp();
-			}
-			if(Gdx.input.isKeyPressed(Keys.A)) {
-				game.player.moveLeft();
-			}
-			if(Gdx.input.isKeyPressed(Keys.S)) {
-				game.player.moveDown();
-			}
-			if(Gdx.input.isKeyPressed(Keys.D)) {
-				game.player.moveRight();
-			}
-		}
 	}
 	
 	private void initialiseObjects() {
@@ -99,6 +113,11 @@ public class Map implements Screen{
 	}
 	
 	private void drawUI() {
+		// If time is past 9:00pm, add a dark filter
+		if(game.time > 21) {
+			game.batch.draw(new Texture("UI/DarkFilter.png"), 0, 0); // Dark filter
+		}
+				
 		// Draw energy bar
 		game.batch.draw(new Texture("UI/EnergyBar1.png"), 10, 308);
 		TextureRegion region = new TextureRegion(new Texture("UI/EnergyBar2.png"), (int)Math.round(284f*(game.energyBar.energy/100f)), new Texture("UI/EnergyBar2.png").getHeight());

@@ -15,16 +15,40 @@ import com.heslington_hustle.game.Player;
 public class CharacterSelectScreen implements Screen{
 	private HeslingtonHustle game;
 	private Texture[] avatars = new Texture[4];
+	public Texture[] idleRSheets = new Texture[4];
+	public Texture[] idleLSheets = new Texture[4];
+	public Texture[] walkRSheets = new Texture[4];
+	public Texture[] walkLSheets = new Texture[4];
 	private int avatarIndex;
 	
 	public CharacterSelectScreen(HeslingtonHustle game) {
 		this.game = game;
 		
 		avatarIndex = 0;
-		avatars[0] = new Texture("Avatars/PlaceholderCharacter.png");
-		avatars[1] = new Texture("Avatars/PlaceholderCharacter.png");
+		avatars[0] = new Texture("Avatars/Avatar1.png");
+		avatars[1] = new Texture("Avatars/Avatar2.png");
 		avatars[2] = new Texture("Avatars/PlaceholderCharacter.png");
 		avatars[3] = new Texture("Avatars/PlaceholderCharacter.png");
+		
+		idleRSheets[0] = new Texture("Avatars/Avatar1_IdleR.png");
+		idleRSheets[1] = new Texture("Avatars/Avatar2_IdleR.png");
+		idleRSheets[2] = new Texture("Avatars/PlaceholderCharacter.png");
+		idleRSheets[3] = new Texture("Avatars/PlaceholderCharacter.png");
+		
+		idleLSheets[0] = new Texture("Avatars/Avatar1_IdleL.png");
+		idleLSheets[1] = new Texture("Avatars/Avatar2_IdleL.png");
+		idleLSheets[2] = new Texture("Avatars/PlaceholderCharacter.png");
+		idleLSheets[3] = new Texture("Avatars/PlaceholderCharacter.png");
+		
+		walkRSheets[0] = new Texture("Avatars/Avatar1_walkR.png");
+		walkRSheets[1] = new Texture("Avatars/Avatar2_walkR.png");
+		walkRSheets[2] = new Texture("Avatars/PlaceholderCharacter.png");
+		walkRSheets[3] = new Texture("Avatars/PlaceholderCharacter.png");
+		
+		walkLSheets[0] = new Texture("Avatars/Avatar1_walkL.png");
+		walkLSheets[1] = new Texture("Avatars/Avatar2_walkL.png");
+		walkLSheets[2] = new Texture("Avatars/PlaceholderCharacter.png");
+		walkLSheets[3] = new Texture("Avatars/PlaceholderCharacter.png");
 	}
 
 	@Override
@@ -119,8 +143,8 @@ public class CharacterSelectScreen implements Screen{
 	}
 	
 	private void newGame() {
-		game.player = new Player(game, avatars[avatarIndex]);
-		game.energyBar = new EnergyBar(new Texture("Avatars/PlaceholderCharacter.png"), 100f);
+		game.player = new Player(game, avatars[avatarIndex], idleRSheets[avatarIndex], idleLSheets[avatarIndex], walkRSheets[avatarIndex], walkLSheets[avatarIndex]);
+		game.energyBar = new EnergyBar(100f);
 		game.day = 1;
 		game.time = 8;
 		game.setScreen(new InformationScreen(game, "mainTutorial", new Map(game, 1)));

@@ -9,16 +9,28 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Align;
 import com.heslington_hustle.game.HeslingtonHustle;
+import com.heslington_hustle.game.PopUpText;
 
 public class InformationScreen implements Screen{
 	private HeslingtonHustle game;
 	public String type;
 	private Screen nextScreen;
+	private int score;
+	private float resourcesGained; // Study points / energy
 	
 	public InformationScreen(HeslingtonHustle game, String type, Screen nextScreen) {
 		this.game = game;
 		this.type = type;
 		this.nextScreen = nextScreen;
+	}
+	
+	public InformationScreen(HeslingtonHustle game, String type, Screen nextScreen, int score, float resourcesGained) {
+		// For minigame results
+		this.game = game;
+		this.type = type;
+		this.nextScreen = nextScreen;
+		this.score = score;
+		this.resourcesGained = resourcesGained;
 	}
 
 	@Override
@@ -42,6 +54,12 @@ public class InformationScreen implements Screen{
 		}
 		else if(type == "bugFixerTutorial") {
 			loadBugFixerTutorial();
+		}
+		else if(type == "studyGameScore") {
+			loadStudyGameScore();
+		}
+		else if(type == "recreationGameScore") {
+			loadRecreationGameScore();
 		}
 		
 		// Continue
@@ -89,6 +107,65 @@ public class InformationScreen implements Screen{
 		
 		game.batch.draw(new Texture("UI/TutorialLeftClick.png"), 380, 90);
 		game.font.draw(game.batch, "Shoot", 420, 110, 100, Align.left, false);
+	}
+	
+	public void loadStudyGameScore() {
+		game.font.getData().setScale(1.2f); // Set font size
+		game.font.setColor(new Color(222/255f, 158/255f, 65/255f, 1));
+		game.font.draw(game.batch, "Game Over!", 250, 330, 100, Align.center, false);
+		game.font.getData().setScale(0.4f);
+		game.font.setColor(new Color(1, 1, 1, 1));	
+		game.font.draw(game.batch, "Final score: " + Integer.toString(score), 250, 260, 100, Align.center, false);
+		
+		// TODO - Change accordingly
+		if(resourcesGained < 30f) {
+			game.font.draw(game.batch, "You don't feel very productive...", 250, 200, 100, Align.center, false);
+		}
+		else if(resourcesGained < 50f) {
+			game.font.draw(game.batch, "You feel slightly productive", 250, 200, 100, Align.center, false);
+		}
+		else if(resourcesGained < 70f) {
+			game.font.draw(game.batch, "You feel productive", 250, 200, 100, Align.center, false);
+		}
+		else if(resourcesGained < 90f) {
+			game.font.draw(game.batch, "You feel very productive", 250, 200, 100, Align.center, false);
+		}
+		else {
+			game.font.draw(game.batch, "You feel extremely productive!", 250, 200, 100, Align.center, false);
+		}
+				
+		if(game.timesStudied[game.day-1] > 2) {
+			game.font.draw(game.batch, "You start to feel stressed...", 250, 150, 100, Align.center, false);
+		}
+		else if(game.timesStudied[game.day-1] > 3) {
+			game.font.draw(game.batch, "You feel very stressed...", 250, 150, 100, Align.center, false);
+		}
+	}
+	
+	public void loadRecreationGameScore() {
+		game.font.getData().setScale(1.2f); // Set font size
+		game.font.setColor(new Color(222/255f, 158/255f, 65/255f, 1));
+		game.font.draw(game.batch, "Game Over!", 250, 330, 100, Align.center, false);
+		game.font.getData().setScale(0.4f);
+		game.font.setColor(new Color(1, 1, 1, 1));	
+		game.font.draw(game.batch, "Final score: " + Integer.toString(score), 250, 260, 100, Align.center, false);
+		
+		// TODO - Change accordingly
+		if(resourcesGained < 30f) {
+			game.font.draw(game.batch, "You don't feel very well rested...", 250, 200, 100, Align.center, false);
+		}
+		else if(resourcesGained < 40f) {
+			game.font.draw(game.batch, "You feel slightly well rested", 250, 200, 100, Align.center, false);
+		}
+		else if(resourcesGained < 50f) {
+			game.font.draw(game.batch, "You feel well rested", 250, 200, 100, Align.center, false);
+		}
+		else if(resourcesGained < 60f) {
+			game.font.draw(game.batch, "You feel very well rested", 250, 200, 100, Align.center, false);
+		}
+		else {
+			game.font.draw(game.batch, "You feel extremely well rested!", 250, 200, 100, Align.center, false);
+		}
 	}
 
 	@Override

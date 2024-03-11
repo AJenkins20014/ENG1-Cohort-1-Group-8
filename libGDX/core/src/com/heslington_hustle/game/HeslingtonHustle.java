@@ -108,11 +108,11 @@ public class HeslingtonHustle extends Game {
 	
 	private void initialiseMinigames() {
 		minigames[0] = new BugFixer(this, 1);
-		minigames[1] = new StudyGame1(this, 1);
-		//minigames[2] = new StudyGame2(this, 1);
-		minigames[3] = new RecreationGame1(this, 1);
-		//minigames[4] = new RecreationGame2(this, 1);
-		//minigames[5] = new RecreationGame3(this, 1);
+		minigames[1] = new StudyGame1(this, 1); // TODO - Study game 1
+		minigames[2] = new StudyGame1(this, 1); // TODO - Study game 2
+		minigames[3] = new RecreationGame1(this, 1); // TODO - Recreation game 1
+		minigames[4] = new RecreationGame1(this, 1); // TODO - Recreation game 2
+		minigames[5] = new RecreationGame1(this, 1); // TODO - Recreation game 3
 		// etc...
 	}
 	

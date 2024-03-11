@@ -9,12 +9,14 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Align;
 import com.heslington_hustle.game.HeslingtonHustle;
 import com.heslington_hustle.game.PopUpText;
+import com.heslington_hustle.screens.InformationScreen;
 import com.heslington_hustle.screens.MinigameScreen;
 
 public class RecreationGame1 extends MinigameScreen implements Screen {
 	private boolean minimised;
 	private float energyGained;
 	private float maxEnergyGained;
+	private int score;
 
 	public RecreationGame1(HeslingtonHustle game, float difficultyScalar) {
 		super(game, difficultyScalar);
@@ -32,10 +34,13 @@ public class RecreationGame1 extends MinigameScreen implements Screen {
 		if(game.isBorderless) {
 			Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode());
 		}
-				
-		// Display game screen
-		game.setScreen(this);
 		
+		
+		// Display tutorial - TODO: create a tutorial in InformationScreen and rename the string in the constructor below to fit
+	    //game.setScreen(new InformationScreen(game, "THISMINIGAMETutorial", this));
+	    
+		// Display game screen - TODO: Remove, uncomment out for testing purposes
+		game.setScreen(this);
 		
 		// Temporary - TODO: REMOVE
 		endGame();
@@ -62,24 +67,8 @@ public class RecreationGame1 extends MinigameScreen implements Screen {
 			Gdx.graphics.setWindowedMode(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		}
 		
-		game.setScreen(game.map);
-		
-		// TODO - Change accordingly
-		if(energyGained < 30f) {
-			game.addPopUpText(new PopUpText("You don't feel very well rested...", 250, 300, 100, Align.center, false, 0.4f, new Color(1,1,1,1)), 2);
-		}
-		else if(energyGained < 40f) {
-			game.addPopUpText(new PopUpText("You feel slightly well rested", 250, 300, 100, Align.center, false, 0.4f, new Color(1,1,1,1)), 2);
-		}
-		else if(energyGained < 50f) {
-			game.addPopUpText(new PopUpText("You feel well rested", 250, 300, 100, Align.center, false, 0.4f, new Color(1,1,1,1)), 2);
-		}
-		else if(energyGained < 60f) {
-			game.addPopUpText(new PopUpText("You feel very well rested", 250, 300, 100, Align.center, false, 0.4f, new Color(1,1,1,1)), 2);
-		}
-		else {
-			game.addPopUpText(new PopUpText("You feel extremely well rested!", 250, 300, 100, Align.center, false, 0.4f, new Color(1,1,1,1)), 2);
-		}
+		// Display final score
+		game.setScreen(new InformationScreen(game, "recreationGameScore", game.map, score, energyGained));
 		
 	}
 	
