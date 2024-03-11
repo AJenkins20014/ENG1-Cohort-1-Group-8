@@ -27,28 +27,28 @@ public class CharacterSelectScreen implements Screen{
 		avatarIndex = 0;
 		avatars[0] = new Texture("Avatars/Avatar1.png");
 		avatars[1] = new Texture("Avatars/Avatar2.png");
-		avatars[2] = new Texture("Avatars/PlaceholderCharacter.png");
-		avatars[3] = new Texture("Avatars/PlaceholderCharacter.png");
+		avatars[2] = new Texture("Avatars/Avatar3.png");
+		avatars[3] = new Texture("Avatars/Avatar4.png");
 		
 		idleRSheets[0] = new Texture("Avatars/Avatar1_IdleR.png");
 		idleRSheets[1] = new Texture("Avatars/Avatar2_IdleR.png");
-		idleRSheets[2] = new Texture("Avatars/PlaceholderCharacter.png");
-		idleRSheets[3] = new Texture("Avatars/PlaceholderCharacter.png");
+		idleRSheets[2] = new Texture("Avatars/Avatar3_IdleR.png");
+		idleRSheets[3] = new Texture("Avatars/Avatar4_IdleR.png");
 		
 		idleLSheets[0] = new Texture("Avatars/Avatar1_IdleL.png");
 		idleLSheets[1] = new Texture("Avatars/Avatar2_IdleL.png");
-		idleLSheets[2] = new Texture("Avatars/PlaceholderCharacter.png");
-		idleLSheets[3] = new Texture("Avatars/PlaceholderCharacter.png");
+		idleLSheets[2] = new Texture("Avatars/Avatar3_IdleL.png");
+		idleLSheets[3] = new Texture("Avatars/Avatar4_IdleL.png");
 		
-		walkRSheets[0] = new Texture("Avatars/Avatar1_walkR.png");
-		walkRSheets[1] = new Texture("Avatars/Avatar2_walkR.png");
-		walkRSheets[2] = new Texture("Avatars/PlaceholderCharacter.png");
-		walkRSheets[3] = new Texture("Avatars/PlaceholderCharacter.png");
+		walkRSheets[0] = new Texture("Avatars/Avatar1_WalkR.png");
+		walkRSheets[1] = new Texture("Avatars/Avatar2_WalkR.png");
+		walkRSheets[2] = new Texture("Avatars/Avatar3_WalkR.png");
+		walkRSheets[3] = new Texture("Avatars/Avatar4_WalkR.png");
 		
-		walkLSheets[0] = new Texture("Avatars/Avatar1_walkL.png");
-		walkLSheets[1] = new Texture("Avatars/Avatar2_walkL.png");
-		walkLSheets[2] = new Texture("Avatars/PlaceholderCharacter.png");
-		walkLSheets[3] = new Texture("Avatars/PlaceholderCharacter.png");
+		walkLSheets[0] = new Texture("Avatars/Avatar1_WalkL.png");
+		walkLSheets[1] = new Texture("Avatars/Avatar2_WalkL.png");
+		walkLSheets[2] = new Texture("Avatars/Avatar3_WalkL.png");
+		walkLSheets[3] = new Texture("Avatars/Avatar4_WalkL.png");
 	}
 
 	@Override
