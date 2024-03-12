@@ -241,7 +241,6 @@ public class Player {
     }
 	
 	private void initializeInaccessibleRegions() {
-		// Screen 1
 		inaccessibleRegionsScreen1 = new Rectangle[] { 
 				new Rectangle(191, 360-65, 226, 66),
 				new Rectangle(447, 360-65, 192, 65),
@@ -249,12 +248,13 @@ public class Player {
 				new Rectangle(0, 360-224, 256, 129),
 				new Rectangle(0, 360-256, 192, 32),
 				new Rectangle(0, 360-360, 256, 105),
-				new Rectangle(288, 360-224, 288, 129),
+				new Rectangle(287, 360-224, 114, 130),
 				new Rectangle(608, 360-224, 32, 129),
-				new Rectangle(288, 360-320, 288, 65),
-				new Rectangle(385, 360-270, 114, 72),
+				new Rectangle(287, 360-320, 288, 65),
+				new Rectangle(441, 360-224, 136, 130),
 				new Rectangle(254, 360-360, 386, 9),
 				new Rectangle(608, 360-360, 32, 105),
+				new Rectangle(400, 360-208, 42, 114),
 				};
 		inaccessibleRegionsScreen2 = new Rectangle[] { 
 				new Rectangle(0, 360-65, 97, 66),
@@ -263,13 +263,13 @@ public class Player {
 				new Rectangle(352, 360-256, 288, 34),
 				new Rectangle(255, 360-224, 161, 66),
 				new Rectangle(127, 360-224, 98, 162),
-				new Rectangle(224, 360-128, 97, 66),
 				new Rectangle(127, 360-32, 290, 33),
 				new Rectangle(351, 360-128, 66, 66),
-				new Rectangle(447, 360-360, 193, 298),
-				new Rectangle(406, 360-107, 126, 45),
+				new Rectangle(447, 360-360, 193, 253),
 				new Rectangle(607, 360-76, 33, 77),
 				new Rectangle(447, 360-32, 130, 33),
+				new Rectangle(530, 360-108, 110, 46),
+				new Rectangle(447, 360-78, 53, 16),
 				};
 		inaccessibleRegionsScreen3 = new Rectangle[] { 
 				new Rectangle(0, 360-360, 161, 200),

@@ -160,17 +160,15 @@ public class Map implements Screen{
 		
 		// Student Hub
 		interactRegions = new Rectangle[] { 
-				new Rectangle(345, 360-255, 40, 32),
-				new Rectangle(499, 360-255, 48, 32),
+				new Rectangle(399, 360-255, 44, 68),
 				};
-		objects[1] = new Building(game, "Student Hub", interactRegions, 1, "E: Study", 400, 360-182, 400, 360-259, game.minigames[1], 60f, 3);
+		objects[1] = new Building(game, "Student Hub", interactRegions, 1, "E: Study", 375, 360-130, 375, 360-185, game.minigames[1], 60f, 3);
 		
 		// Library
 		interactRegions = new Rectangle[] { 
-				new Rectangle(416, 360-141, 32, 34),
-				new Rectangle(399, 360-63, 140, 32),
+				new Rectangle(416, 360-110, 115, 69),
 				};
-		objects[2] = new Building(game, "Library", interactRegions, 2, "E: Study", 425, 360-41, 425, 360-91, game.minigames[1], 60f, 3);
+		objects[2] = new Building(game, "Library", interactRegions, 2, "E: Study", 440, 360-72, 440, 360-128, game.minigames[1], 60f, 3);
 		
 		// Lake
 		interactRegions = new Rectangle[] { 
