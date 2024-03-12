@@ -1,7 +1,14 @@
 /UI/
 /Avatars/
+<<<<<<< HEAD
 /Map/
 /BugFixerMinigame/
 /com/
 /Objects/
 /Music/
+=======
+/BugFixerMinigame/
+/com/
+/Objects/
+/Music/
+>>>>>>> branch 'main' of ssh://git@github.com/AJenkins20014/ENG1-Cohort-1-Group-8
