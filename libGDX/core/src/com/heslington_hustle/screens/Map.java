@@ -1,5 +1,6 @@
 package com.heslington_hustle.screens;
 
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
@@ -7,6 +8,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Align;
 import com.heslington_hustle.game.HeslingtonHustle;
 import com.heslington_hustle.objects.Bed;
@@ -20,7 +22,12 @@ public class Map implements Screen{
 	public Object[] objects = new Object[8];
 	
 	public int screen; // 1 = bottom left, 2 = bottom right, 3 = top left, 4 = top right
-
+	private Texture screen1, screen2, screen3, screen4;
+	private Texture screen1Overlay, screen2Overlay, screen3Overlay, screen4Overlay;
+	private Texture blackFilter;
+	private Texture energyBar1, energyBar2, energyBar3;
+	private Texture energyIconFull, energyIconEmpty;
+	
 	public Map(HeslingtonHustle game, int screen) {
 		this.game = game;
 		game.map = this;
@@ -28,6 +35,25 @@ public class Map implements Screen{
 		
 		// Add objects to array
 		initialiseObjects();
+		
+		// Load textures
+		screen1 = new Texture("Map/Screen1.png");
+		screen2 = new Texture("Map/Screen2.png");
+		screen3 = new Texture("Map/Screen3.png");
+		screen4 = new Texture("Map/Screen4.png");
+		screen1Overlay = new Texture("Map/Screen1Overlay.png");
+		screen2Overlay = new Texture("Map/Screen2Overlay.png");
+		screen3Overlay = new Texture("Map/Screen3Overlay.png");
+		screen4Overlay = new Texture("Map/Screen4Overlay.png");
+		
+		blackFilter = new Texture("UI/DarkFilter.png");
+		
+		energyBar1 = new Texture("UI/EnergyBar1.png");
+		energyBar2 = new Texture("UI/EnergyBar2.png");
+		energyBar3 = new Texture("UI/EnergyBar3.png");
+		
+		energyIconFull = new Texture("UI/EnergyIcon.png");
+		energyIconEmpty = new Texture("UI/EnergyIconEmpty.png");
 	}
 
 	@Override
@@ -44,17 +70,21 @@ public class Map implements Screen{
 		
 		game.batch.begin();
 		
-		// Draw objects on current screen
-		for(int i = 0; i < objects.length; i++) {
-			if(objects[i] != null && objects[i].screen == screen) {
-				game.batch.draw(objects[i].sprite, objects[i].x, objects[i].y);
-			}
+		// Draw map background
+		if(screen == 1) {
+			game.batch.draw(screen1, 0, 0);
+		}
+		else if(screen == 2) {
+			game.batch.draw(screen2, 0, 0);
+		}
+		else if(screen == 3) {
+			game.batch.draw(screen3, 0, 0);
+		}
+		else if(screen == 4) {
+			game.batch.draw(screen4, 0, 0);
 		}
 		
-		
-		// Check for whether the player has touched an object
-		checkPlayerObjectCollision();
-		
+
 		if(!Gdx.input.isKeyPressed(Keys.W) && !Gdx.input.isKeyPressed(Keys.S) && !Gdx.input.isKeyPressed(Keys.A) && !Gdx.input.isKeyPressed(Keys.D)) {
 			game.player.idleAnimation();
 		}
@@ -68,6 +98,8 @@ public class Map implements Screen{
 				game.batch.draw(currentFrame, game.player.x-16, game.player.y-16);
 			}
 		}
+		
+		
 		
 		if(!game.paused) {
 			if(Gdx.input.isKeyPressed(Keys.W)) {
@@ -86,6 +118,23 @@ public class Map implements Screen{
 		
 		game.player.clock += Gdx.graphics.getDeltaTime();
 		
+		// Draw map overlay
+		if(screen == 1) {
+			game.batch.draw(screen1Overlay, 0, 0);
+		}
+		else if(screen == 2) {
+			game.batch.draw(screen2Overlay, 0, 0);
+		}
+		else if(screen == 3) {
+			game.batch.draw(screen3Overlay, 0, 0);
+		}
+		else if(screen == 4) {
+			game.batch.draw(screen4Overlay, 0, 0);
+		}
+		
+		// Check for whether the player has touched an object
+		checkPlayerObjectCollision();
+				
 		// Draw UI elements
 		drawUI();
 		
@@ -101,28 +150,73 @@ public class Map implements Screen{
 	}
 	
 	private void initialiseObjects() {
-		objects[0] = new Building(game, "CS Building", new Texture("Objects/PlaceholderBuilding.png"), 100, 100, 1, "E: Study", game.minigames[0], 60f, 3);
-		objects[1] = new Building(game, "Library", new Texture("Objects/PlaceholderBuilding.png"), 200, 200, 2, "E: Study", game.minigames[1], 60f, 3);
-		objects[2] = new Building(game, "Student Hub", new Texture("Objects/PlaceholderBuilding.png"), 150, 175, 4, "E: Study", game.minigames[2], 60f, 3);
-		objects[3] = new Building(game, "Lake", new Texture("Objects/PlaceholderBuilding.png"), 300, 120, 3, "E: Relax", game.minigames[3], 0f, 2);
-		objects[4] = new Building(game, "Pub", new Texture("Objects/PlaceholderBuilding.png"), 330, 200, 4, "E: Relax", game.minigames[4], 0f, 2);
-		objects[5] = new Building(game, "Arcade", new Texture("Objects/PlaceholderBuilding.png"), 90, 60, 3, "E: Relax", game.minigames[5], 0f, 2);
-		objects[6] = new Bed(game, "Accomodation", new Texture("Objects/PlaceholderBuilding.png"), 320, 100, 1, "E: Sleep");
-		objects[7] = new Foodhall(game, "Greggs", new Texture("Objects/PlaceholderBuilding.png"), 100, 80, 2, "E: Eat", 40f, 1);
-		// etc...
+		Rectangle[] interactRegions;
+		
+		// CS Building
+		interactRegions = new Rectangle[] { 
+				new Rectangle(192, 360-255, 61, 32),
+				};
+		objects[0] = new Building(game, "CS Building", interactRegions, 1, "E: Study", 100, 360-182, 100, 360-259, game.minigames[0], 60f, 3);
+		
+		// Student Hub
+		interactRegions = new Rectangle[] { 
+				new Rectangle(345, 360-255, 40, 32),
+				new Rectangle(499, 360-255, 48, 32),
+				};
+		objects[1] = new Building(game, "Student Hub", interactRegions, 1, "E: Study", 400, 360-182, 400, 360-259, game.minigames[1], 60f, 3);
+		
+		// Library
+		interactRegions = new Rectangle[] { 
+				new Rectangle(416, 360-141, 32, 34),
+				new Rectangle(399, 360-63, 140, 32),
+				};
+		objects[2] = new Building(game, "Library", interactRegions, 2, "E: Study", 425, 360-41, 425, 360-91, game.minigames[1], 60f, 3);
+		
+		// Lake
+		interactRegions = new Rectangle[] { 
+				new Rectangle(288, 360-255, 64, 32),
+				new Rectangle(416, 360-223, 32, 65),
+				};
+		objects[3] = new Building(game, "Lake", interactRegions, 2, "E: Relax", 432, 360-250, 432, 360-319, game.minigames[3], 0f, 2);
+		
+		// Accomodation
+		interactRegions = new Rectangle[] { 
+				new Rectangle(160, 360-210, 32, 51),
+				};
+		objects[4] = new Bed(game, "Accomodation", interactRegions, 3, "E: Sleep", 130, 360-35, 130, 360-125);
+		
+		// Sports Field
+		interactRegions = new Rectangle[] { 
+				new Rectangle(267, 360-339, 334, 202),
+				};
+		objects[5] = new Building(game, "Sports Field", interactRegions, 3, "E: Play", 380, 360-201, 380, 360-288, game.minigames[4], 0f, 2);
+		
+		// Glasshouse
+		interactRegions = new Rectangle[] { 
+				new Rectangle(306, 360-222, 77, 32),
+				new Rectangle(416, 360-298, 32, 55),
+				new Rectangle(416, 360-158, 32, 63),
+				};
+		objects[6] = new Foodhall(game, "The Glasshouse", interactRegions, 4, "E: Eat", 390, 360-160, 390, 360-190, 40f, 1);
+		
+		// Bus to Town
+		interactRegions = new Rectangle[] { 
+				new Rectangle(447, 360-95, 161, 32),
+				};
+		objects[7] = new Building(game, "Bus", interactRegions, 4, "E: Go to Town", 415, 360-15, 415, 360-45, game.minigames[4], 0f, 2);
 	}
 	
 	private void drawUI() {
-		// If time is past 9:00pm, add a dark filter
-		if(game.time > 21) {
-			game.batch.draw(new Texture("UI/DarkFilter.png"), 0, 0); // Dark filter
+		// If time is past 8:00pm, add a dark filter
+		if(game.time > 20) {
+			game.batch.draw(blackFilter, 0, 0); // Dark filter
 		}
 				
 		// Draw energy bar
-		game.batch.draw(new Texture("UI/EnergyBar1.png"), 10, 308);
-		TextureRegion region = new TextureRegion(new Texture("UI/EnergyBar2.png"), (int)Math.round(284f*(game.energyBar.energy/100f)), new Texture("UI/EnergyBar2.png").getHeight());
+		game.batch.draw(energyBar1, 10, 308);
+		TextureRegion region = new TextureRegion(energyBar2, (int)Math.round(284f*(game.energyBar.energy/100f)), new Texture("UI/EnergyBar2.png").getHeight());
 		game.batch.draw(region, 10, 308);
-		game.batch.draw(new Texture("UI/EnergyBar3.png"), 10, 308);
+		game.batch.draw(energyBar3, 10, 308);
 		
 		game.font.getData().setScale(0.25f); // Set font size
 		game.font.draw(game.batch, Integer.toString((int)Math.round(game.energyBar.energy)), -17, 328, 100, Align.center, false);
@@ -145,51 +239,53 @@ public class Map implements Screen{
 	
 	private void checkPlayerObjectCollision() {
 		for(int i = 0; i < objects.length; i++) {
-			if(objects[i] != null) {
-				if(game.player.x + game.player.sprite.getWidth()/2 > objects[i].x && game.player.x - game.player.sprite.getWidth() < (objects[i].x + objects[i].sprite.getWidth()/2) && 
-						game.player.y > (objects[i].y - objects[i].sprite.getHeight()/2) && game.player.y - game.player.sprite.getHeight()/2 < (objects[i].y + objects[i].sprite.getHeight()/2) 
-								&& screen == objects[i].screen){
-					// Draw tooltips
-					if(objects[i] instanceof Building) {
-						game.font.getData().setScale(0.3f); // Set font size
-						game.font.draw(game.batch, objects[i].tooltip, objects[i].x, objects[i].y + objects[i].sprite.getHeight() + 50, objects[i].sprite.getWidth(), Align.center, false);
-						
-						game.font.getData().setScale(0.5f); // Set font size
-						game.font.setColor(new Color(164/255f, 221/255f, 219/255f, 1));
-						
-						Texture energyIcon = new Texture("UI/EnergyIconEmpty.png");
-						if(game.energyBar.energy >= ((Building) objects[i]).requiredEnergy){
-							energyIcon = new Texture("UI/EnergyIcon.png");
-						}
-						
-						game.batch.draw(energyIcon, objects[i].x + objects[i].sprite.getWidth()/6, objects[i].y + objects[i].sprite.getHeight() + 5);
-						game.font.draw(game.batch, Integer.toString((int)Math.round(((Building) objects[i]).requiredEnergy)),
-								objects[i].x + objects[i].sprite.getWidth()/6 + energyIcon.getWidth() + 10, objects[i].y + objects[i].sprite.getHeight() + energyIcon.getHeight(),
-								20, Align.left, false);
-						
-						game.font.getData().setScale(0.3f); // Set font size
-						game.font.setColor(new Color(1, 1, 1, 1));
-						game.font.draw(game.batch, objects[i].name, objects[i].x, objects[i].y - 10, objects[i].sprite.getWidth(), Align.center, false);
-					}
-					else {
-						game.font.getData().setScale(0.5f); // Set font size
-						game.font.draw(game.batch, objects[i].tooltip, objects[i].x, objects[i].y + objects[i].sprite.getHeight()*1.5f, objects[i].sprite.getWidth(), Align.center, false);
-						game.font.draw(game.batch, objects[i].name, objects[i].x, objects[i].y - objects[i].sprite.getHeight()/2, objects[i].sprite.getWidth(), Align.center, false);
-					}
-					
-					// Check if interact key (E) is pressed
-					if(Gdx.input.isKeyJustPressed(Keys.E)) {
+			if(objects[i] != null && objects[i].screen == screen) {
+				for (Rectangle region : objects[i].interactRegions) {
+		            if (region.contains(game.player.x,game.player.y-game.player.sprite.getHeight()/2)) {
+		            	// Draw tooltips
 						if(objects[i] instanceof Building) {
-							((Building) objects[i]).interact();
+							game.font.getData().setScale(0.3f); // Set font size
+							game.font.draw(game.batch, objects[i].tooltip, objects[i].tooltipX, objects[i].tooltipY, 100, Align.center, false);
+							
+							if(((Building) objects[i]).requiredEnergy > 0f) {
+								game.font.getData().setScale(0.5f); // Set font size
+								game.font.setColor(new Color(164/255f, 221/255f, 219/255f, 1));
+								
+								Texture energyIcon = energyIconEmpty;
+								if(game.energyBar.energy >= ((Building) objects[i]).requiredEnergy){
+									energyIcon = energyIconFull;
+								}
+								
+								game.batch.draw(energyIcon, objects[i].tooltipX + 20, objects[i].tooltipY-40);
+								game.font.draw(game.batch, Integer.toString((int)Math.round(((Building) objects[i]).requiredEnergy)),
+										objects[i].tooltipX + 40, objects[i].tooltipY - 20,
+										20, Align.left, false);
+							}
+							
+							game.font.getData().setScale(0.3f); // Set font size
+							game.font.setColor(new Color(1, 1, 1, 1));
+							game.font.draw(game.batch, objects[i].name, objects[i].nameX, objects[i].nameY, 100, Align.center, false);
 						}
-						else if(objects[i] instanceof Bed) {
-							((Bed) objects[i]).startNewDay();
+						else {
+							game.font.getData().setScale(0.3f); // Set font size
+							game.font.draw(game.batch, objects[i].tooltip, objects[i].tooltipX, objects[i].tooltipY, 100, Align.center, false);
+							game.font.draw(game.batch, objects[i].name, objects[i].nameX, objects[i].nameY, 100, Align.center, false);
 						}
-						else if(objects[i] instanceof Foodhall) {
-							((Foodhall) objects[i]).eat();
+						
+						// Check if interact key (E) is pressed
+						if(Gdx.input.isKeyJustPressed(Keys.E)) {
+							if(objects[i] instanceof Building) {
+								((Building) objects[i]).interact();
+							}
+							else if(objects[i] instanceof Bed) {
+								((Bed) objects[i]).startNewDay();
+							}
+							else if(objects[i] instanceof Foodhall) {
+								((Foodhall) objects[i]).eat();
+							}
 						}
-					}
-				}
+		            }
+		        }
 			}
 		}
 	}

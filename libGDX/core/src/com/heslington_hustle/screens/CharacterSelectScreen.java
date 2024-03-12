@@ -147,7 +147,7 @@ public class CharacterSelectScreen implements Screen{
 		game.energyBar = new EnergyBar(100f);
 		game.day = 1;
 		game.time = 8;
-		game.setScreen(new InformationScreen(game, "mainTutorial", new Map(game, 1)));
+		game.setScreen(new InformationScreen(game, "mainTutorial", new Map(game, 3)));
 	}
 
 	@Override

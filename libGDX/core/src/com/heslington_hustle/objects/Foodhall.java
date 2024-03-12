@@ -2,6 +2,7 @@ package com.heslington_hustle.objects;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Align;
 import com.heslington_hustle.game.HeslingtonHustle;
 import com.heslington_hustle.game.PopUpText;
@@ -10,8 +11,8 @@ public class Foodhall extends Object {
 	public Float energyChange;
 	public int timeSpent;
 	
-	public Foodhall(HeslingtonHustle game, String name, Texture sprite, float x, float y, int screen, String tooltip, Float energyChange, int timeSpent) {
-		super(game, name, sprite, x, y, screen, tooltip);
+	public Foodhall(HeslingtonHustle game, String name, Rectangle[] interactRegions, int screen, String tooltip, int tooltipX, int tooltipY, int nameX, int nameY, Float energyChange, int timeSpent) {
+		super(game, name, interactRegions, screen, tooltip, tooltipX, tooltipY, nameX, nameY);
 		this.energyChange = energyChange;
 		this.timeSpent = timeSpent;
 	}

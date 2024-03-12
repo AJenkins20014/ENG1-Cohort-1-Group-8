@@ -2,6 +2,7 @@ package com.heslington_hustle.objects;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Align;
 import com.heslington_hustle.game.HeslingtonHustle;
 import com.heslington_hustle.game.PopUpText;
@@ -9,8 +10,8 @@ import com.heslington_hustle.screens.minigames.ExamGame;
 
 public class Bed extends Object {
 	
-	public Bed(HeslingtonHustle game, String name, Texture sprite, float x, float y, int screen, String tooltip) {
-		super(game, name, sprite, x, y, screen, tooltip);
+	public Bed(HeslingtonHustle game, String name, Rectangle[] interactRegions, int screen, String tooltip, int tooltipX, int tooltipY, int nameX, int nameY) {
+		super(game, name, interactRegions, screen, tooltip, tooltipX, tooltipY, nameX, nameY);
 	}
 	
 	public void startNewDay() {

@@ -2,6 +2,7 @@ package com.heslington_hustle.objects;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Align;
 import com.heslington_hustle.game.HeslingtonHustle;
 import com.heslington_hustle.game.PopUpText;
@@ -13,8 +14,8 @@ public class Building extends Object {
 	public float requiredEnergy;
 	public int timeSpent;
 	
-	public Building(HeslingtonHustle game, String name, Texture sprite, float x, float y, int screen, String tooltip, MinigameScreen minigameScreen, Float requiredEnergy, int timeSpent) {
-		super(game, name, sprite, x, y, screen, tooltip);
+	public Building(HeslingtonHustle game, String name, Rectangle[] interactRegions, int screen, String tooltip, int tooltipX, int tooltipY, int nameX, int nameY, MinigameScreen minigameScreen, Float requiredEnergy, int timeSpent) {
+		super(game, name, interactRegions, screen, tooltip, tooltipX, tooltipY, nameX, nameY);
 		this.minigame = minigameScreen;
 		this.requiredEnergy = requiredEnergy;
 		this.timeSpent = timeSpent;
