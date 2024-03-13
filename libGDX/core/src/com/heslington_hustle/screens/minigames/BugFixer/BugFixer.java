@@ -55,6 +55,7 @@ public class BugFixer extends MinigameScreen implements Screen {
 	
 	public float health;
 	private Sprite cursorShip;
+	private Texture healthBar1, healthBar2, healthBar3;
 	
 	public int rows = 32;
 	public int columns = 17;
@@ -81,6 +82,10 @@ public class BugFixer extends MinigameScreen implements Screen {
 		// Load textures
 		Texture texture = new Texture("BugFixerMinigame/Cursor.png");
 		cursorShip = new Sprite(texture);
+		
+		healthBar1 = new Texture("BugFixerMinigame/HealthBar1.png");
+		healthBar2 = new Texture("BugFixerMinigame/HealthBar2.png");
+		healthBar3 = new Texture("BugFixerMinigame/HealthBar3.png");
 		
 		// Load sounds
 		backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("Music/BugFixerMusic.ogg"));
@@ -148,8 +153,8 @@ public class BugFixer extends MinigameScreen implements Screen {
 			Gdx.graphics.setWindowedMode(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		}
 		
-		// Reset custom cursor - TODO
-		Pixmap pixmap = new Pixmap(Gdx.files.internal("UI/Cursor.png")); // TODO (crosshair?)
+		// Reset custom cursor 
+		Pixmap pixmap = new Pixmap(Gdx.files.internal("UI/Cursor.png"));
 		Cursor cursor = Gdx.graphics.newCursor(pixmap, 0, 0);
 		Gdx.graphics.setCursor(cursor);
 		
@@ -207,6 +212,17 @@ public class BugFixer extends MinigameScreen implements Screen {
 		}
 		if(game.paused) {
 			game.pauseMenu();
+			
+			// Reset custom cursor
+			Pixmap pixmap = new Pixmap(Gdx.files.internal("UI/Cursor.png"));
+			Cursor cursor = Gdx.graphics.newCursor(pixmap, 0, 0);
+			Gdx.graphics.setCursor(cursor);
+		}
+		else {
+			// Set custom cursor
+			Pixmap pixmap = new Pixmap(Gdx.files.internal("BugFixerMinigame/Crosshair.png"));
+			Cursor cursor = Gdx.graphics.newCursor(pixmap, 16, 16);
+			Gdx.graphics.setCursor(cursor);
 		}
 		
 		game.batch.end();
@@ -352,10 +368,10 @@ public class BugFixer extends MinigameScreen implements Screen {
 	
 	private void drawUI() {
 		// Draw energy bar
-		game.batch.draw(new Texture("BugFixerMinigame/HealthBar1.png"), game.camera.viewportWidth/2 - new Texture("BugFixerMinigame/HealthBar1.png").getWidth()/2, 350);
-		TextureRegion region = new TextureRegion(new Texture("BugFixerMinigame/HealthBar2.png"), (int)Math.round(284f*(health/100f)), new Texture("BugFixerMinigame/HealthBar2.png").getHeight());
-		game.batch.draw(region, game.camera.viewportWidth/2 - new Texture("BugFixerMinigame/HealthBar1.png").getWidth()/2, 350);
-		game.batch.draw(new Texture("BugFixerMinigame/HealthBar3.png"), game.camera.viewportWidth/2 - new Texture("BugFixerMinigame/HealthBar1.png").getWidth()/2, 350);
+		game.batch.draw(healthBar1, game.camera.viewportWidth/2 - healthBar1.getWidth()/2, 350);
+		TextureRegion region = new TextureRegion(healthBar2, (int)Math.round(284f*(health/100f)), healthBar2.getHeight());
+		game.batch.draw(region, game.camera.viewportWidth/2 - healthBar1.getWidth()/2, 350);
+		game.batch.draw(healthBar3, game.camera.viewportWidth/2 - healthBar1.getWidth()/2, 350);
 		
 		// Draw Score
 		game.font.getData().setScale(0.3f); // Set font size
@@ -484,6 +500,6 @@ public class BugFixer extends MinigameScreen implements Screen {
 
 	@Override
 	public void dispose() {
-		
+
 	}
 }

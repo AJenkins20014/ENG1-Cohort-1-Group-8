@@ -99,12 +99,10 @@ public class StartScreen implements Screen {
 	}
 	
 	private void loadCharacterSelect() {
-		//this.dispose();
 		game.setScreen(new CharacterSelectScreen(game));
 	}
 	
 	private void loadOptions() {
-		//this.dispose();
 		game.setScreen(new OptionsScreen(game));
 	}
 	

@@ -212,7 +212,7 @@ public class Map implements Screen{
 				
 		// Draw energy bar
 		game.batch.draw(energyBar1, 10, 308);
-		TextureRegion region = new TextureRegion(energyBar2, (int)Math.round(284f*(game.energyBar.energy/100f)), new Texture("UI/EnergyBar2.png").getHeight());
+		TextureRegion region = new TextureRegion(energyBar2, (int)Math.round(284f*(game.energyBar.energy/100f)), energyBar2.getHeight());
 		game.batch.draw(region, 10, 308);
 		game.batch.draw(energyBar3, 10, 308);
 		

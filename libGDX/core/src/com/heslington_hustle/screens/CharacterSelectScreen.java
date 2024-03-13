@@ -113,9 +113,9 @@ public class CharacterSelectScreen implements Screen{
 		}
 		
 		if(avatarIndex < 3) {
-			if(mousePos.x < 200 + new Texture("Avatars/PlaceholderCharacter.png").getWidth()/2 && mousePos.x > 170 + new Texture("Avatars/PlaceholderCharacter.png").getWidth()/2 && mousePos.y < 100 && mousePos.y > 100 - game.layout.height) {
+			if(mousePos.x < 200 + avatars[avatarIndex].getWidth()/2 && mousePos.x > 170 + avatars[avatarIndex].getWidth()/2 && mousePos.y < 100 && mousePos.y > 100 - game.layout.height) {
 				game.layout.setText(game.font, ">", new Color(232/255f, 193/255f, 112/255f, 1), 100, Align.bottomLeft, false);
-				game.font.draw(game.batch, game.layout, 170 + new Texture("Avatars/PlaceholderCharacter.png").getWidth()/2, 100);
+				game.font.draw(game.batch, game.layout, 170 + avatars[avatarIndex].getWidth()/2, 100);
 				if(Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
 					// Next Avatar
 					game.menuClick.play(game.volume);
@@ -124,7 +124,7 @@ public class CharacterSelectScreen implements Screen{
 			}
 			else {
 				game.layout.setText(game.font, ">", new Color(1, 1, 1, 1), 100, Align.bottomLeft, false);
-				game.font.draw(game.batch, game.layout, 170 + new Texture("Avatars/PlaceholderCharacter.png").getWidth()/2, 100);
+				game.font.draw(game.batch, game.layout, 170 + avatars[avatarIndex].getWidth()/2, 100);
 			}
 		}
 		

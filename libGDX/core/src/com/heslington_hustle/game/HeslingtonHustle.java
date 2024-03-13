@@ -16,6 +16,7 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Align;
@@ -61,6 +62,10 @@ public class HeslingtonHustle extends Game {
 	private ArrayList<Float> popUpTimers = new ArrayList<>();
 	private float popUpAlpha;
 	
+	private float fadeClock; // Used for the fadeToBlack() method
+	private float fadeAlpha;
+	private Sprite blackScreen;
+	
 	public Music menuMusic;
 	public Music mapMusic;
 	public Sound menuClick;
@@ -101,6 +106,10 @@ public class HeslingtonHustle extends Game {
 		mapMusic.setLooping(true);
 		
 		menuClick = Gdx.audio.newSound(Gdx.files.internal("UI/ButtonClick.mp3"));
+		
+		// Load textures
+		blackScreen = new Sprite(new Texture("UI/BlackScreen.png"));
+		fadeClock = 3;
 		
 		// Display start menu
 		this.setScreen(new StartScreen(this));
@@ -277,11 +286,17 @@ public class HeslingtonHustle extends Game {
 		menuMusic.setVolume(musicVolume);
 		mapMusic.setVolume(musicVolume);
 	}
+	
+	public void fadeToBlack() {
+		fadeClock = 0f;
+		fadeAlpha = 0f;
+	}
 
 	@Override
 	public void render () {
 		super.render();
 		clock += Gdx.graphics.getDeltaTime();
+		fadeClock += Gdx.graphics.getDeltaTime();
 		
 		batch.begin();
 		
@@ -301,6 +316,18 @@ public class HeslingtonHustle extends Game {
 			else {
 				renderPopUps(false);
 			}
+		}
+		
+		// Fade to black
+		if(fadeClock < 1) {
+			fadeAlpha = fadeClock;
+			blackScreen.setAlpha(fadeAlpha);
+			blackScreen.draw(batch);
+		}
+		else if(fadeClock < 2) {
+			fadeAlpha = 1-(fadeClock-1);
+			blackScreen.setAlpha(fadeAlpha);
+			blackScreen.draw(batch);
 		}
 		
 		batch.end();
