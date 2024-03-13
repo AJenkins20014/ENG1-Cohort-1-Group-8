@@ -134,11 +134,13 @@ public class SniperBug {
 	private void attack() {
 		timeSinceAttack = 0f;
 		
+		// Spawn bullet in direction of player
 		bugFixer.enemyBullets.add(new Bullet(game, bugFixer, x, y, bugFixer.player.getPosition().cpy(), false));
 		bugFixer.enemyShot.play(game.volume);
 	}
 	
 	public void destroy() {
+		// Destroy this bug to save memory
 		bugFixer.world.destroyBody(body);
 	}
 }

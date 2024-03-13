@@ -8,7 +8,6 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 
 public class Player {
-	
 	private HeslingtonHustle game;
 	
 	public Texture sprite;
@@ -18,20 +17,27 @@ public class Player {
 	public String direction;
 	public float clock;
 	
+	// Idle animation when player is facing to the right
 	public Animation<TextureRegion> idleRAnimation;
 	public Texture idleRSheet;
+	// Idle animation when player is facing to the left
 	public Animation<TextureRegion> idleLAnimation;
 	public Texture idleLSheet;
+	// Rows and columns for the idle sprite sheets
 	private int idleSheetRows = 1;
 	private int idleSheetCols = 7;
 	
+	// Idle animation when player is walking to the right
 	public Animation<TextureRegion> walkRAnimation;
 	public Texture walkRSheet;
+	// Idle animation when player is walking to the left
 	public Animation<TextureRegion> walkLAnimation;
 	public Texture walkLSheet;
+	// Rows and columns for the walk sprite sheets
 	private int walkSheetRows = 1;
 	private int walkSheetCols = 4;
 	
+	// Regions that the player should not be able to walk in
 	private Rectangle[] inaccessibleRegionsScreen1;
 	private Rectangle[] inaccessibleRegionsScreen2;
 	private Rectangle[] inaccessibleRegionsScreen3;
@@ -41,11 +47,13 @@ public class Player {
 		this.game = game;
 		this.sprite = sprite;
 		this.speed = 150;
+		// Start player at bed
 		this.x = 173;
 		this.y = 360-185;
-		this.direction = "R";
+		this.direction = "R"; // Starting direction to face is right
 		
 		// Idle R animation
+		// Split the sprite sheet into multiple sprites
 		TextureRegion[][] idleRTexture = TextureRegion.split(idleRSheet,
 				idleRSheet.getWidth() / idleSheetCols,
 				idleRSheet.getHeight() / idleSheetRows);
@@ -56,6 +64,7 @@ public class Player {
 				idleRFrames[index++] = idleRTexture[i][j];
 			}
 		}
+		// Create animation out of the individual frames
 		idleRAnimation = new Animation<TextureRegion>(0.2f, idleRFrames);
 		
 		// Idle L animation
@@ -103,6 +112,7 @@ public class Player {
 	
 	public void idleAnimation() {
 		if(direction == "R") {
+			// Get current animation frame depending on the value of the clock
 			TextureRegion currentFrame = idleRAnimation.getKeyFrame(clock, true);
 			game.batch.draw(currentFrame, x-16, y-16);
 		}
@@ -129,6 +139,7 @@ public class Player {
 			}
 		}
 		
+		// If player can move to the region, move them there. Gdx.graphics.getDeltaTime() is essential for movement to be the same on all framerates
 		if (canMoveTo(x, y-sprite.getHeight()/2 + speed * Gdx.graphics.getDeltaTime())) {
             y += speed * Gdx.graphics.getDeltaTime();
         }
@@ -217,30 +228,32 @@ public class Player {
 		else if(game.map.screen == 2) {
 			for (Rectangle region : inaccessibleRegionsScreen2) {
 	            if (region.contains(targetX, targetY)) {
-	                return false; // Movement is not allowed
+	                return false;
 	            }
 	        }
-	        return true; // Movement is allowed
+	        return true;
 		}
 		else if(game.map.screen == 3) {
 			for (Rectangle region : inaccessibleRegionsScreen3) {
 	            if (region.contains(targetX, targetY)) {
-	                return false; // Movement is not allowed
+	                return false;
 	            }
 	        }
-	        return true; // Movement is allowed
+	        return true;
 		}
 		else {
 			for (Rectangle region : inaccessibleRegionsScreen4) {
 	            if (region.contains(targetX, targetY)) {
-	                return false; // Movement is not allowed
+	                return false;
 	            }
 	        }
-	        return true; // Movement is allowed
+	        return true;
 		}
     }
 	
 	private void initializeInaccessibleRegions() {
+		// Manually draw rectangles for all the regions that the player cannot move to
+		// Can add be easily modified if the map is to be changed
 		inaccessibleRegionsScreen1 = new Rectangle[] { 
 				new Rectangle(191, 360-65, 226, 66),
 				new Rectangle(447, 360-65, 192, 65),
@@ -270,6 +283,7 @@ public class Player {
 				new Rectangle(447, 360-32, 130, 33),
 				new Rectangle(530, 360-108, 110, 46),
 				new Rectangle(447, 360-78, 53, 16),
+				new Rectangle(127, 360-128, 194, 66),
 				};
 		inaccessibleRegionsScreen3 = new Rectangle[] { 
 				new Rectangle(0, 360-360, 161, 200),

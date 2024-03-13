@@ -18,6 +18,7 @@ public class InformationScreen implements Screen{
 	private int score;
 	private float resourcesGained; // Study points / energy
 	
+	// Should be used for tutorials and game over screens for minigames
 	public InformationScreen(HeslingtonHustle game, String type, Screen nextScreen) {
 		this.game = game;
 		this.type = type;
@@ -38,8 +39,7 @@ public class InformationScreen implements Screen{
 		// Clear the screen
 		Gdx.gl.glClearColor(32/255f, 46/255f, 55/255f, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-				
-				
+					
 		// Set projection matrix of the batch to the camera
 		game.batch.setProjectionMatrix(game.camera.combined);
 		game.camera.update();
@@ -47,6 +47,8 @@ public class InformationScreen implements Screen{
 		// Get mouse position in world coordinates
 		Vector3 mousePos = game.camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 1f));
 				
+		
+		// Begin drawing on screen
 		game.batch.begin();
 		
 		if(type == "mainTutorial") {
@@ -62,7 +64,7 @@ public class InformationScreen implements Screen{
 			loadRecreationGameScore();
 		}
 		
-		// Continue
+		// Continue button
 		game.font.getData().setScale(0.6f); // Set font size
 		game.font.setColor(new Color(1, 1, 1, 1));	
 		game.layout.setText(game.font, "Continue!", new Color(1, 1, 1, 1), 100, Align.center, false);
@@ -76,10 +78,12 @@ public class InformationScreen implements Screen{
 		}
 		game.font.draw(game.batch, game.layout, 250, 40);
 		
+		// Stop drawing on screen
 		game.batch.end();
 	}
 	
 	public void loadMainTutorial() {
+		// Display the tutorial for the game in general
 		game.font.getData().setScale(0.4f);
 		game.font.setColor(new Color(1, 1, 1, 1));	
 		game.font.draw(game.batch, "You wake up after a long night out. You glance at your phone and realise the date - only 1 week before exams start! "
@@ -94,6 +98,7 @@ public class InformationScreen implements Screen{
 	}
 	
 	public void loadBugFixerTutorial() {
+		// Display the tutorial for the BugFixer minigame
 		game.font.getData().setScale(1.2f); // Set font size
 		game.font.setColor(new Color(222/255f, 158/255f, 65/255f, 1));
 		game.font.draw(game.batch, "BugFixer", 250, 330, 100, Align.center, false);
@@ -110,6 +115,7 @@ public class InformationScreen implements Screen{
 	}
 	
 	public void loadStudyGameScore() {
+		// Display the game over screen for study minigames
 		game.font.getData().setScale(1.2f); // Set font size
 		game.font.setColor(new Color(222/255f, 158/255f, 65/255f, 1));
 		game.font.draw(game.batch, "Game Over!", 250, 330, 100, Align.center, false);
@@ -143,6 +149,7 @@ public class InformationScreen implements Screen{
 	}
 	
 	public void loadRecreationGameScore() {
+		// Display the game over screen for recreation minigames
 		game.font.getData().setScale(1.2f); // Set font size
 		game.font.setColor(new Color(222/255f, 158/255f, 65/255f, 1));
 		game.font.draw(game.batch, "Game Over!", 250, 330, 100, Align.center, false);
@@ -175,6 +182,7 @@ public class InformationScreen implements Screen{
 	
 	@Override
 	public void show() {
+		// Called when this screen becomes displayed
 		game.menuMusic.play();
 	}
 
@@ -190,6 +198,7 @@ public class InformationScreen implements Screen{
 
 	@Override
 	public void hide() {
+		// Called when this screen stops being displayed
 		game.menuMusic.pause();
 	}
 

@@ -58,6 +58,7 @@ public class PopUpText {
 	}
 	
 	public boolean equals(PopUpText text) {
+		// Check if a pop up is exactly the same as another to avoid spam
 		if(this == text) {
 			return true;
 		}
@@ -65,6 +66,7 @@ public class PopUpText {
             return false;
         }
 		
+		// Checks if each individual variable is the same in both objects
 		return(this.text == text.text && this.x == text.x && this.y == text.y && this.targetWidth == text.targetWidth && this.align == text.align && this.wrap == text.wrap
 				&& this.scale == text.scale && this.color.r == text.color.r  && this.color.g == text.color.g  && this.color.b == text.color.b  && this.color.a == text.color.a);
 	}

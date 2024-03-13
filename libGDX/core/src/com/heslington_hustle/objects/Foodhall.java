@@ -21,6 +21,7 @@ public class Foodhall extends Object {
 		super(game, name, interactRegions, screen, tooltip, tooltipX, tooltipY, nameX, nameY);
 		this.energyChange = energyChange;
 		this.timeSpent = timeSpent;
+		// Load eating sound
 		this.eat = Gdx.audio.newSound(Gdx.files.internal("Map/Eat.mp3"));
 	}
 	
@@ -31,8 +32,9 @@ public class Foodhall extends Object {
 		if (game.time + timeSpent > 24){
 			game.addPopUpText(new PopUpText("It's too late to do this now!", 250, 300, 100, Align.center, false, 0.4f, new Color(1,1,1,1)), 2);
 		}
-		// Add energy and time
 		else {
+			
+			// Fade to black and play eating sound
 			game.fadeToBlack();
 			eat.play(game.volume);
 			eating = true;
@@ -41,6 +43,7 @@ public class Foodhall extends Object {
 			Timer.schedule(new Task() {
 			    @Override
 			    public void run() {
+			    	// Add energy and time
 			    	if(game.timesEatenToday == 0) {
 						game.energyBar.addEnergy(energyChange);
 						game.time += timeSpent;

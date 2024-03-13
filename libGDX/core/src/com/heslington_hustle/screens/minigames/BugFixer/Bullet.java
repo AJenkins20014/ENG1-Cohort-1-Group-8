@@ -65,17 +65,19 @@ public class Bullet {
             this.directionX = (this.destination.x - this.x) / directionLength;
             this.directionY = (this.destination.y - this.y) / directionLength;
         } else {
-            // Handle the case where the destination is the same as the current position
+            // Destination is the same as current position
             this.directionX = 0;
             this.directionY = 0;
         }
 	}
 	
 	public void update() {
+		// Called every frame in the BugFixer render() method
 		move();
 		drawSprite();
 		checkCollision();
 		
+		// Increment clock
 		clock += Gdx.graphics.getDeltaTime();
 	}
 	

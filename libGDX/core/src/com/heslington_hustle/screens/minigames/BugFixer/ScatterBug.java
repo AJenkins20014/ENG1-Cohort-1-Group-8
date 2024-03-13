@@ -135,6 +135,7 @@ public class ScatterBug {
 	private void attack() {
 		timeSinceAttack = 0f;
 		
+		// Spawn bullets in 8 directions around the scatter bug
 		bugFixer.enemyBullets.add(new Bullet(game, bugFixer, x, y, new Vector2(0, y+100), false));
 		bugFixer.enemyBullets.add(new Bullet(game, bugFixer, x, y, new Vector2(0, y-100), false));
 		bugFixer.enemyBullets.add(new Bullet(game, bugFixer, x, y, new Vector2(x+100, 0), false));
@@ -147,6 +148,7 @@ public class ScatterBug {
 	}
 	
 	public void destroy() {
+		// Destroy this bug to save memory
 		bugFixer.world.destroyBody(body);
 	}
 }

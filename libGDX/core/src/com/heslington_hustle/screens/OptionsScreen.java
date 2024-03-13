@@ -107,6 +107,7 @@ public class OptionsScreen implements Screen {
 		Vector3 mousePos = game.camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 1f));
 		
 		
+		// Start drawing
 		game.batch.begin();
 		
 		// Draw menu title
@@ -358,13 +359,13 @@ public class OptionsScreen implements Screen {
 			}
 		}
 
-		
-		
+		// Stop drawing
 		game.batch.end();
 	}
 	
 	@Override
 	public void show() {
+		// Called when this screen becomes displayed
 		game.menuMusic.play();
 	}
 
@@ -385,6 +386,7 @@ public class OptionsScreen implements Screen {
 
 	@Override
 	public void hide() {
+		// Called when this screen stops being displayed
 		game.menuMusic.pause();
 	}
 

@@ -18,6 +18,7 @@ public class Bed extends Object {
 	
 	public Bed(HeslingtonHustle game, String name, Rectangle[] interactRegions, int screen, String tooltip, int tooltipX, int tooltipY, int nameX, int nameY) {
 		super(game, name, interactRegions, screen, tooltip, tooltipX, tooltipY, nameX, nameY);
+		// Load sleep sound
 		this.sleep = Gdx.audio.newSound(Gdx.files.internal("Map/Sleep.mp3"));
 	}
 	
@@ -35,6 +36,7 @@ public class Bed extends Object {
 			game.energyBar.addEnergy(80f);
 		}
 		
+		// Fade to black and play sleep sound
 		game.fadeToBlack();
 		sleep.play(game.volume);
 		sleeping = true;
@@ -64,6 +66,7 @@ public class Bed extends Object {
 	}
 	
 	private void startExam() {
+		// Starts the exam game at the end of the 7th day
 		ExamGame Exam = new ExamGame(game, 1f);
 		Exam.startGame();
 	}

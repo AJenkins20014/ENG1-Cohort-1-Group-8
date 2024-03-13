@@ -1,6 +1,5 @@
 package com.heslington_hustle.objects;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
 import com.heslington_hustle.game.HeslingtonHustle;
 
@@ -14,6 +13,7 @@ public class Object {
 	public int tooltipX, tooltipY;
 	public int nameX, nameY;
 	
+	// Parent class of Bed, Building and Foodhall
 	public Object(HeslingtonHustle game, String name, Rectangle[] interactRegions, int screen, String tooltip, int tooltipX, int tooltipY, int nameX, int nameY) {
 		this.game = game;
 		this.name = name;

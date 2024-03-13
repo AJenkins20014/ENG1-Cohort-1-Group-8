@@ -10,6 +10,7 @@ public class MinigameScreen implements Screen {
 	public float difficultyScalar;
 	public boolean exam;
 	
+	// Parent class of minigames
 	public MinigameScreen(HeslingtonHustle game, float difficultyScalar){
 		this.game = game;
 		this.difficultyScalar = difficultyScalar;
@@ -18,7 +19,6 @@ public class MinigameScreen implements Screen {
 	
 	public void startGame() {
 		// Should be overrided in specific minigames
-		// Set all minigames back to their start state
 	}
 	
 	@Override

@@ -36,8 +36,9 @@ public class GameOverScreen implements Screen {
 		// Get mouse position in world coordinates
 		Vector3 mousePos = game.camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 1f));
 				
-		game.batch.begin();
-				
+		
+		// Begin drawing on screen
+		game.batch.begin();	
 
 		// Display score and grade
 		game.font.getData().setScale(1.2f); // Set font size
@@ -68,7 +69,7 @@ public class GameOverScreen implements Screen {
 			game.font.draw(game.batch, "New high score!", 250, 120, 100, Align.center, false);
 		}
 				
-				
+		// Stop drawing on screen
 		game.batch.end();
 	}
 	
@@ -79,6 +80,7 @@ public class GameOverScreen implements Screen {
 	
 	@Override
 	public void show() {
+		// Called when this screen becomes displayed
 		game.menuMusic.play();
 	}
 
@@ -99,6 +101,7 @@ public class GameOverScreen implements Screen {
 
 	@Override
 	public void hide() {
+		// Called when this screen stops being displayed
 		game.menuMusic.pause();
 	}
 

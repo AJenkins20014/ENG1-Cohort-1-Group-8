@@ -9,7 +9,6 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Cursor;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Pixmap;
@@ -30,40 +29,42 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.heslington_hustle.game.HeslingtonHustle;
-import com.heslington_hustle.game.PopUpText;
 import com.heslington_hustle.screens.InformationScreen;
 import com.heslington_hustle.screens.MinigameScreen;
 
 public class BugFixer extends MinigameScreen implements Screen {
-	public World world;
-	private Box2DDebugRenderer debugRenderer;
-	private boolean minimised;
-	private float accumulator = 0f;
-	private float fixedTimeStep = 1 / 144f; // Adjust as needed
+	public World world; // Stores bodies and physics
+	@SuppressWarnings("unused")
+	private Box2DDebugRenderer debugRenderer; // Can be used to display hitboxes for testing
+	private boolean minimised; // If the game window is minimised
+	private float accumulator = 0f; // Clock for physics, incremented every frame
+	private float fixedTimeStep = 1 / 144f; // Time step for physics - adjust as needed
 	
 	public Body player;
-	private float playerToMouse;
+	private float playerToMouse; // Angle of the player ship to the cursor (in radians, should be converted to degrees)
 	private float timeSinceAttack;
 	private float attackCooldown;
-	private ArrayList<Bullet> bullets = new ArrayList<>();
-	public ArrayList<Bullet> enemyBullets = new ArrayList<>();
+	private ArrayList<Bullet> bullets = new ArrayList<>(); // Array of player bullets
+	public ArrayList<Bullet> enemyBullets = new ArrayList<>(); // Array of enemy bullets
 	
-	private float clock;
-	private float enemySpawnClock;
-	private float spawnTimer;
-	private Random random;
+	private float clock; // Clock, incremented every frame
+	private float enemySpawnClock; // Clock for how long it has been since an enemy has spawned
+	private float spawnTimer; // Duration between enemy spawns
+	private Random random; // Random number generator
 	
 	public float health;
-	private Sprite cursorShip;
+	private Sprite cursorShip; // Player ship
 	private Texture healthBar1, healthBar2, healthBar3;
 	
+	// Enemy grid dimensions
 	public int rows = 32;
 	public int columns = 17;
+	// A grid for where enemies can spawns
 	public java.lang.Object[][] enemyGrid = new java.lang.Object[rows][columns];
 	
 	private float studyPointsGained;
 	private float maxStudyPointsGained;
-	public int score;
+	public int score; // Minigame score incremented by shooting bugs
 	
 	private Music backgroundMusic;
 	private Sound playerShot;
@@ -73,11 +74,14 @@ public class BugFixer extends MinigameScreen implements Screen {
 	public BugFixer(HeslingtonHustle game, float difficultyScalar) {
 		super(game, difficultyScalar);
 		world = new World(new Vector2(0, 0), true); // Create world with no gravity
-		debugRenderer = new Box2DDebugRenderer();
+		debugRenderer = new Box2DDebugRenderer(); // Create hitbox renderer for testing
+		this.attackCooldown = 0.2f; // Attack speed for player
+		
 		this.studyPointsGained = 15f; // From worst possible performance
 		this.maxStudyPointsGained = 100f; // From best possible performance
-		this.random = new Random();
-		this.attackCooldown = 0.2f;
+		
+		this.random = new Random(); // Create random number generator
+		
 		
 		// Load textures
 		Texture texture = new Texture("BugFixerMinigame/Cursor.png");
@@ -99,6 +103,7 @@ public class BugFixer extends MinigameScreen implements Screen {
 	@Override
 	public void startGame() {
 		// Code to restart the game
+		// Initialise variables to starting values
 		studyPointsGained = 15f;
 		clock = 0f;
 		enemySpawnClock = 0f;
@@ -115,12 +120,14 @@ public class BugFixer extends MinigameScreen implements Screen {
 			Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode());
 		}
 		
+		// Destroy any currently saved bodies
 		Array<Body> bodies = new Array<Body>();
 	    world.getBodies(bodies);
 	    for(Body body: bodies){
 	        world.destroyBody(body);
 	    }
 	    
+	    // Create world boundaries and player body
 	    createShip();
 	    createWalls();
 	    
@@ -136,8 +143,6 @@ public class BugFixer extends MinigameScreen implements Screen {
 		studyPointsGained += clock/3;
 		studyPointsGained += score/10;
 		
-		System.out.print(studyPointsGained + "\n");
-		
 		// Check BugFixer high score
 		if(game.prefs.getInteger("bugFixerHighScore", 0) < score) {
 			game.prefs.putInteger("bugFixerHighScore", score);
@@ -148,6 +153,7 @@ public class BugFixer extends MinigameScreen implements Screen {
 			studyPointsGained = maxStudyPointsGained;
 		}
 		
+		// Set game back to borderless if the user had it set
 		if(game.isBorderless) {
 			Gdx.graphics.setUndecorated(true);
 			Gdx.graphics.setWindowedMode(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
@@ -183,7 +189,7 @@ public class BugFixer extends MinigameScreen implements Screen {
 	
 	@Override
 	public void render(float delta) {
-		if(minimised) return;
+		if(minimised) return; // Do nothing if the game is minimised
 		
 		// Clear the screen
 		Gdx.gl.glClearColor(16/255f, 20/255f, 31/255f, 1);
@@ -200,8 +206,10 @@ public class BugFixer extends MinigameScreen implements Screen {
 		updateMusicVolume();
 		
 		
+		// Begin drawing objects on the screen
 		game.batch.begin();
 		
+		// Draw player ship
 		cursorShip.setPosition(player.getPosition().x - cursorShip.getWidth()/2, player.getPosition().y - cursorShip.getHeight()/2);
 		cursorShip.setRotation((float) Math.toDegrees(playerToMouse));
 		cursorShip.draw(game.batch);
@@ -225,38 +233,46 @@ public class BugFixer extends MinigameScreen implements Screen {
 			Gdx.graphics.setCursor(cursor);
 		}
 		
+		// Stop drawing objects on the screen
 		game.batch.end();
 				
+		// If the game is paused, do not carry out any physics operations or update any clocks
 		if(game.paused) return;
 		
+		// Check if the user is issuing any move commands
 		movePlayer();
 		
+		
+		// Begin drawing again
 		game.batch.begin();
+		
+		// Player ship attacks if left click is pressed and the attack is not on cooldown
 		if(Gdx.input.isButtonPressed(Input.Buttons.LEFT) && timeSinceAttack > attackCooldown && clock > 0.2f) {
-			attack(new Vector2(mousePos.x, mousePos.y));
+			attack(new Vector2(mousePos.x, mousePos.y)); // Fire a bullet in the direction of the cursor
 		}
 		
-		for(int i = 0; i < bullets.size(); i++) {
+		// Remove any bullets that have gone off the screen
+		for(int i = 0; i < bullets.size(); i++) { // Player bullets
 			bullets.get(i).update();
 			if(bullets.get(i).checkOutOfBounds()) {
 				bullets.remove(i);
 			}
 		}
-		
-		for(int i = 0; i < enemyBullets.size(); i++) {
+		for(int i = 0; i < enemyBullets.size(); i++) { // Enemy bullets
 			enemyBullets.get(i).update();
 			if(enemyBullets.get(i).checkOutOfBounds()) {
 				enemyBullets.remove(i);
 			}
 		}
 		
+		// Stop drawing
 		game.batch.end();	
 		
-		// Uncomment this to display hitboxes
+		// Uncomment to display hitboxes for testing
 		//debugRenderer.render(world, game.camera.combined);
 		
-		// Accumulate the time
-	    accumulator += delta;
+		// Accumulate the time for physics
+	    accumulator += Gdx.graphics.getDeltaTime();
 
 	    // Update the physics world with a fixed timestep
 	    while (accumulator >= fixedTimeStep) {
@@ -264,11 +280,15 @@ public class BugFixer extends MinigameScreen implements Screen {
 	        accumulator -= fixedTimeStep;
 	    }
 	    
-	    
+	    // Update other clocks
 		clock += Gdx.graphics.getDeltaTime();
 		enemySpawnClock += Gdx.graphics.getDeltaTime();
 		timeSinceAttack += Gdx.graphics.getDeltaTime();
+		
+		// Check if a new enemy should spawn
 		checkEnemySpawn();
+		
+		// Run update methods for all bugs (so that they are called every frame)
 		for (int i = 0; i < rows; i++) {
 			for (int j = 0; j < columns; j++) {
 				if (enemyGrid[i][j] instanceof SniperBug) {
@@ -280,10 +300,12 @@ public class BugFixer extends MinigameScreen implements Screen {
 			 }
 		}
 		
+		// Draw the UI (last to ensure it is on top of everything else)
 		game.batch.begin();
 		drawUI();
 		game.batch.end();
 		
+		// End the game if the player's health drops to or below 0
 		if(health <= 0f) {
 			endGame();
 		}
@@ -399,18 +421,18 @@ public class BugFixer extends MinigameScreen implements Screen {
 			spawnTimer = (1f/((clock+10f)/10f))/difficultyScalar;
 		}
 		
-		
 		// For first 10 seconds only spawn SniperBugs
 		if(clock < 10f) {
 			if(enemySpawnClock > spawnTimer) {
-				spawnBug("SniperBug");
-				enemySpawnClock = 0f;
+				spawnBug("SniperBug"); // Spawn bug
+				enemySpawnClock = 0f; // Reset the spawn clock
 			}
 		}
 		// After 10 seconds spawn ScatterBugs also
 		else {
 			int randomNumber = random.nextInt(10);
 			if(enemySpawnClock > spawnTimer) {
+				// Scatter bugs have a 30% chance of spawing
 				if(randomNumber < 3) {
 					spawnBug("ScatterBug");
 				}
@@ -448,15 +470,13 @@ public class BugFixer extends MinigameScreen implements Screen {
 
             attempts++;
         }
-
-        System.out.println("Unable to find a valid spawn point after " + maxAttempts + " attempts. \n");
         return false; // No spawn location found
 	}
 	
 	private void attack(Vector2 mousePos) {
-		timeSinceAttack = 0f;
+		timeSinceAttack = 0f; // Reset attack clock
 		
-		bullets.add(new Bullet(game, this, player.getPosition().cpy().x, player.getPosition().cpy().y, mousePos, true));
+		bullets.add(new Bullet(game, this, player.getPosition().cpy().x, player.getPosition().cpy().y, mousePos, true)); // Spawn bullet
 		playerShot.play(game.volume);
 	}
 	
@@ -467,7 +487,9 @@ public class BugFixer extends MinigameScreen implements Screen {
 	
 	@Override
 	public void resize(int width, int height) {
+		// Called when the game window is resized
 		if(width == 0 && height == 0) {
+			// Pause the game if the game window is minimised
 			minimised = true;
 			game.togglePause();
 		}
@@ -478,6 +500,8 @@ public class BugFixer extends MinigameScreen implements Screen {
 	
 	@Override
 	public void hide() {
+		// Called when this screen is no longer displayed
+		
 		// Reset custom cursor
 		Pixmap pixmap = new Pixmap(Gdx.files.internal("UI/Cursor.png"));
 		Cursor cursor = Gdx.graphics.newCursor(pixmap, 0, 0);
@@ -489,6 +513,8 @@ public class BugFixer extends MinigameScreen implements Screen {
 	
 	@Override
 	public void show() {
+		// Called when this screen becomes displayed
+		
 		// Set custom cursor
 		Pixmap pixmap = new Pixmap(Gdx.files.internal("BugFixerMinigame/Crosshair.png"));
 		Cursor cursor = Gdx.graphics.newCursor(pixmap, 16, 16);

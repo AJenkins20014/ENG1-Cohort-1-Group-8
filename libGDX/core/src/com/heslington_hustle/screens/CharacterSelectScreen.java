@@ -25,6 +25,8 @@ public class CharacterSelectScreen implements Screen{
 		this.game = game;
 		
 		avatarIndex = 0;
+		
+		// Load avatar textures
 		avatars[0] = new Texture("Avatars/Avatar1.png");
 		avatars[1] = new Texture("Avatars/Avatar2.png");
 		avatars[2] = new Texture("Avatars/Avatar3.png");
@@ -53,6 +55,7 @@ public class CharacterSelectScreen implements Screen{
 
 	@Override
 	public void show() {
+		// Called when this screen becomes displayed
 		game.menuMusic.play();
 	}
 
@@ -69,7 +72,8 @@ public class CharacterSelectScreen implements Screen{
 		// Get mouse position in world coordinates
 		Vector3 mousePos = game.camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 1f));
 				
-				
+		
+		// Begin drawing on screen
 		game.batch.begin();
 				
 		// Draw menu title
@@ -139,6 +143,7 @@ public class CharacterSelectScreen implements Screen{
 		}
 		game.font.draw(game.batch, game.layout, 20, 50);
 		
+		// Stop drawing on screen
 		game.batch.end();
 	}
 	
@@ -167,6 +172,7 @@ public class CharacterSelectScreen implements Screen{
 
 	@Override
 	public void hide() {
+		// Called when this screen stops being displayed
 		game.menuMusic.pause();
 	}
 

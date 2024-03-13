@@ -23,8 +23,8 @@ public class Map implements Screen{
 	
 	public int screen; // 1 = bottom left, 2 = bottom right, 3 = top left, 4 = top right
 	private Texture screen1, screen2, screen3, screen4;
-	private Texture screen1Overlay, screen2Overlay, screen3Overlay, screen4Overlay;
-	private Texture blackFilter;
+	private Texture screen1Overlay, screen2Overlay, screen3Overlay, screen4Overlay; // Textures that should be displayed over the player object
+	private Texture blackFilter; // Dark filter for when it is late in the game day
 	private Texture energyBar1, energyBar2, energyBar3;
 	private Texture energyIconFull, energyIconEmpty;
 	
@@ -68,6 +68,7 @@ public class Map implements Screen{
 		game.camera.update();
 				
 		
+		// Begin drawing on screen
 		game.batch.begin();
 		
 		// Draw map background
@@ -83,24 +84,25 @@ public class Map implements Screen{
 		else if(screen == 4) {
 			game.batch.draw(screen4, 0, 0);
 		}
-		
 
+		// If the player isn't moving, display the idle animation
 		if(!Gdx.input.isKeyPressed(Keys.W) && !Gdx.input.isKeyPressed(Keys.S) && !Gdx.input.isKeyPressed(Keys.A) && !Gdx.input.isKeyPressed(Keys.D)) {
 			game.player.idleAnimation();
 		}
 		else {
 			if(game.player.direction == "R") {
+				// Player is moving right, display the walk right animation
 				TextureRegion currentFrame = game.player.walkRAnimation.getKeyFrame(game.player.clock, true);
 				game.batch.draw(currentFrame, game.player.x-16, game.player.y-16);
 			}
 			else if(game.player.direction == "L") {
+				// Player is moving left, display the walk left animation
 				TextureRegion currentFrame = game.player.walkLAnimation.getKeyFrame(game.player.clock, true);
 				game.batch.draw(currentFrame, game.player.x-16, game.player.y-16);
 			}
 		}
 		
-		
-		
+		// Checks if player wants to move - ignored is game is paused
 		if(!game.paused) {
 			if(Gdx.input.isKeyPressed(Keys.W)) {
 				game.player.moveUp();
@@ -116,7 +118,7 @@ public class Map implements Screen{
 			}
 		}
 		
-		game.player.clock += Gdx.graphics.getDeltaTime();
+		game.player.clock += Gdx.graphics.getDeltaTime(); // Update clock for the player object - for animations
 		
 		// Draw map overlay
 		if(screen == 1) {
@@ -146,10 +148,12 @@ public class Map implements Screen{
 			game.pauseMenu();
 		}
 		
+		// Stop drawing
 		game.batch.end();
 	}
 	
 	private void initialiseObjects() {
+		// Manually initialise objects and define rectangles in which the player can stand to interact with them
 		Rectangle[] interactRegions;
 		
 		// CS Building
@@ -236,6 +240,7 @@ public class Map implements Screen{
 	}
 	
 	private void checkPlayerObjectCollision() {
+		// Checks if the player is in an object's interact region(s)
 		for(int i = 0; i < objects.length; i++) {
 			if(objects[i] != null && objects[i].screen == screen) {
 				for (Rectangle region : objects[i].interactRegions) {
@@ -290,6 +295,7 @@ public class Map implements Screen{
 	
 	@Override
 	public void show() {
+		// Called when this screen becomes displayed
 		game.mapMusic.play();
 	}
 
@@ -310,6 +316,7 @@ public class Map implements Screen{
 
 	@Override
 	public void hide() {
+		// Called when this screen stops being displayed
 		game.mapMusic.stop();
 	}
 

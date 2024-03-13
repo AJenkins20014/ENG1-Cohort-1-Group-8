@@ -20,7 +20,6 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Align;
-import com.heslington_hustle.screens.GameOverScreen;
 import com.heslington_hustle.screens.Map;
 import com.heslington_hustle.screens.MinigameScreen;
 import com.heslington_hustle.screens.StartScreen;
@@ -34,14 +33,14 @@ public class HeslingtonHustle extends Game {
 	public static int windowWidth = 1920;
 	public static int windowHeight = 1080;
 	public float volume;
-	public boolean isBorderless; // Some minigames may set to fullscreen mode
+	public boolean isBorderless; // For use in minigames
 	
 	public OrthographicCamera camera;
 	public SpriteBatch batch;
 	public BitmapFont font;
 	public GlyphLayout layout = new GlyphLayout();
 	
-	public Preferences prefs;
+	public Preferences prefs; // Contains save data
 	
 	public Map map;
 	public Player player;
@@ -50,21 +49,21 @@ public class HeslingtonHustle extends Game {
 	public int time; // Hour
 	public HashMap<String, Float> studyPoints = new HashMap<>(); // Is used to calculate final score and alter exam difficulty (Minigame Name | Study Points)
 	public int[] timesStudied = new int[7]; // Number of times studied per day.
-	public int timesEatenToday;
+	public int timesEatenToday; // Number of times eaten on the current day
 	
 	public MinigameScreen[] minigames = new MinigameScreen[7];
 	
-	public boolean paused;
-	public boolean confirmQuit;
+	public boolean paused; // If game is paused
+	public boolean confirmQuit; // If the player is about to quit
 	
-	private float clock;
+	private float clock; // Incremented every frame
 	private ArrayList<PopUpText> popUps = new ArrayList<>();
-	private ArrayList<Float> popUpTimers = new ArrayList<>();
-	private float popUpAlpha;
+	private ArrayList<Float> popUpTimers = new ArrayList<>(); // How long each pop up has been displayed for
+	private float popUpAlpha; // Opacity of pop up text
 	
-	private float fadeClock; // Used for the fadeToBlack() method
-	private float fadeAlpha;
-	private Sprite blackScreen;
+	private float fadeClock; // Clock for the fadeToBlack() method
+	private float fadeAlpha; // Opacity of the black screen
+	private Sprite blackScreen; 
 	
 	public Music menuMusic;
 	public Music mapMusic;
@@ -116,6 +115,7 @@ public class HeslingtonHustle extends Game {
 	}
 	
 	private void initialiseMinigames() {
+		// Replace these with new minigames as they are added
 		minigames[0] = new BugFixer(this, 1);
 		minigames[1] = new StudyGame1(this, 1); // TODO - Study game 1
 		minigames[2] = new StudyGame1(this, 1); // TODO - Study game 2
@@ -188,6 +188,7 @@ public class HeslingtonHustle extends Game {
 					else {
 						volume -= 0.1f;
 					}
+					// Save data
 					prefs.putFloat("volume", volume);
 					prefs.flush();
 				}
@@ -288,6 +289,7 @@ public class HeslingtonHustle extends Game {
 	}
 	
 	public void fadeToBlack() {
+		// Reset fade clock and opacity
 		fadeClock = 0f;
 		fadeAlpha = 0f;
 	}
@@ -295,15 +297,21 @@ public class HeslingtonHustle extends Game {
 	@Override
 	public void render () {
 		super.render();
+		
+		// Increment timers
 		clock += Gdx.graphics.getDeltaTime();
 		fadeClock += Gdx.graphics.getDeltaTime();
 		
+		// Begin drawing on screen
 		batch.begin();
 		
-		if(this.getScreen() instanceof GameOverScreen || this.getScreen() instanceof StartScreen) {
+		// Clear pop ups if not on map screen
+		if(!(this.getScreen() instanceof Map)) {
 			popUps.clear();
 		}
 		
+		// Code for fading and displaying pop ups over time
+		// Pop ups are stored as an array so multiple can be stored and displayed in order
 		if(popUps.size() > 0) {
 			if(clock > popUpTimers.get(0)) {
 				popUps.remove(0);
@@ -318,7 +326,7 @@ public class HeslingtonHustle extends Game {
 			}
 		}
 		
-		// Fade to black
+		// Fade to black (if needed)
 		if(fadeClock < 1) {
 			fadeAlpha = fadeClock;
 			blackScreen.setAlpha(fadeAlpha);
@@ -330,6 +338,7 @@ public class HeslingtonHustle extends Game {
 			blackScreen.draw(batch);
 		}
 		
+		// Stop drawing on screen
 		batch.end();
 		
 		updateMusicVolume();
