@@ -23,6 +23,7 @@ import com.badlogic.gdx.utils.Align;
 import com.heslington_hustle.screens.Map;
 import com.heslington_hustle.screens.MinigameScreen;
 import com.heslington_hustle.screens.StartScreen;
+import com.heslington_hustle.screens.minigames.ExamGame;
 import com.heslington_hustle.screens.minigames.BugFixer.BugFixer;
 import com.heslington_hustle.screens.minigames.RecreationGame1.RecreationGame1;
 import com.heslington_hustle.screens.minigames.StudyGame1.StudyGame1;
@@ -52,6 +53,7 @@ public class HeslingtonHustle extends Game {
 	public int timesEatenToday; // Number of times eaten on the current day
 	
 	public MinigameScreen[] minigames = new MinigameScreen[7];
+	public ExamGame exam = new ExamGame(this, 1f);
 	
 	public boolean paused; // If game is paused
 	public boolean confirmQuit; // If the player is about to quit

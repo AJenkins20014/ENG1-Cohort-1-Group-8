@@ -164,6 +164,12 @@ public class BugFixer extends MinigameScreen implements Screen {
 		Cursor cursor = Gdx.graphics.newCursor(pixmap, 0, 0);
 		Gdx.graphics.setCursor(cursor);
 		
+		if(exam) {
+			game.exam.score += studyPointsGained/33;
+			game.exam.loadNextMinigame();
+			return;
+		}
+		
 		// Add studyPoints score to total score for this minigame
 		if(game.studyPoints.containsKey("BugFixer")) {
 			game.studyPoints.put("BugFixer", (game.studyPoints.get("BugFixer") + studyPointsGained));
@@ -366,7 +372,6 @@ public class BugFixer extends MinigameScreen implements Screen {
 		
 		// Dispose hitbox
 		box.dispose();
-
 	}
 	
 	private void movePlayer() {

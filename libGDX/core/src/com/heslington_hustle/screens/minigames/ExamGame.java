@@ -10,10 +10,11 @@ import com.heslington_hustle.screens.MinigameScreen;
 
 public class ExamGame extends MinigameScreen implements Screen {
 
-	private float score;
+	public float score;
 	private float scoreCap;
 	private String grade;
 	public HashMap<String, Float> difficultyScalars = new HashMap<>(); // How difficult is each exam minigame (Minigame name | DifficultyScalar)
+	private int currentMinigame; // Index of current mingiame
 	
 	public ExamGame(HeslingtonHustle game, float difficultyScalar) {
 		super(game, difficultyScalar);
@@ -39,6 +40,12 @@ public class ExamGame extends MinigameScreen implements Screen {
 		if((daysMissed > 0 && daysWithMultipleStudies < 1) || daysMissed > 1) {
 			scoreCap = 39f;
 		}
+		
+		// Check if any minigames haven't yet been played, and add them to the array
+		if(!game.studyPoints.containsKey("BugFixer")) {
+			game.studyPoints.put("BugFixer", 0f);
+		}
+		// etc...
 		
 		// Calculate starting score and difficulty scalars based on amount studied in the game
 		float studyPointsTotal = 0;
@@ -118,11 +125,15 @@ public class ExamGame extends MinigameScreen implements Screen {
 		// Display game screen
 		game.setScreen(this);
 		
-		// Temporary - TODO REMOVE
-		endGame();
+		// Loads next study minigame
+		currentMinigame = 0;
+		loadNextMinigame();
 	}
 	
 	private void endGame() {
+		if(score > scoreCap) {
+			score = scoreCap;
+		}
 		
 		// Calculate final grade
 		if(score < 40f) {
@@ -157,8 +168,24 @@ public class ExamGame extends MinigameScreen implements Screen {
 		
 	}
 	
-	private void loadNextMinigame() {
+	public void loadNextMinigame() {
+		// Remember only to load study minigames, you aren't being tested on recreation :)
+		Set<String> keySet = game.studyPoints.keySet(); // Get set of minigame names
+		String[] minigames = keySet.toArray(new String[0]); // Convert set to array for indexing
 		
+		// Check if this is the last minigame - TODO: Add rest of minigames
+		if(currentMinigame < 1) { // TODO: Change to no. of minigames
+			// Check minigame name and load relevant minigame
+			if(minigames[currentMinigame] == "BugFixer") {
+				game.minigames[0].startGame();
+				game.minigames[0].difficultyScalar = difficultyScalars.get(minigames[currentMinigame]);
+				game.minigames[0].exam = true;
+			}
+			currentMinigame++;
+		}
+		else {
+			endGame();
+		}	
 	}
 	
 	@Override
