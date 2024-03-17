@@ -71,8 +71,6 @@ public class BookStacker extends MinigameScreen implements Screen {
 	   
 		spawnBook(0,5,State.STATIONARY); //  Bottom Platform
 		spawnBook(8,0,State.MOVING);
-		// Temporary - TODO: REMOVE
-		//endGame();
 	}
 	
 	private void endGame() {
