@@ -14,6 +14,7 @@ import com.heslington_hustle.screens.InformationScreen;
 import com.heslington_hustle.screens.MinigameScreen;
 
 public class SwiftSwimmer extends MinigameScreen implements Screen {
+	private float clock; 
 	private boolean minimised;
 	private float energyGained;
 	private float maxEnergyGained;
@@ -49,7 +50,7 @@ public class SwiftSwimmer extends MinigameScreen implements Screen {
 	
 	private void endGame() {
 		game.energyBar.addEnergy(energyGained);
-		
+		score = swimmer.laps*75;
 		/*
 		// Check minigame high score
 		if(game.prefs.getInteger("thisMinigameHighScore", 0) < score) {
@@ -87,11 +88,15 @@ public class SwiftSwimmer extends MinigameScreen implements Screen {
 		
 		// Get mouse position in world coordinates
 		Vector3 mousePos = game.camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 1f));
+		//Increment delta time
+		clock += Gdx.graphics.getDeltaTime();
+		//Move Swimmer
 		swimmer.Swim();
-		
 		game.batch.begin();
 		//Move Swimmer
-		System.out.println(game.batch);
+		if(clock > 15) {
+			endGame();
+		}
 		
 		
 		// CODE TO RENDER SPRITES GOES HERE
