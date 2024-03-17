@@ -63,6 +63,9 @@ public class InformationScreen implements Screen{
 		else if(type == "recreationGameScore") {
 			loadRecreationGameScore();
 		}
+		else if(type == "bookStackerTutorial") {
+			loadBookStackerTutorial();
+		}
 		
 		// Continue button
 		game.font.getData().setScale(0.6f); // Set font size
@@ -112,6 +115,23 @@ public class InformationScreen implements Screen{
 		
 		game.batch.draw(new Texture("UI/TutorialLeftClick.png"), 380, 90);
 		game.font.draw(game.batch, "Shoot", 420, 110, 100, Align.left, false);
+	}
+	
+	public void loadBookStackerTutorial() {
+		// Display the tutorial for the BugFixer minigame
+		game.font.getData().setScale(1.2f); // Set font size
+		game.font.setColor(new Color(222/255f, 158/255f, 65/255f, 1));
+		game.font.draw(game.batch, "BookStacker", 250, 330, 100, Align.center, false);
+		game.font.getData().setScale(0.4f);
+		game.font.setColor(new Color(1, 1, 1, 1));	
+		game.font.draw(game.batch, "Stack books without dropping to get points!", 50, 260, 500, Align.center, true);
+		
+		game.font.getData().setScale(0.5f);
+		game.batch.draw(new Texture("UI/TutorialMove.png"), 60, 90);
+		game.font.draw(game.batch, "Move", 150, 110, 100, Align.left, false);
+		
+		game.batch.draw(new Texture("UI/TutorialLeftClick.png"), 380, 90);
+		game.font.draw(game.batch, "Drop", 420, 110, 100, Align.left, false);
 	}
 	
 	public void loadStudyGameScore() {

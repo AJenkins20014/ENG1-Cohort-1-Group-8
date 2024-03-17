@@ -24,6 +24,7 @@ import com.heslington_hustle.screens.Map;
 import com.heslington_hustle.screens.MinigameScreen;
 import com.heslington_hustle.screens.StartScreen;
 import com.heslington_hustle.screens.minigames.ExamGame;
+import com.heslington_hustle.screens.minigames.BookStacker.BookStacker;
 import com.heslington_hustle.screens.minigames.BugFixer.BugFixer;
 import com.heslington_hustle.screens.minigames.RecreationGame1.RecreationGame1;
 import com.heslington_hustle.screens.minigames.StudyGame1.StudyGame1;
@@ -119,7 +120,7 @@ public class HeslingtonHustle extends Game {
 	private void initialiseMinigames() {
 		// Replace these with new minigames as they are added
 		minigames[0] = new BugFixer(this, 1);
-		minigames[1] = new StudyGame1(this, 1); // TODO - Study game 1
+		minigames[1] = new BookStacker(this, 1); // TODO - Study game 1
 		minigames[2] = new StudyGame1(this, 1); // TODO - Study game 2
 		minigames[3] = new RecreationGame1(this, 1); // TODO - Recreation game 1
 		minigames[4] = new RecreationGame1(this, 1); // TODO - Recreation game 2
