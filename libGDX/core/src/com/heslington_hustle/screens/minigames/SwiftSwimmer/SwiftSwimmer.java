@@ -63,9 +63,8 @@ public class SwiftSwimmer extends MinigameScreen implements Screen {
 	}
 	
 	private void endGame() {
-		game.energyBar.addEnergy(energyGained);
 		score = swimmer.laps*75;
-		energyGained = score/11;
+		energyGained = score/15;
 
 		// Check minigame high score
 		if(game.prefs.getInteger("swiftSwimmerHighScore", 0) < score) {
@@ -76,6 +75,8 @@ public class SwiftSwimmer extends MinigameScreen implements Screen {
 		if(energyGained > maxEnergyGained) {
 			energyGained = maxEnergyGained;
 		}
+		
+		game.energyBar.addEnergy(energyGained);
 		
 		// Reset window back to borderless
 		if(game.isBorderless) {

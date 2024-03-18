@@ -69,6 +69,9 @@ public class InformationScreen implements Screen{
 		else if(type == "swiftSwimmerTutorial") {
 			loadSwiftSwimmerTutorial();
 		}
+		else if(type == "drunkDancerTutorial") {
+			loadDrunkDancerTutorial();
+		}
 		
 		// Continue button
 		game.font.getData().setScale(0.6f); // Set font size
@@ -121,7 +124,7 @@ public class InformationScreen implements Screen{
 	}
 	
 	public void loadBookStackerTutorial() {
-		// Display the tutorial for the BugFixer minigame
+		// Display the tutorial for the BookStacker minigame
 		game.font.getData().setScale(1.2f); // Set font size
 		game.font.setColor(new Color(222/255f, 158/255f, 65/255f, 1));
 		game.font.draw(game.batch, "BookStacker", 250, 330, 100, Align.center, false);
@@ -135,7 +138,7 @@ public class InformationScreen implements Screen{
 	}
 	
 	public void loadSwiftSwimmerTutorial() {
-		// Display the tutorial for the BugFixer minigame
+		// Display the tutorial for the Swift Swimmer minigame
 		game.font.getData().setScale(1.2f); // Set font size
 		game.font.setColor(new Color(222/255f, 158/255f, 65/255f, 1));
 		game.font.draw(game.batch, "SwiftSwimmer", 250, 330, 100, Align.center, false);
@@ -147,6 +150,23 @@ public class InformationScreen implements Screen{
 		game.batch.draw(new Texture("UI/TutorialLeftClick.png"), 60, 90);
 		game.font.draw(game.batch, "Click as fast as possible to swim", 150, 110, 100, Align.left, false);
 	}
+	
+	public void loadDrunkDancerTutorial() {
+		// Display the tutorial for the DrunkDancer minigame
+		game.font.getData().setScale(1.2f); // Set font size
+		game.font.setColor(new Color(222/255f, 158/255f, 65/255f, 1));
+		game.font.draw(game.batch, "DrunkDancer", 250, 330, 100, Align.center, false);
+		game.font.getData().setScale(0.4f);
+		game.font.setColor(new Color(1, 1, 1, 1));	
+		game.font.draw(game.batch, "Dance in time with the arrows!", 50, 260, 500, Align.center, true);
+		
+		game.font.getData().setScale(0.5f);
+		game.batch.draw(new Texture("UI/TutorialMove.png"), 160, 90);
+		game.font.draw(game.batch, "or", 200, 110, 100, Align.center, false);
+		game.batch.draw(new Texture("UI/TutorialArrowKeys.png"), 290, 90);
+		game.font.draw(game.batch, "Dance", 370, 110, 100, Align.left, false);
+	}
+	
 	public void loadStudyGameScore() {
 		// Display the game over screen for study minigames
 		game.font.getData().setScale(1.2f); // Set font size

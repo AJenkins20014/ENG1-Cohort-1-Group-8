@@ -26,6 +26,7 @@ import com.heslington_hustle.screens.StartScreen;
 import com.heslington_hustle.screens.minigames.ExamGame;
 import com.heslington_hustle.screens.minigames.BookStacker.BookStacker;
 import com.heslington_hustle.screens.minigames.BugFixer.BugFixer;
+import com.heslington_hustle.screens.minigames.DrunkDancer.DrunkDancer;
 import com.heslington_hustle.screens.minigames.RecreationGame1.RecreationGame1;
 import com.heslington_hustle.screens.minigames.StudyGame1.StudyGame1;
 import com.heslington_hustle.screens.minigames.SwiftSwimmer.SwiftSwimmer;
@@ -72,6 +73,7 @@ public class HeslingtonHustle extends Game {
 	public Music menuMusic;
 	public Music mapMusic;
 	public Sound menuClick;
+	public Cursor cursor;
 	
 	@Override
 	public void create () {	
@@ -92,7 +94,7 @@ public class HeslingtonHustle extends Game {
 		
 		// Set custom cursor
 		Pixmap pixmap = new Pixmap(Gdx.files.internal("UI/Cursor.png"));
-		Cursor cursor = Gdx.graphics.newCursor(pixmap, 0, 0);
+		cursor = Gdx.graphics.newCursor(pixmap, 0, 0);
 		Gdx.graphics.setCursor(cursor);
 		
 		// Create spritebatch
@@ -125,7 +127,7 @@ public class HeslingtonHustle extends Game {
 		minigames[2] = new StudyGame1(this, 1); // TODO - Study game 2
 		minigames[3] = new SwiftSwimmer(this, 1); // TODO - Recreation game 1
 		minigames[4] = new RecreationGame1(this, 1); // TODO - Recreation game 2
-		minigames[5] = new RecreationGame1(this, 1); // TODO - Recreation game 3
+		minigames[5] = new DrunkDancer(this, 1); // TODO - Recreation game 3
 		// etc...
 	}
 	

@@ -205,7 +205,7 @@ public class Map implements Screen{
 		interactRegions = new Rectangle[] { 
 				new Rectangle(447, 360-95, 161, 32),
 				};
-		objects[7] = new Building(game, "Bus", interactRegions, 4, "E: Go to Town", 415, 360-15, 415, 360-45, game.minigames[4], 0f, 2);
+		objects[7] = new Building(game, "Bus", interactRegions, 4, "E: Go to Town", 415, 360-15, 415, 360-45, game.minigames[5], 0f, 2);
 	}
 	
 	private void drawUI() {
