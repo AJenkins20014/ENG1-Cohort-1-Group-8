@@ -17,7 +17,17 @@ public class ColourMatch extends MinigameScreen implements Screen {
 	private float studyPointsGained;
 	private float maxStudyPointsGained;
 	private int score;
-	
+	public enum Colour{
+		RED,
+		BLUE,
+		YELLOW,
+		GREEN
+	}
+	public ColourBlock redBlock;
+	public ColourBlock blueBlock;
+	public ColourBlock yellowBlock;
+	public ColourBlock greenBlock;
+	public ColourBlock guessBlock;
 	public ColourMatch(HeslingtonHustle game, float difficultyScalar) {
 		super(game, difficultyScalar);
 		this.studyPointsGained = 15f; // From worst possible performance
