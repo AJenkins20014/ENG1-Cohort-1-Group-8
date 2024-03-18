@@ -90,6 +90,7 @@ public class SwiftSwimmer extends MinigameScreen implements Screen {
 	
 	@Override
 	public void render(float delta) {
+		Gdx.input.setCursorPosition(320, 200);
 		if(minimised) return;
 		
 		// Clear the screen
