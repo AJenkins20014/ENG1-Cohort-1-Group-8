@@ -67,8 +67,7 @@ public class Bed extends Object {
 	
 	private void startExam() {
 		// Starts the exam game at the end of the 7th day
-		ExamGame Exam = new ExamGame(game, 1f);
-		Exam.startGame();
+		game.exam.startGame();
 	}
 
 }

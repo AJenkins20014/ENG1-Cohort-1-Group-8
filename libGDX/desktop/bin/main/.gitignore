@@ -1,14 +1,9 @@
-/UI/
+/BookStackerMinigame/
+/SwiftSwimmerMinigame/
+/Music/
 /Avatars/
-<<<<<<< HEAD
+/BugFixerMinigame/
 /Map/
-/BugFixerMinigame/
-/com/
 /Objects/
-/Music/
-=======
-/BugFixerMinigame/
-/com/
-/Objects/
-/Music/
->>>>>>> branch 'main' of ssh://git@github.com/AJenkins20014/ENG1-Cohort-1-Group-8
+/UI/
+/ColourMatchMinigame/

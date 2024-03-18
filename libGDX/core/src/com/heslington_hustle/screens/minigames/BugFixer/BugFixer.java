@@ -70,6 +70,7 @@ public class BugFixer extends MinigameScreen implements Screen {
 	private Sound playerShot;
 	public Sound enemyShot;
 	private Sound enemySpawn;
+	private Cursor cursor;
 	
 	public BugFixer(HeslingtonHustle game, float difficultyScalar) {
 		super(game, difficultyScalar);
@@ -90,6 +91,10 @@ public class BugFixer extends MinigameScreen implements Screen {
 		healthBar1 = new Texture("BugFixerMinigame/HealthBar1.png");
 		healthBar2 = new Texture("BugFixerMinigame/HealthBar2.png");
 		healthBar3 = new Texture("BugFixerMinigame/HealthBar3.png");
+		
+		// Load custom cursor
+		Pixmap pixmap = new Pixmap(Gdx.files.internal("BugFixerMinigame/Crosshair.png"));
+		cursor = Gdx.graphics.newCursor(pixmap, 16, 16);
 		
 		// Load sounds
 		backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("Music/BugFixerMusic.ogg"));
@@ -144,10 +149,13 @@ public class BugFixer extends MinigameScreen implements Screen {
 		studyPointsGained += score/10;
 		
 		// Check BugFixer high score
-		if(game.prefs.getInteger("bugFixerHighScore", 0) < score) {
-			game.prefs.putInteger("bugFixerHighScore", score);
-			game.prefs.flush();
+		if(!exam) {
+			if(game.prefs.getInteger("bugFixerHighScore", 0) < score) {
+				game.prefs.putInteger("bugFixerHighScore", score);
+				game.prefs.flush();
+			}
 		}
+		
 		
 		if(studyPointsGained > maxStudyPointsGained) {
 			studyPointsGained = maxStudyPointsGained;
@@ -160,9 +168,13 @@ public class BugFixer extends MinigameScreen implements Screen {
 		}
 		
 		// Reset custom cursor 
-		Pixmap pixmap = new Pixmap(Gdx.files.internal("UI/Cursor.png"));
-		Cursor cursor = Gdx.graphics.newCursor(pixmap, 0, 0);
-		Gdx.graphics.setCursor(cursor);
+		Gdx.graphics.setCursor(game.cursor);
+		
+		if(exam) {
+			game.exam.score += studyPointsGained/33;
+			game.exam.loadNextMinigame();
+			return;
+		}
 		
 		// Add studyPoints score to total score for this minigame
 		if(game.studyPoints.containsKey("BugFixer")) {
@@ -222,14 +234,10 @@ public class BugFixer extends MinigameScreen implements Screen {
 			game.pauseMenu();
 			
 			// Reset custom cursor
-			Pixmap pixmap = new Pixmap(Gdx.files.internal("UI/Cursor.png"));
-			Cursor cursor = Gdx.graphics.newCursor(pixmap, 0, 0);
-			Gdx.graphics.setCursor(cursor);
+			Gdx.graphics.setCursor(game.cursor);
 		}
 		else {
 			// Set custom cursor
-			Pixmap pixmap = new Pixmap(Gdx.files.internal("BugFixerMinigame/Crosshair.png"));
-			Cursor cursor = Gdx.graphics.newCursor(pixmap, 16, 16);
 			Gdx.graphics.setCursor(cursor);
 		}
 		
@@ -366,7 +374,6 @@ public class BugFixer extends MinigameScreen implements Screen {
 		
 		// Dispose hitbox
 		box.dispose();
-
 	}
 	
 	private void movePlayer() {
@@ -389,7 +396,7 @@ public class BugFixer extends MinigameScreen implements Screen {
 	}
 	
 	private void drawUI() {
-		// Draw energy bar
+		// Draw health bar
 		game.batch.draw(healthBar1, game.camera.viewportWidth/2 - healthBar1.getWidth()/2, 350);
 		TextureRegion region = new TextureRegion(healthBar2, (int)Math.round(284f*(health/100f)), healthBar2.getHeight());
 		game.batch.draw(region, game.camera.viewportWidth/2 - healthBar1.getWidth()/2, 350);
@@ -503,9 +510,7 @@ public class BugFixer extends MinigameScreen implements Screen {
 		// Called when this screen is no longer displayed
 		
 		// Reset custom cursor
-		Pixmap pixmap = new Pixmap(Gdx.files.internal("UI/Cursor.png"));
-		Cursor cursor = Gdx.graphics.newCursor(pixmap, 0, 0);
-		Gdx.graphics.setCursor(cursor);
+		Gdx.graphics.setCursor(game.cursor);
 		
 		// Stop music
 		backgroundMusic.stop();
@@ -516,8 +521,6 @@ public class BugFixer extends MinigameScreen implements Screen {
 		// Called when this screen becomes displayed
 		
 		// Set custom cursor
-		Pixmap pixmap = new Pixmap(Gdx.files.internal("BugFixerMinigame/Crosshair.png"));
-		Cursor cursor = Gdx.graphics.newCursor(pixmap, 16, 16);
 		Gdx.graphics.setCursor(cursor);
 				
 		// Play music
