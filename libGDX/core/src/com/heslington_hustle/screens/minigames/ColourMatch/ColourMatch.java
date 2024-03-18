@@ -1,4 +1,4 @@
-package com.heslington_hustle.screens.minigames.StudyGame1;
+package com.heslington_hustle.screens.minigames.ColourMatch;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -12,13 +12,13 @@ import com.heslington_hustle.game.PopUpText;
 import com.heslington_hustle.screens.InformationScreen;
 import com.heslington_hustle.screens.MinigameScreen;
 
-public class StudyGame1 extends MinigameScreen implements Screen {
+public class ColourMatch extends MinigameScreen implements Screen {
 	private boolean minimised;
 	private float studyPointsGained;
 	private float maxStudyPointsGained;
 	private int score;
 	
-	public StudyGame1(HeslingtonHustle game, float difficultyScalar) {
+	public ColourMatch(HeslingtonHustle game, float difficultyScalar) {
 		super(game, difficultyScalar);
 		this.studyPointsGained = 15f; // From worst possible performance
 		this.maxStudyPointsGained = 100f; // From best possible performance
@@ -35,13 +35,9 @@ public class StudyGame1 extends MinigameScreen implements Screen {
 		}
 		
 		// Display tutorial - TODO: create a tutorial in InformationScreen and rename the string in the constructor below to fit
-	    //game.setScreen(new InformationScreen(game, "THISMINIGAMETutorial", this));
-	    
-		// Display game screen - TODO: Remove, uncomment out for testing purposes
-		game.setScreen(this);
-		
-		// Temporary - TODO: REMOVE
-		endGame();
+	    game.setScreen(new InformationScreen(game, "colourMatchTutorial", this));
+
+
 	}
 	
 	private void endGame() {

@@ -66,8 +66,8 @@ public class InformationScreen implements Screen{
 		else if(type == "bookStackerTutorial") {
 			loadBookStackerTutorial();
 		}
-		else if(type == "swiftSwimmerTutorial") {
-			loadSwiftSwimmerTutorial();
+		else if(type == "colourMatchTutorial") {
+			loadColourMatchTutorial();
 		}
 		else if(type == "drunkDancerTutorial") {
 			loadDrunkDancerTutorial();
@@ -135,6 +135,20 @@ public class InformationScreen implements Screen{
 		game.font.getData().setScale(0.5f);
 		game.batch.draw(new Texture("UI/TutorialLeftClick.png"), 250, 90);
 		game.font.draw(game.batch, "Drop", 300, 110, 100, Align.left, false);
+	}
+	
+	public void loadColourMatchTutorial() {
+		// Display the tutorial for the BugFixer minigame
+		game.font.getData().setScale(1.2f); // Set font size
+		game.font.setColor(new Color(222/255f, 158/255f, 65/255f, 1));
+		game.font.draw(game.batch, "ColourMatch", 250, 330, 100, Align.center, false);
+		game.font.getData().setScale(0.4f);
+		game.font.setColor(new Color(1, 1, 1, 1));	
+		game.font.draw(game.batch, "Watch and then click colours in the right order", 50, 260, 500, Align.center, true);
+		
+		game.font.getData().setScale(0.5f);
+		game.batch.draw(new Texture("UI/TutorialLeftClick.png"), 250, 90);
+		game.font.draw(game.batch, "Click", 300, 110, 100, Align.left, false);
 	}
 	
 	public void loadSwiftSwimmerTutorial() {
