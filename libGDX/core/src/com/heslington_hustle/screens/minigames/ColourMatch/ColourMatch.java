@@ -35,13 +35,9 @@ public class ColourMatch extends MinigameScreen implements Screen {
 		}
 		
 		// Display tutorial - TODO: create a tutorial in InformationScreen and rename the string in the constructor below to fit
-	    //game.setScreen(new InformationScreen(game, "THISMINIGAMETutorial", this));
-	    
-		// Display game screen - TODO: Remove, uncomment out for testing purposes
-		game.setScreen(this);
-		
-		// Temporary - TODO: REMOVE
-		endGame();
+	    game.setScreen(new InformationScreen(game, "colourMatchTutorial", this));
+
+
 	}
 	
 	private void endGame() {
