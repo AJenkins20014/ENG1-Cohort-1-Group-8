@@ -45,6 +45,8 @@ public class StartScreen implements Screen {
 		game.font.setColor(new Color(232/255f, 193/255f, 112/255f, 1));
 		game.font.draw(game.batch, "High Score: " + Integer.toString(game.prefs.getInteger("highScore", 0)), 470, 190, 140, Align.right, false);
 		game.font.draw(game.batch, "BugFixer High Score: " + Integer.toString(game.prefs.getInteger("bugFixerHighScore", 0)), 470, 160, 140, Align.right, false);
+		game.font.draw(game.batch, "BookStacker High Score: " + Integer.toString(game.prefs.getInteger("bookStackerHighScore", 0)), 470, 130, 140, Align.right, false);
+		game.font.draw(game.batch, "SwiftSwimmer High Score: " + Integer.toString(game.prefs.getInteger("swiftSwimmerHighScore", 0)), 470, 100, 140, Align.right, false);
 		
 		// Draw buttons
 		game.font.getData().setScale(0.8f); // Set font size

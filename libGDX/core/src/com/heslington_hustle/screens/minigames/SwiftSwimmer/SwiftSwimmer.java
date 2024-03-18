@@ -2,6 +2,8 @@ package com.heslington_hustle.screens.minigames.SwiftSwimmer;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -20,12 +22,23 @@ public class SwiftSwimmer extends MinigameScreen implements Screen {
 	private float maxEnergyGained;
 	private int score;
 	public Swimmer swimmer;
+	private Texture background;
+	private Music backgroundMusic;
+	public static Sound splash;
 
 	public SwiftSwimmer(HeslingtonHustle game, float difficultyScalar) {
 		super(game, difficultyScalar);
 		this.energyGained = 20f; // From worst possible performance
 		this.maxEnergyGained = 60f; // From best possible performance
-		// TODO Auto-generated constructor stub
+		
+		// Load textures
+		background = new Texture("SwiftSwimmerMinigame/Background.png");
+		
+		// Load sounds
+		backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("Music/SwiftSwimmerMusic.ogg"));
+		backgroundMusic.setLooping(true);
+						
+		splash = Gdx.audio.newSound(Gdx.files.internal("SwiftSwimmerMinigame/Splash.mp3"));
 	}
 	
 	@Override
@@ -51,13 +64,12 @@ public class SwiftSwimmer extends MinigameScreen implements Screen {
 	private void endGame() {
 		game.energyBar.addEnergy(energyGained);
 		score = swimmer.laps*75;
-		/*
+
 		// Check minigame high score
-		if(game.prefs.getInteger("thisMinigameHighScore", 0) < score) {
-			game.prefs.putInteger("thisMinigameHighScore", score);
+		if(game.prefs.getInteger("swiftSwimmerHighScore", 0) < score) {
+			game.prefs.putInteger("swiftSwimmerHighScore", score);
 			game.prefs.flush();
 		}
-		*/
 		
 		if(energyGained > maxEnergyGained) {
 			energyGained = maxEnergyGained;
@@ -90,9 +102,18 @@ public class SwiftSwimmer extends MinigameScreen implements Screen {
 		Vector3 mousePos = game.camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 1f));
 		//Increment delta time
 		clock += Gdx.graphics.getDeltaTime();
+		
+		// Draw background
+		game.batch.begin();
+		game.batch.draw(background, 0, 0);
+		game.batch.end();
+		
 		//Move Swimmer
 		swimmer.Swim();
 		game.batch.begin();
+		
+		
+		
 		//Move Swimmer
 		if(clock > 15) {
 			endGame();
@@ -112,6 +133,8 @@ public class SwiftSwimmer extends MinigameScreen implements Screen {
 		
 		game.batch.end();
 		
+		updateMusicVolume();
+		
 				
 		if(game.paused) return;
 		// Anything that shouldn't happen while the game is paused should go here
@@ -126,6 +149,23 @@ public class SwiftSwimmer extends MinigameScreen implements Screen {
 		else {
 			minimised = false;
 		}
+	}
+	
+	@Override
+	public void hide() {
+		// Stop music
+		backgroundMusic.stop();
+	}
+	
+	@Override
+	public void show() {
+		// Play music
+		backgroundMusic.play();
+	}
+	
+	private void updateMusicVolume() {
+		float musicVolume = game.volume/2;
+		backgroundMusic.setVolume(musicVolume);
 	}
 	
 	@Override

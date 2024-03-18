@@ -27,6 +27,7 @@ public class Swimmer {
 		if(Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)){
 			boundaryChecks();
 			this.x += this.speed;
+			SwiftSwimmer.splash.play(game.volume);
 		}
 		drawSprite();
 		

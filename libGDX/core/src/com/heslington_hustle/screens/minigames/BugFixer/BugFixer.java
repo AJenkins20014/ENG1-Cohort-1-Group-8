@@ -144,10 +144,13 @@ public class BugFixer extends MinigameScreen implements Screen {
 		studyPointsGained += score/10;
 		
 		// Check BugFixer high score
-		if(game.prefs.getInteger("bugFixerHighScore", 0) < score) {
-			game.prefs.putInteger("bugFixerHighScore", score);
-			game.prefs.flush();
+		if(!exam) {
+			if(game.prefs.getInteger("bugFixerHighScore", 0) < score) {
+				game.prefs.putInteger("bugFixerHighScore", score);
+				game.prefs.flush();
+			}
 		}
+		
 		
 		if(studyPointsGained > maxStudyPointsGained) {
 			studyPointsGained = maxStudyPointsGained;

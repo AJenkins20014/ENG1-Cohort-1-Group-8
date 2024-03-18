@@ -60,7 +60,7 @@ public class BookSegment {
 		if(Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)&& this.state == State.MOVING && BookStacker.blockDrop == false) {
 				this.state = State.FALLING;
 				BookStacker.changeHeightandSpeed = true;
-				
+				BookStacker.bookStack.play(game.volume);
 			
 			
 		}
