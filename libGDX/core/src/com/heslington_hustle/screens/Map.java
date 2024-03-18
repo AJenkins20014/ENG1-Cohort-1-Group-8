@@ -191,7 +191,7 @@ public class Map implements Screen{
 		interactRegions = new Rectangle[] { 
 				new Rectangle(267, 360-339, 334, 202),
 				};
-		objects[5] = new Building(game, "Sports Field", interactRegions, 3, "E: Play", 380, 360-201, 380, 360-288, game.minigames[4], 0f, 2);
+		objects[5] = new Building(game, "Sports Field", interactRegions, 3, "E: Play", 380, 360-201, 380, 360-288, game.minigames[5], 0f, 2);
 		
 		// Glasshouse
 		interactRegions = new Rectangle[] { 
