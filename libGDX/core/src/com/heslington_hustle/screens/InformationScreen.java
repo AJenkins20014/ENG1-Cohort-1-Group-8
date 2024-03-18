@@ -72,6 +72,9 @@ public class InformationScreen implements Screen{
 		else if(type == "drunkDancerTutorial") {
 			loadDrunkDancerTutorial();
 		}
+		else if(type == "swiftSwimmerTutorial") {
+			loadSwiftSwimmerTutorial();
+		}
 		
 		// Continue button
 		game.font.getData().setScale(0.6f); // Set font size

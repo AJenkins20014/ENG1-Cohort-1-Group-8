@@ -16,7 +16,7 @@ import com.heslington_hustle.screens.InformationScreen;
 import com.heslington_hustle.screens.MinigameScreen;
 
 public class SwiftSwimmer extends MinigameScreen implements Screen {
-	private float clock = 0; 
+	private float clock = 0;
 	private boolean minimised;
 	private float energyGained;
 	private float maxEnergyGained;
@@ -63,6 +63,7 @@ public class SwiftSwimmer extends MinigameScreen implements Screen {
 	}
 	
 	private void endGame() {
+		Gdx.input.setCursorPosition(320, 170);
 		score = swimmer.laps*75;
 		energyGained = score/15;
 
@@ -91,7 +92,7 @@ public class SwiftSwimmer extends MinigameScreen implements Screen {
 	
 	@Override
 	public void render(float delta) {
-		Gdx.input.setCursorPosition(320, 200);
+		
 		if(minimised) return;
 		
 		// Clear the screen

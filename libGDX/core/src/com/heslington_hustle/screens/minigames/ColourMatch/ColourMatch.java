@@ -47,7 +47,6 @@ public class ColourMatch extends MinigameScreen implements Screen {
 		// Display tutorial - TODO: create a tutorial in InformationScreen and rename the string in the constructor below to fit
 	    game.setScreen(new InformationScreen(game, "colourMatchTutorial", this));
 
-
 	}
 	
 	private void endGame() {
@@ -102,7 +101,7 @@ public class ColourMatch extends MinigameScreen implements Screen {
 		
 		// Get mouse position in world coordinates
 		Vector3 mousePos = game.camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 1f));
-		
+	    redBlock = new ColourBlock(game, Colour.RED,5,5);
 		
 		game.batch.begin();
 		
