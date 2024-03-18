@@ -43,6 +43,7 @@ public class SwiftSwimmer extends MinigameScreen implements Screen {
 	
 	@Override
 	public void startGame() {
+		clock = 0;
 		// Code to restart the game
 		energyGained = 20f; // From worst possible performance
 		
