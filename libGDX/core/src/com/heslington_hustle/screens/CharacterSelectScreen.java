@@ -148,7 +148,7 @@ public class CharacterSelectScreen implements Screen{
 	}
 	
 	private void newGame() {
-		game.player = new Player(game, avatars[avatarIndex], idleRSheets[avatarIndex], idleLSheets[avatarIndex], walkRSheets[avatarIndex], walkLSheets[avatarIndex]);
+		game.player = new Player(game, avatars[avatarIndex], idleRSheets[avatarIndex], idleLSheets[avatarIndex], walkRSheets[avatarIndex], walkLSheets[avatarIndex], avatarIndex);
 		game.energyBar = new EnergyBar(100f);
 		game.day = 1;
 		game.time = 8;

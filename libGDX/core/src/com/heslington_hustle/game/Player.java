@@ -11,6 +11,7 @@ public class Player {
 	private HeslingtonHustle game;
 	
 	public Texture sprite;
+	public int avatarNumber;
 	public float speed;
 	public float x;
 	public float y;
@@ -43,9 +44,10 @@ public class Player {
 	private Rectangle[] inaccessibleRegionsScreen3;
 	private Rectangle[] inaccessibleRegionsScreen4;
 	
-	public Player (HeslingtonHustle game, Texture sprite, Texture idleRSheet, Texture idleLSheet, Texture walkRSheet, Texture walkLSheet) {
+	public Player (HeslingtonHustle game, Texture sprite, Texture idleRSheet, Texture idleLSheet, Texture walkRSheet, Texture walkLSheet, int avatarNumber) {
 		this.game = game;
 		this.sprite = sprite;
+		this.avatarNumber = avatarNumber;
 		this.speed = 150;
 		// Start player at bed
 		this.x = 173;

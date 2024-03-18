@@ -8,6 +8,8 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Align;
 import com.heslington_hustle.game.HeslingtonHustle;
@@ -25,6 +27,9 @@ public class SwiftSwimmer extends MinigameScreen implements Screen {
 	private Texture background;
 	private Music backgroundMusic;
 	public static Sound splash;
+	
+	public static Animation<TextureRegion> swimAnimation;
+	private Texture swimSheet;
 
 	public SwiftSwimmer(HeslingtonHustle game, float difficultyScalar) {
 		super(game, difficultyScalar);
@@ -43,6 +48,7 @@ public class SwiftSwimmer extends MinigameScreen implements Screen {
 	
 	@Override
 	public void startGame() {
+		loadAnimations();
 		clock = 0;
 		// Code to restart the game
 		energyGained = 20f; // From worst possible performance
@@ -144,6 +150,34 @@ public class SwiftSwimmer extends MinigameScreen implements Screen {
 				
 		if(game.paused) return;
 		// Anything that shouldn't happen while the game is paused should go here
+	}
+	
+	private void loadAnimations(){
+		// Load animations
+		if(game.player.avatarNumber == 0) {
+			swimSheet = new Texture("SwiftSwimmerMinigame/Avatar1.png");
+		}
+		else if(game.player.avatarNumber == 1) {
+			swimSheet = new Texture("SwiftSwimmerMinigame/Avatar2.png");
+		}
+		else if(game.player.avatarNumber == 2) {
+			swimSheet = new Texture("SwiftSwimmerMinigame/Avatar3.png");
+		}
+		else{
+			swimSheet = new Texture("SwiftSwimmerMinigame/Avatar4.png");
+		}
+		
+		TextureRegion[][] swimTexture = TextureRegion.split(swimSheet,
+				swimSheet.getWidth() / 2,
+				swimSheet.getHeight());
+
+		TextureRegion[] swimFrames = new TextureRegion[2];
+		int index = 0;
+		for (int j = 0; j < 2; j++) {
+			swimFrames[index++] = swimTexture[0][j];
+		}
+		swimAnimation = new Animation<TextureRegion>(1, swimFrames);
+		
 	}
 	
 	@Override
