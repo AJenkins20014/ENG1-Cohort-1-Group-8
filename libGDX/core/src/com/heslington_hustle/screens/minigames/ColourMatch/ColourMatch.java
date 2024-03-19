@@ -58,6 +58,9 @@ public class ColourMatch extends MinigameScreen implements Screen {
 	
 	@Override
 	public void startGame() {
+		
+		// Code to restart the game
+		studyPointsGained = 15f;
 		background = new Texture("ColourMatchMinigame/Background.png");
 		sequencePressed = 0;
 		sequence = new Array<Colour>();
@@ -66,9 +69,6 @@ public class ColourMatch extends MinigameScreen implements Screen {
 		blockShown = false;
 		pointer = 0;
 		clock = 0;
-		// Code to restart the game
-		studyPointsGained = 15f;
-		
 		// If in borderless, set to fullscreen to pause game if unfocused
 		if(game.isBorderless) {
 			Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode());
@@ -76,6 +76,7 @@ public class ColourMatch extends MinigameScreen implements Screen {
 		
 		// Display tutorial
 	    game.setScreen(new InformationScreen(game, "colourMatchTutorial", this));
+	    //Creates four buttons and then begins the sequence for player to copy
 	    redBlock = new ColourBlock(game, Colour.RED,120,50);
 	    blueBlock = new ColourBlock(game, Colour.BLUE,220,50);
 	    greenBlock = new ColourBlock(game, Colour.GREEN,120,150);
@@ -139,13 +140,14 @@ public class ColourMatch extends MinigameScreen implements Screen {
 		// Set projection matrix of the batch to the camera
 		game.batch.setProjectionMatrix(game.camera.combined);
 		game.camera.update();
+		//Render sprites
 		renderBackground();
 		renderBlocks();
 		
 		// Get mouse position in world coordinates
 		Vector3 mousePos = game.camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 1f));
 	    this.mousePos = mousePos;
-	    
+	    //If sequence is completed, reset variables increase score and add to sequence
 	    if(sequencePressed  == sequence.size) {
 	    	toDisplaySequence = true;
 	    	sequencePressed = 0;
@@ -156,6 +158,7 @@ public class ColourMatch extends MinigameScreen implements Screen {
 	    
 		game.batch.begin();
 		
+		//Display current score
 		game.font.getData().setScale(0.3f); // Set font size
 		game.font.draw(game.batch, "Score: " + Integer.toString((score)), 400, 350, 100, Align.center, false);
 
@@ -177,25 +180,35 @@ public class ColourMatch extends MinigameScreen implements Screen {
 		
 		//Display Sequence
 	    displaySequence();
-	    
+	    //If sequence is not being displayed, read player inputs STOPS PLAYER COPYING SEQUENCE AS SHOWS
 	    if(!toDisplaySequence) {
 	    	readPlayerInputSequence();
 	    }
 	}
 	
 	private void renderBackground() {
+		/**
+		 * Used to draw the background on screen
+		 */
 		game.batch.begin();
 		game.batch.draw(background,0,0);
 		game.batch.end();
 	}
 
 	public void addToSequence() {
+		/**
+		 *Used to add a colour to the sequence
+		 */
 		sequence.add(generateColour()) ;
 		
 	}
 	
 	//Gets a Colour for the sequence
 	public Colour generateColour() {
+		/**
+		 * Generates a random colour to be added to the sequence to guess
+		 * 
+		 */
 		int random = MathUtils.random.nextInt(4);
 		        return colourList[random];
 	}
@@ -212,6 +225,9 @@ public class ColourMatch extends MinigameScreen implements Screen {
 	}
 
 	public void renderBlocks() {
+		/**
+		 * Draws all blocks on screen including sequence block if exists
+		 */
 		redBlock.drawSprite();
 		blueBlock.drawSprite();
 		yellowBlock.drawSprite();
@@ -225,18 +241,21 @@ public class ColourMatch extends MinigameScreen implements Screen {
 		
 	}
 	public void displaySequence() {
-		if(clock > (0.5-(0.01*sequence.size)) && toDisplaySequence == true) {
-	    	if(pointer > sequence.size-1) {
+		/**
+		 * Used to display the sequence to  be guessed
+		 */
+		if(clock > (0.5-(0.025*sequence.size)) && toDisplaySequence == true) { //If sequence is playing and enough time has passed between blocks shown
+	    	if(pointer > sequence.size-1) { //Code to end showing sequence
 	    		toDisplaySequence = false;
 	    		pointer = 0;
 	    	}
-	    	else if(blockShown == true) {
+	    	else if(blockShown == true) { // Code to get rid of block being shown and signal to show next
 	    		sequenceBlock.kill();
 	    		sequenceBlock = null;
 	    		pointer +=1;
 	    		blockShown = false;
 	    	}
-	    	else {
+	    	else { // Creates block to be shown;
 	    		sequenceBlock = new ColourBlock(game,sequence.get(pointer),420,100);
 	    		blockShown = true;
 	    		
@@ -246,6 +265,9 @@ public class ColourMatch extends MinigameScreen implements Screen {
 	    }
 	}
 	public void readPlayerInputSequence() {
+		/**
+		 * Checks if the correct colour is pressed, and ends the game if not, or progresses game if it is
+		 */
 		if(Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
 			game.menuClick.play(game.volume);
 			 switch(sequence.get(sequencePressed)) {

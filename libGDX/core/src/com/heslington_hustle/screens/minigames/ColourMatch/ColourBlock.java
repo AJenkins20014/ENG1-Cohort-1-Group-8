@@ -16,6 +16,7 @@ public class ColourBlock {
 		this.colour = colour;
 		this.x = x;
 		this.y = y;
+		//Assigns texture based on colour property
 		switch(this.colour) {
 			case RED: this.sprite = new Texture("ColourMatchMinigame/red.png");break;
 			case GREEN:this.sprite = new Texture("ColourMatchMinigame/green.png");break;
@@ -31,6 +32,7 @@ public class ColourBlock {
 	public void kill() {
 		this.sprite.dispose();
 	}
+	//Checks if mouse clicks on itself
 	public Boolean inBounds(float mouseX, float mouseY) {
 		if(mouseX>=this.x && mouseX <=this.x+100 && mouseY>=this.y && mouseY <=this.y+100) {
 			return true;
