@@ -1,3 +1,7 @@
+/**
+ * Represents a bullet in the BugFixer minigame.
+ * Bullets can be fired by the player ship or enemy bugs.
+ */
 package com.heslington_hustle.screens.minigames.BugFixer;
 
 import com.badlogic.gdx.Gdx;
@@ -26,6 +30,15 @@ public class Bullet {
 	private int sheetCols = 5;
 	private float clock;
 	
+	/**
+     * Constructs a new Bullet instance.
+     * @param game The main game instance
+     * @param bugFixer The BugFixer minigame instance
+     * @param x The initial x-coordinate of the bullet
+     * @param y The initial y-coordinate of the bullet
+     * @param destination The destination position of the bullet
+     * @param playerBullet Indicates whether the bullet was fired by the player
+     */
 	public Bullet(HeslingtonHustle game, BugFixer bugFixer, float x, float y, Vector2 destination, boolean playerBullet) {
 		this.game = game;
 		this.bugFixer = bugFixer;
@@ -71,6 +84,10 @@ public class Bullet {
         }
 	}
 	
+	/**
+     * Updates the bullet's position, animation, and collision detection.
+     * Called every frame in the BugFixer minigame render method.
+     */
 	public void update() {
 		// Called every frame in the BugFixer render() method
 		move();
@@ -81,11 +98,17 @@ public class Bullet {
 		clock += Gdx.graphics.getDeltaTime();
 	}
 	
+	/**
+     * Moves the bullet according to its direction and speed.
+     */
 	private void move() {
         x += directionX * speed*Gdx.graphics.getDeltaTime();
         y += directionY * speed*Gdx.graphics.getDeltaTime();
 	}
 	
+	/**
+     * Draws the bullet sprite on the screen.
+     */
 	private void drawSprite() {
 		TextureRegion currentFrame = animation.getKeyFrame(clock, true);
 		Sprite sprite = new Sprite(currentFrame);
@@ -96,6 +119,10 @@ public class Bullet {
 		sprite.draw(game.batch);
 	}
 	
+	/**
+     * Checks if the bullet is out of bounds of the game screen.
+     * @return true If the bullet is out of bounds, false otherwise
+     */
 	public boolean checkOutOfBounds() {
 		if(x < -10f || x > 650f || y < -10f || y > 370f) {
 			return true;
@@ -103,6 +130,10 @@ public class Bullet {
 		else return false;
 	}
 	
+	/**
+     * Checks for collisions between the bullet and game entities,
+     * such as enemy bugs or the player ship.
+     */
 	private void checkCollision() {
 		if(playerBullet) {
 			for (int i = 0; i < bugFixer.rows; i++) {

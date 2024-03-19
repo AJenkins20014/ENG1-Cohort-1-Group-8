@@ -1,3 +1,7 @@
+/**
+ * The OptionsScreen class represents the screen where players can adjust various game settings.
+ * It implements the Screen interface.
+ */
 package com.heslington_hustle.screens;
 
 import java.util.ArrayList;
@@ -27,6 +31,10 @@ public class OptionsScreen implements Screen {
 	
 	private ArrayList<Integer> framerates = new ArrayList<>();
 
+	/**
+	 * Constructs a new OptionsScreen object with the specified game instance.
+	 * @param game The HeslingtonHustle game instance.
+	 */
 	public OptionsScreen(HeslingtonHustle game) {
 		this.game = game;
 		this.maxScreenWidth = 1920;
@@ -83,6 +91,9 @@ public class OptionsScreen implements Screen {
 		}
 	}
 	
+	/**
+	 * Finds the index of the current resolution in the resolutionWidths and resolutionHeights arrays.
+	 */
 	private void findResolution() {
 		for(int i = 0; i < resolutionWidths.size(); i++) {
 			for(int j = 0; j < resolutionHeights.size(); j++) {
@@ -93,6 +104,10 @@ public class OptionsScreen implements Screen {
 		}
 	}
 	
+	/**
+     * Renders the options screen.
+     * @param delta The time elapsed since the last frame.
+     */
 	@Override
 	public void render(float delta) {
 		// Clear the screen
@@ -363,33 +378,51 @@ public class OptionsScreen implements Screen {
 		game.batch.end();
 	}
 	
+	/**
+     * Called when this screen becomes displayed.
+     */
 	@Override
 	public void show() {
-		// Called when this screen becomes displayed
 		game.menuMusic.play();
 	}
 
+	/**
+     * Called when the screen size changes.
+     * @param width The new width.
+     * @param height The new height.
+     */
 	@Override
 	public void resize(int width, int height) {
 		
 	}
 
+	/**
+     * Called when the game is paused.
+     */
 	@Override
 	public void pause() {
 		
 	}
 
+	/**
+     * Called when the game is resumed from a paused state.
+     */
 	@Override
 	public void resume() {
 		
 	}
 
+	/**
+     * Called when this screen stops being displayed.
+     */
 	@Override
 	public void hide() {
-		// Called when this screen stops being displayed
 		game.menuMusic.pause();
 	}
 
+	/**
+     * Called when the screen resources should be disposed.
+     */
 	@Override
 	public void dispose() {
 		

@@ -1,3 +1,7 @@
+/**
+ * Represents a QuickTimeEvent in the Drunk Dancer minigame.
+ * QuickTimeEvents are displayed on the screen and require player input.
+ */
 package com.heslington_hustle.screens.minigames.DrunkDancer;
 
 import com.badlogic.gdx.Gdx;
@@ -14,6 +18,13 @@ public class QuickTimeEvent {
 	private float speed;
 	private Texture sprite;
 	
+	/**
+     * Constructs a QuickTimeEvent with the specified game instance, DrunkDancer instance, input key, and speed.
+     * @param game The main game instance.
+     * @param drunkDancer The DrunkDancer instance.
+     * @param input The input key code associated with the event.
+     * @param speed The speed at which the event moves downward.
+     */
 	public QuickTimeEvent(HeslingtonHustle game, DrunkDancer drunkDancer, int input, float speed) {
 		this.game = game;
 		this.drunkDancer = drunkDancer;
@@ -39,19 +50,32 @@ public class QuickTimeEvent {
 		}
 	}
 	
+	/**
+     * Updates the position of the QuickTimeEvent.
+     * Called every frame in the DrunkDancer render method.
+     */
 	public void update() {
 		move();
 		drawSprite();
 	}
 	
+	/**
+     * Moves the QuickTimeEvent downward.
+     */
 	private void move() {
 		y -= speed*Gdx.graphics.getDeltaTime();
 	}
 	
+	/**
+     * Draws the QuickTimeEvent sprite.
+     */
 	private void drawSprite() {
 		game.batch.draw(sprite, x, y);
 	}
 	
+	/**
+     * Removes the QuickTimeEvent from the parent DrunkDancer's list of active events.
+     */
 	public void destroy() {
 		drunkDancer.QTEs.remove(this);
 	}

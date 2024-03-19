@@ -1,3 +1,9 @@
+/**
+ * The main class representing the Heslington Hustle game. 
+ * This class extends the com.badlogic.gdx.Game class and 
+ * manages the game state, rendering, and interactions as well
+ * as storing variables critical throughout the game.
+ */
 package com.heslington_hustle.game;
 
 import java.util.ArrayList;
@@ -75,6 +81,9 @@ public class HeslingtonHustle extends Game {
 	public Sound menuClick;
 	public Cursor cursor;
 	
+	/**
+     * Initializes the game.
+     */
 	@Override
 	public void create () {	
 		// Set windowHeight and windowWidth to the monitor's resolution
@@ -120,6 +129,9 @@ public class HeslingtonHustle extends Game {
 		this.setScreen(new StartScreen(this));
 	}
 	
+	/**
+     * Initializes the minigames array with the available minigames.
+     */
 	private void initialiseMinigames() {
 		// Replace these with new minigames as they are added
 		minigames[0] = new BugFixer(this, 1);
@@ -131,6 +143,9 @@ public class HeslingtonHustle extends Game {
 		// etc...
 	}
 	
+	/**
+     * Loads saved user settings.
+     */
 	public void loadData() {
 		// Load save data
 		prefs = Gdx.app.getPreferences("User Data");
@@ -158,6 +173,9 @@ public class HeslingtonHustle extends Game {
 		volume = prefs.getFloat("volume", 0.5f);
 	}
 	
+	/**
+     * Toggles the pause state of the game.
+     */
 	public void togglePause() {
 		if(!paused) {
 			paused = true;
@@ -168,6 +186,9 @@ public class HeslingtonHustle extends Game {
 		}
 	}
 	
+	/**
+     * Displays the pause menu with options to adjust volume and quit the game.
+     */
 	public void pauseMenu() {
 		// Draw menu box
 		batch.draw(new Texture("UI/PauseMenu.png"), 0, 0);
@@ -255,6 +276,11 @@ public class HeslingtonHustle extends Game {
 		}
 	}
 	
+	/**
+     * Adds a pop-up text message to the map.
+     * @param popUpText The PopUpText object representing the pop-up text message.
+     * @param time The duration for which the pop-up should be displayed.
+     */
 	public void addPopUpText(PopUpText popUpText, float time) {
 		if(popUps.size() > 10) {
 			// Avoid popup spam
@@ -274,6 +300,10 @@ public class HeslingtonHustle extends Game {
 		popUpTimers.add(time);
 	}
 	
+	/**
+     * Renders the pop-up text messages with fade effect.
+     * @param fade Indicates whether fading effect should be applied to the pop-up text.
+     */
 	private void renderPopUps(boolean fade) {
 		font.getData().setScale(popUps.get(0).scale); // Set font size
 		if(!fade) {
@@ -288,18 +318,27 @@ public class HeslingtonHustle extends Game {
 		font.setColor(new Color(1,1,1,1)); // Reset font color
 	}
 	
+	/**
+     * Updates the volume of music based on the game's volume setting.
+     */
 	private void updateMusicVolume() {
 		float musicVolume = volume/2;
 		menuMusic.setVolume(musicVolume);
 		mapMusic.setVolume(musicVolume);
 	}
 	
+	/**
+     * Fades the screen to black.
+     */
 	public void fadeToBlack() {
 		// Reset fade clock and opacity
 		fadeClock = 0f;
 		fadeAlpha = 0f;
 	}
 
+	/**
+     * Renders the game and its components. Called every frame.
+     */
 	@Override
 	public void render () {
 		super.render();
@@ -348,10 +387,5 @@ public class HeslingtonHustle extends Game {
 		batch.end();
 		
 		updateMusicVolume();
-	}
-	
-	@Override
-	public void dispose () {
-
 	}
 }

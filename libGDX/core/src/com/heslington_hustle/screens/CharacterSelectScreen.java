@@ -1,3 +1,7 @@
+/**
+ * Represents the screen where players can select their character avatar before starting the game.
+ * Implements the Screen interface.
+ */
 package com.heslington_hustle.screens;
 
 import com.badlogic.gdx.Gdx;
@@ -21,6 +25,10 @@ public class CharacterSelectScreen implements Screen{
 	public Texture[] walkLSheets = new Texture[4];
 	private int avatarIndex;
 	
+	/**
+     * Constructs a CharacterSelectScreen.
+     * @param game The game instance.
+     */
 	public CharacterSelectScreen(HeslingtonHustle game) {
 		this.game = game;
 		
@@ -53,12 +61,18 @@ public class CharacterSelectScreen implements Screen{
 		walkLSheets[3] = new Texture("Avatars/Avatar4_WalkL.png");
 	}
 
+	/**
+     * Called when this screen becomes displayed.
+     */
 	@Override
 	public void show() {
-		// Called when this screen becomes displayed
 		game.menuMusic.play();
 	}
 
+	/**
+     * Renders the character selection screen.
+     * @param delta The time elapsed since the last frame.
+     */
 	@Override
 	public void render(float delta) {
 		// Clear the screen
@@ -147,6 +161,9 @@ public class CharacterSelectScreen implements Screen{
 		game.batch.end();
 	}
 	
+	/**
+     * Starts a new game with the selected character and initializes game variables.
+     */
 	private void newGame() {
 		game.player = new Player(game, avatars[avatarIndex], idleRSheets[avatarIndex], idleLSheets[avatarIndex], walkRSheets[avatarIndex], walkLSheets[avatarIndex], avatarIndex);
 		game.energyBar = new EnergyBar(100f);
@@ -158,27 +175,43 @@ public class CharacterSelectScreen implements Screen{
 		game.setScreen(new InformationScreen(game, "mainTutorial", new Map(game, 3)));
 	}
 
+	/**
+     * Called when the screen size changes.
+     * @param width The new width.
+     * @param height The new height.
+     */
 	@Override
 	public void resize(int width, int height) {
 		
 	}
 
+	/**
+     * Called when the game is paused.
+     */
 	@Override
 	public void pause() {
 		
 	}
 
+	/**
+     * Called when the game is resumed from a paused state.
+     */
 	@Override
 	public void resume() {
 		
 	}
 
+	/**
+     * Called when this screen stops being displayed.
+     */
 	@Override
 	public void hide() {
-		// Called when this screen stops being displayed
 		game.menuMusic.pause();
 	}
 
+	/**
+     * Called when the screen resources should be disposed.
+     */
 	@Override
 	public void dispose() {
 		

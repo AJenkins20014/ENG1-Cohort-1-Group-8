@@ -1,3 +1,8 @@
+/**
+ * Represents the Drunk Dancer minigame screen.
+ * It extends the MinigameScreen class and implements the Screen interface.
+ * Players must hit the correct keys in time to score points and avoid losing health.
+ */
 package com.heslington_hustle.screens.minigames.DrunkDancer;
 
 import java.util.ArrayList;
@@ -9,15 +14,11 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.Input.Keys;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Align;
 import com.heslington_hustle.game.HeslingtonHustle;
-import com.heslington_hustle.game.PopUpText;
 import com.heslington_hustle.screens.InformationScreen;
 import com.heslington_hustle.screens.MinigameScreen;
 
@@ -48,6 +49,11 @@ public class DrunkDancer extends MinigameScreen implements Screen {
 	private Sound hit;
 	private Sound miss;
 
+	/**
+     * Constructs a Drunk Dancer minigame screen with the specified game instance and difficulty scalar.
+     * @param game The main game instance.
+     * @param difficultyScalar The scalar value for adjusting game difficulty.
+     */
 	public DrunkDancer(HeslingtonHustle game, float difficultyScalar) {
 		super(game, difficultyScalar);
 		this.energyGained = 20f; // From worst possible performance
@@ -67,6 +73,9 @@ public class DrunkDancer extends MinigameScreen implements Screen {
 		miss = Gdx.audio.newSound(Gdx.files.internal("DrunkDancerMinigame/Miss.mp3"));
 	}
 	
+	/**
+     * Starts the Drunk Dancer minigame.
+     */
 	@Override
 	public void startGame() {
 		// Code to restart the game
@@ -87,6 +96,9 @@ public class DrunkDancer extends MinigameScreen implements Screen {
 	    game.setScreen(new InformationScreen(game, "drunkDancerTutorial", this));
 	}
 	
+	/**
+     * Ends the Drunk Dancer minigame.
+     */
 	public void endGame() {
 		energyGained += score/20;
 		
@@ -111,6 +123,10 @@ public class DrunkDancer extends MinigameScreen implements Screen {
 		game.setScreen(new InformationScreen(game, "recreationGameScore", game.map, score, energyGained));
 	}
 	
+	/**
+     * Renders the Drunk Dancer minigame screen.
+     * @param delta The time in seconds since the last render.
+     */
 	@Override
 	public void render(float delta) {
 		if(minimised) return;
@@ -122,10 +138,6 @@ public class DrunkDancer extends MinigameScreen implements Screen {
 		// Set projection matrix of the batch to the camera
 		game.batch.setProjectionMatrix(game.camera.combined);
 		game.camera.update();
-		
-		// Get mouse position in world coordinates
-		Vector3 mousePos = game.camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 1f));
-		
 		
 		game.batch.begin();
 		
@@ -189,6 +201,10 @@ public class DrunkDancer extends MinigameScreen implements Screen {
 		updateMusicVolume();
 	}
 	
+	/**
+     * Checks the player's input against QuickTimeEvents.
+     * @param input The input key code.
+     */
 	private void checkQTE(int input) {
 		boolean QTEFound = false;
 		for(int i = 0; i < QTEs.size(); i++) {	
@@ -221,6 +237,9 @@ public class DrunkDancer extends MinigameScreen implements Screen {
 		}
 	}
 	
+	/**
+     * Generates a new QuickTimeEvent.
+     */
 	private void newQTE() {
 		List<Integer> keys = List.of(Keys.A, Keys.W, Keys.S, Keys.D);
         int randomIndex = new Random().nextInt(keys.size());
@@ -229,6 +248,9 @@ public class DrunkDancer extends MinigameScreen implements Screen {
 		QTEs.add(new QuickTimeEvent(game, this, input, QTESpeed));
 	}
 	
+	/**
+     * Increases the game difficulty over time.
+     */
 	private void rampDifficulty() {
 		// Decrease time between enemy spawns as game progresses
 		if(clock < 3f) {
@@ -253,6 +275,9 @@ public class DrunkDancer extends MinigameScreen implements Screen {
 		QTESpeed = (clock+10)*10f;
 	}
 	
+	/**
+     * Draws the user interface elements.
+     */
 	private void drawUI() {
 		// Draw health bar
 		game.batch.draw(healthBar1, game.camera.viewportWidth/2 - healthBar1.getWidth()/2, 350);
@@ -269,23 +294,37 @@ public class DrunkDancer extends MinigameScreen implements Screen {
 		game.font.draw(game.batch, performance, game.camera.viewportWidth/2 - 50, game.camera.viewportHeight/2 + 50, 100, Align.center, false);
 	}
 	
+	/**
+     * Called when the DrunkDancer screen is no longer displayed.
+     */
 	@Override
 	public void hide() {
 		// Stop music
 		backgroundMusic.stop();
 	}
 	
+	/**
+	 * Called when the DrunkDancer screen becomes displayed.
+	 */
 	@Override
 	public void show() {
 		// Play music
 		backgroundMusic.play();
 	}
 	
+	/**
+     * Updates the volume of the background music based on the game's volume setting.
+     */
 	private void updateMusicVolume() {
 		float musicVolume = game.volume/2;
 		backgroundMusic.setVolume(musicVolume);
 	}
 	
+	/**
+     * Called when the game window is resized.
+     * @param width The new width of the game window
+     * @param height The new height of the game window
+     */
 	@Override
 	public void resize(int width, int height) {
 		if(width == 0 && height == 0) {

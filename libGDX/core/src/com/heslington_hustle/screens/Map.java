@@ -1,5 +1,8 @@
+/**
+ * The Map class represents the game map screen where players can navigate and interact with various objects.
+ * This class implements the Screen interface.
+ */
 package com.heslington_hustle.screens;
-
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
@@ -28,6 +31,11 @@ public class Map implements Screen{
 	private Texture energyBar1, energyBar2, energyBar3;
 	private Texture energyIconFull, energyIconEmpty;
 	
+	/**
+	 * Constructs a new Map object with the specified game instance and screen number.
+	 * @param game The HeslingtonHustle game instance.
+	 * @param screen The screen number indicating the portion of the map to be displayed.
+	 */
 	public Map(HeslingtonHustle game, int screen) {
 		this.game = game;
 		game.map = this;
@@ -56,6 +64,10 @@ public class Map implements Screen{
 		energyIconEmpty = new Texture("UI/EnergyIconEmpty.png");
 	}
 
+	/**
+     * Renders the map.
+     * @param delta The time elapsed since the last frame.
+     */
 	@Override
 	public void render(float delta) {
 		// Clear the screen
@@ -152,6 +164,9 @@ public class Map implements Screen{
 		game.batch.end();
 	}
 	
+	/**
+	 * Initialises the objects on the map and defines their interact regions.
+	 */
 	private void initialiseObjects() {
 		// Manually initialise objects and define rectangles in which the player can stand to interact with them
 		Rectangle[] interactRegions;
@@ -208,6 +223,9 @@ public class Map implements Screen{
 		objects[7] = new Building(game, "Bus", interactRegions, 4, "E: Go to Town", 415, 360-15, 415, 360-45, game.minigames[5], 0f, 2);
 	}
 	
+	/**
+	 * Draws the user interface elements on the screen.
+	 */
 	private void drawUI() {
 		// If time is past 8:00pm, add a dark filter
 		if(game.time > 20) {
@@ -239,8 +257,10 @@ public class Map implements Screen{
 		}
 	}
 	
+	/**
+	 * Checks if the player is colliding with any objects on the map and handles interactions accordingly.
+	 */
 	private void checkPlayerObjectCollision() {
-		// Checks if the player is in an object's interact region(s)
 		for(int i = 0; i < objects.length; i++) {
 			if(objects[i] != null && objects[i].screen == screen) {
 				for (Rectangle region : objects[i].interactRegions) {
@@ -293,33 +313,51 @@ public class Map implements Screen{
 		}
 	}
 	
+	/**
+     * Called when this screen becomes displayed.
+     */
 	@Override
 	public void show() {
-		// Called when this screen becomes displayed
 		game.mapMusic.play();
 	}
 
+	/**
+     * Called when the screen size changes.
+     * @param width The new width.
+     * @param height The new height.
+     */
 	@Override
 	public void resize(int width, int height) {
 		
 	}
 
+	/**
+     * Called when the game is paused.
+     */
 	@Override
 	public void pause() {
 		
 	}
 
+	/**
+     * Called when the game is resumed from a paused state.
+     */
 	@Override
 	public void resume() {
 		
 	}
 
+	/**
+     * Called when this screen stops being displayed.
+     */
 	@Override
 	public void hide() {
-		// Called when this screen stops being displayed
 		game.mapMusic.stop();
 	}
 
+	/**
+     * Called when the screen resources should be disposed.
+     */
 	@Override
 	public void dispose() {
 		

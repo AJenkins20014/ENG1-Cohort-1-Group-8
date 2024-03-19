@@ -1,3 +1,8 @@
+/**
+ * The BugFixer class represents the screen and logic for the Bug Fixer minigame.
+ * It extends the MinigameScreen class and implements the Screen interface.
+ * Players are tasked with fixing bugs by shooting them while avoiding enemy attacks.
+ */
 package com.heslington_hustle.screens.minigames.BugFixer;
 
 import java.util.ArrayList;
@@ -72,6 +77,13 @@ public class BugFixer extends MinigameScreen implements Screen {
 	private Sound enemySpawn;
 	private Cursor cursor;
 	
+	/**
+     * Constructs a new BugFixer minigame with the specified game instance and difficulty scalar.
+     * Initializes the world, attack cooldown, study points gained, random number generator,
+     * textures, sounds, and other necessary game elements.
+     * @param game The game instance.
+     * @param difficultyScalar The scalar value representing the difficulty level.
+     */
 	public BugFixer(HeslingtonHustle game, float difficultyScalar) {
 		super(game, difficultyScalar);
 		world = new World(new Vector2(0, 0), true); // Create world with no gravity
@@ -105,6 +117,10 @@ public class BugFixer extends MinigameScreen implements Screen {
 		enemySpawn = Gdx.audio.newSound(Gdx.files.internal("BugFixerMinigame/EnemySpawn.mp3"));
 	}
 	
+	/**
+     * Starts the BugFixer minigame by resetting all variables to their starting values,
+     * creating the world, player ship, walls, and displaying the tutorial.
+     */
 	@Override
 	public void startGame() {
 		// Code to restart the game
@@ -140,6 +156,11 @@ public class BugFixer extends MinigameScreen implements Screen {
 	    game.setScreen(new InformationScreen(game, "bugFixerTutorial", this));
 	}
 	
+	/**
+     * Ends the BugFixer minigame, calculates the final score and study points gained,
+     * updates high score if necessary, and transitions to the next minigame or displays
+     * the final score screen.
+     */
 	private void endGame() {
 		// Add difficulty modifier to score
 		score = (int) (score*(1/difficultyScalar));
@@ -195,10 +216,20 @@ public class BugFixer extends MinigameScreen implements Screen {
 		game.setScreen(new InformationScreen(game, "studyGameScore", game.map, score, studyPointsGained));
 	}
 	
+	/**
+     * Performs one logic step in the physics world with a fixed timestep.
+     * This method is called repeatedly to update the physics simulation.
+     * @param delta The time step for the physics simulation.
+     */
 	private void logicStep(float delta) {
 		world.step(Math.min(Gdx.graphics.getDeltaTime(), 0.15f), 3, 3);
 	}
 	
+	/**
+     * Renders the BugFixer minigame by clearing the screen, updating player and enemy positions,
+     * handling player input, drawing game elements, and checking for game end conditions.
+     * @param delta The time elapsed since the last frame
+     */
 	@Override
 	public void render(float delta) {
 		if(minimised) return; // Do nothing if the game is minimised
@@ -319,6 +350,9 @@ public class BugFixer extends MinigameScreen implements Screen {
 		}
 	}
 	
+	/**
+     * Creates the player ship body in the physics world.
+     */
 	private void createShip() {
 		// Create body definition
 		BodyDef bodyDef = new BodyDef();
@@ -345,6 +379,9 @@ public class BugFixer extends MinigameScreen implements Screen {
 		circle.dispose();
 	}
 	
+	/**
+     * Creates the boundary walls.
+     */
 	private void createWalls() {
 		// Floor
 		BodyDef bodyDef = new BodyDef();  
@@ -376,6 +413,9 @@ public class BugFixer extends MinigameScreen implements Screen {
 		box.dispose();
 	}
 	
+	/**
+     * Moves the player ship based on user input.
+     */
 	private void movePlayer() {
 		// Apply impulse to body
 		if (Gdx.input.isKeyPressed(Keys.W) && player.getLinearVelocity().y < 100000) {			
@@ -395,6 +435,9 @@ public class BugFixer extends MinigameScreen implements Screen {
 		player.setTransform(player.getPosition().x, player.getPosition().y, playerToMouse);
 	}
 	
+	/**
+     * Draws the UI elements such as the health bar and score on the screen.
+     */
 	private void drawUI() {
 		// Draw health bar
 		game.batch.draw(healthBar1, game.camera.viewportWidth/2 - healthBar1.getWidth()/2, 350);
@@ -407,6 +450,9 @@ public class BugFixer extends MinigameScreen implements Screen {
 		game.font.draw(game.batch, "Score: " + Integer.toString((int) (score*(1/difficultyScalar))), 540, 350, 100, Align.center, false);
 	}
 	
+	/**
+     * Checks if it's time to spawn a new enemy bug and spawns one accordingly.
+     */
 	private void checkEnemySpawn() {
 		// Decrease time between enemy spawns as game progresses
 		if(clock < 3f) {
@@ -452,6 +498,11 @@ public class BugFixer extends MinigameScreen implements Screen {
 		
 	}
 	
+	/**
+     * Spawns a bug of the specified type in the game world.
+     * @param type The type of bug to spawn (e.g. SniperBug or ScatterBug)
+     * @return true If the bug was successfully spawned, false otherwise
+     */
 	private boolean spawnBug(String type) {
 		// Spawn bug in a random, unoccupied slot
 		int maxAttempts = 100; // Maximum attempts to avoid an infinite loop
@@ -480,6 +531,10 @@ public class BugFixer extends MinigameScreen implements Screen {
         return false; // No spawn location found
 	}
 	
+	/**
+     * Handles player attacks by creating bullets and playing sound effects.
+     * @param mousePos The position of the mouse cursor
+     */
 	private void attack(Vector2 mousePos) {
 		timeSinceAttack = 0f; // Reset attack clock
 		
@@ -487,11 +542,19 @@ public class BugFixer extends MinigameScreen implements Screen {
 		playerShot.play(game.volume);
 	}
 	
+	/**
+     * Updates the volume of the background music based on the game's volume setting.
+     */
 	private void updateMusicVolume() {
 		float musicVolume = game.volume/2;
 		backgroundMusic.setVolume(musicVolume);
 	}
 	
+	/**
+     * Called when the game window is resized.
+     * @param width The new width of the game window
+     * @param height The new height of the game window
+     */
 	@Override
 	public void resize(int width, int height) {
 		// Called when the game window is resized
@@ -505,10 +568,11 @@ public class BugFixer extends MinigameScreen implements Screen {
 		}
 	}
 	
+	/**
+     * Called when the BugFixer screen is no longer displayed.
+     */
 	@Override
 	public void hide() {
-		// Called when this screen is no longer displayed
-		
 		// Reset custom cursor
 		Gdx.graphics.setCursor(game.cursor);
 		
@@ -516,19 +580,15 @@ public class BugFixer extends MinigameScreen implements Screen {
 		backgroundMusic.stop();
 	}
 	
+	/**
+	 * Called when the BugFixer screen becomes displayed.
+	 */
 	@Override
 	public void show() {
-		// Called when this screen becomes displayed
-		
 		// Set custom cursor
 		Gdx.graphics.setCursor(cursor);
 				
 		// Play music
 		backgroundMusic.play();
-	}
-
-	@Override
-	public void dispose() {
-
 	}
 }

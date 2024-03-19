@@ -1,3 +1,7 @@
+/**
+ * Represents a Scatter Bug entity in the Bug Fixer minigame.
+ * Scatter Bug is an enemy that spawns in the Bug Fixer minigame and attacks the player.
+ */
 package com.heslington_hustle.screens.minigames.BugFixer;
 
 import com.badlogic.gdx.Gdx;
@@ -36,6 +40,13 @@ public class ScatterBug {
 	
 	private boolean firstAttack;
 	
+	/**
+     * Constructs a Scatter Bug with the specified parameters.
+     * @param game The main game instance.
+     * @param bugFixer The Bug Fixer instance.
+     * @param x The x-coordinate of the Scatter Bug.
+     * @param y The y-coordinate of the Scatter Bug.
+     */
 	public ScatterBug(HeslingtonHustle game, BugFixer bugFixer, float x, float y) {
 		this.game = game;
 		this.bugFixer = bugFixer;
@@ -45,6 +56,9 @@ public class ScatterBug {
 		createBug();
 	}
 	
+	/**
+     * Creates the Scatter Bug's body, initializes animations, and sets initial parameters.
+     */
 	private void createBug() {
 		// Create body definition
 		BodyDef bodyDef = new BodyDef();
@@ -100,6 +114,10 @@ public class ScatterBug {
 		firstAttack = false;
 	}
 	
+	/**
+     * Updates the Scatter Bug's state and triggers attacks.
+     * Called every frame in the BugFixer minigame's render method.
+     */
 	public void update() {
 		clock += Gdx.graphics.getDeltaTime();
 		animationClock += Gdx.graphics.getDeltaTime();
@@ -115,6 +133,9 @@ public class ScatterBug {
 		}
 	}
 	
+	/**
+     * Draws the Scatter Bug's sprite based on its current state.
+     */
 	private void drawSprite() {
 		game.batch.begin();
 		
@@ -132,6 +153,9 @@ public class ScatterBug {
 		game.batch.end();
 	}
 	
+	/**
+     * Triggers the Scatter Bug's attack by spawning bullets in 8 directions around it.
+     */
 	private void attack() {
 		timeSinceAttack = 0f;
 		
@@ -147,6 +171,9 @@ public class ScatterBug {
 		bugFixer.enemyShot.play(game.volume);
 	}
 	
+	/**
+     * Destroys the Scatter Bug's body.
+     */
 	public void destroy() {
 		// Destroy this bug to save memory
 		bugFixer.world.destroyBody(body);

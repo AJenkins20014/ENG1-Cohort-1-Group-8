@@ -1,9 +1,13 @@
+/**
+ * The Foodhall class represents a food hall object in the game.
+ * This class extends the Object class and players
+ * can interact with food halls to eat and replenish energy.
+ */
 package com.heslington_hustle.objects;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Timer;
@@ -17,6 +21,20 @@ public class Foodhall extends Object {
 	private Sound eat;
 	private boolean eating;
 	
+	/**
+     * Constructs a new Foodhall object with the specified parameters.
+     * @param game The game instance.
+     * @param name The name of the food hall.
+     * @param interactRegions The interaction regions of the food hall.
+     * @param screen The screen where the food hall is located.
+     * @param tooltip The tooltip text for the food hall.
+     * @param tooltipX The x-coordinate of the tooltip.
+     * @param tooltipY The y-coordinate of the tooltip.
+     * @param nameX The x-coordinate of the food hall name.
+     * @param nameY The y-coordinate of the food hall name.
+     * @param energyChange The change in energy after eating.
+     * @param timeSpent The time spent by the player when eating.
+     */
 	public Foodhall(HeslingtonHustle game, String name, Rectangle[] interactRegions, int screen, String tooltip, int tooltipX, int tooltipY, int nameX, int nameY, Float energyChange, int timeSpent) {
 		super(game, name, interactRegions, screen, tooltip, tooltipX, tooltipY, nameX, nameY);
 		this.energyChange = energyChange;
@@ -25,6 +43,11 @@ public class Foodhall extends Object {
 		this.eat = Gdx.audio.newSound(Gdx.files.internal("Map/Eat.mp3"));
 	}
 	
+	/**
+     * Allows the player to eat at the food hall.
+     * Checks if the player has enough time to eat.
+     * If conditions are met, subtracts energy, adds time, and updates the player's status.
+     */
 	public void eat() {
 		if(eating) return; // Avoid accidental eating
 		

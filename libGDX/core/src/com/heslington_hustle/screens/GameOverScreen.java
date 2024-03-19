@@ -1,3 +1,7 @@
+/**
+ * Represents the screen displayed when the game is over, showing the player's score, grade, and an option to return to the main menu.
+ * Implements the Screen interface.
+ */
 package com.heslington_hustle.screens;
 
 import com.badlogic.gdx.Gdx;
@@ -16,6 +20,13 @@ public class GameOverScreen implements Screen {
 	private String grade;
 	private boolean newHighScore;
 	
+	/**
+     * Constructs a GameOverScreen.
+     * @param game The game instance.
+     * @param score The player's score.
+     * @param grade The grade achieved by the player.
+     * @param newHighScore Indicates whether the player achieved a new high score.
+     */
 	public GameOverScreen(HeslingtonHustle game, float score, String grade, boolean newHighScore) {
 		this.game = game;
 		this.score = score;
@@ -23,6 +34,10 @@ public class GameOverScreen implements Screen {
 		this.newHighScore = newHighScore;
 	}
 	
+	/**
+     * Renders the game over screen.
+     * @param delta The time elapsed since the last frame.
+     */
 	@Override
 	public void render(float delta) {
 		// Clear the screen
@@ -73,38 +88,58 @@ public class GameOverScreen implements Screen {
 		game.batch.end();
 	}
 	
+	/**
+     * Returns to the main menu.
+     */
 	private void backToMenu() {	
-		// Return to main menu
 		game.setScreen(new StartScreen(game));
 	}
 	
+	/**
+     * Called when this screen becomes displayed.
+     */
 	@Override
 	public void show() {
-		// Called when this screen becomes displayed
 		game.menuMusic.play();
 	}
 
+	 /**
+     * Called when the screen size changes.
+     * @param width The new width.
+     * @param height The new height.
+     */
 	@Override
 	public void resize(int width, int height) {
 		
 	}
 
+	/**
+     * Called when the game is paused.
+     */
 	@Override
 	public void pause() {
 		
 	}
 
+	/**
+     * Called when the game is resumed from a paused state.
+     */
 	@Override
 	public void resume() {
 		
 	}
 
+	/**
+     * Called when this screen stops being displayed.
+     */
 	@Override
 	public void hide() {
-		// Called when this screen stops being displayed
 		game.menuMusic.pause();
 	}
 
+	/**
+     * Called when the screen resources should be disposed.
+     */
 	@Override
 	public void dispose() {
 			

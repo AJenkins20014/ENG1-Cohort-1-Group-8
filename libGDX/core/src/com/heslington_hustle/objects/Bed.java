@@ -1,27 +1,46 @@
+/**
+ * The Bed class represents a bed object in the game.
+ * This class extends the Object class and players
+ * can interact with a bed to start a new day and gain energy.
+ */
 package com.heslington_hustle.objects;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.Timer.Task;
 import com.heslington_hustle.game.HeslingtonHustle;
 import com.heslington_hustle.game.PopUpText;
-import com.heslington_hustle.screens.minigames.ExamGame;
 
 public class Bed extends Object {
 	private Sound sleep;
 	private boolean sleeping;
 	
+	/**
+     * Constructs a new Bed object with the specified parameters.
+     * @param game The game instance.
+     * @param name The name of the bed.
+     * @param interactRegions The interaction regions of the bed.
+     * @param screen The screen where the bed is located.
+     * @param tooltip The tooltip text for the bed.
+     * @param tooltipX The x-coordinate of the tooltip.
+     * @param tooltipY The y-coordinate of the tooltip.
+     * @param nameX The x-coordinate of the bed name.
+     * @param nameY The y-coordinate of the bed name.
+     */
 	public Bed(HeslingtonHustle game, String name, Rectangle[] interactRegions, int screen, String tooltip, int tooltipX, int tooltipY, int nameX, int nameY) {
 		super(game, name, interactRegions, screen, tooltip, tooltipX, tooltipY, nameX, nameY);
 		// Load sleep sound
 		this.sleep = Gdx.audio.newSound(Gdx.files.internal("Map/Sleep.mp3"));
 	}
 	
+	/**
+     * Starts a new day when the player interacts with the bed.
+     * The player gains energy and advances to the next day.
+     */
 	public void startNewDay() {
 		if(sleeping) return; // Avoid accidental sleep
 		
@@ -65,6 +84,9 @@ public class Bed extends Object {
 		}, 1f);
 	}
 	
+	/**
+     * Starts the exam game when the player completes 7 days.
+     */
 	private void startExam() {
 		// Starts the exam game at the end of the 7th day
 		game.exam.startGame();

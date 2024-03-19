@@ -1,7 +1,11 @@
+/**
+ * The Building class represents a building object in the game.
+ * This class extends the Object class and players
+ * can interact with buildings to start minigames.
+ */
 package com.heslington_hustle.objects;
 
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Align;
 import com.heslington_hustle.game.HeslingtonHustle;
@@ -14,6 +18,21 @@ public class Building extends Object {
 	public float requiredEnergy;
 	public int timeSpent;
 	
+	/**
+     * Constructs a new Building object with the specified parameters.
+     * @param game The game instance.
+     * @param name The name of the building.
+     * @param interactRegions The interaction regions of the building.
+     * @param screen The screen where the building is located.
+     * @param tooltip The tooltip text for the building.
+     * @param tooltipX The x-coordinate of the tooltip.
+     * @param tooltipY The y-coordinate of the tooltip.
+     * @param nameX The x-coordinate of the building name.
+     * @param nameY The y-coordinate of the building name.
+     * @param minigameScreen The minigame screen associated with the building.
+     * @param requiredEnergy The energy required to interact with the building.
+     * @param timeSpent The time spent by the player when interacting with the building.
+     */
 	public Building(HeslingtonHustle game, String name, Rectangle[] interactRegions, int screen, String tooltip, int tooltipX, int tooltipY, int nameX, int nameY, MinigameScreen minigameScreen, Float requiredEnergy, int timeSpent) {
 		super(game, name, interactRegions, screen, tooltip, tooltipX, tooltipY, nameX, nameY);
 		this.minigame = minigameScreen;
@@ -21,6 +40,11 @@ public class Building extends Object {
 		this.timeSpent = timeSpent;
 	}
 	
+	/**
+     * Allows the player to interact with the building.
+     * Checks if the player has enough energy and time to start the minigame.
+     * If conditions are met, subtracts energy, adds time, and starts the minigame.
+     */
 	public void interact() {
 		// Check if player has enough time
 		if (game.time + timeSpent > 24){

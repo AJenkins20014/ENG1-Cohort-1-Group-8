@@ -1,5 +1,8 @@
+/**
+ * The Player class represents the player character in the game.
+ * It manages the player's position, movement, animations, and collision detection.
+ */
 package com.heslington_hustle.game;
-
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
@@ -44,6 +47,16 @@ public class Player {
 	private Rectangle[] inaccessibleRegionsScreen3;
 	private Rectangle[] inaccessibleRegionsScreen4;
 	
+	/**
+     * Constructs a new Player with the specified parameters.
+     * @param game The main game instance
+     * @param sprite The texture for the player's sprite
+     * @param idleRSheet The sprite sheet for the idle animation when the player is facing to the right
+     * @param idleLSheet The sprite sheet for the idle animation when the player is facing to the left
+     * @param walkRSheet The sprite sheet for the walk animation when the player is walking to the right
+     * @param walkLSheet The sprite sheet for the walk animation when the player is walking to the left
+     * @param avatarNumber The number representing the player's avatar
+     */
 	public Player (HeslingtonHustle game, Texture sprite, Texture idleRSheet, Texture idleLSheet, Texture walkRSheet, Texture walkLSheet, int avatarNumber) {
 		this.game = game;
 		this.sprite = sprite;
@@ -54,6 +67,137 @@ public class Player {
 		this.y = 360-185;
 		this.direction = "R"; // Starting direction to face is right
 		
+		// Initialize animations
+		initializeAnimations();
+		
+		// Initialize inaccessible regions
+        initializeInaccessibleRegions();
+	}
+	
+	/**
+     * Renders the idle animation of the player.
+     */
+	public void idleAnimation() {
+		if(direction == "R") {
+			// Get current animation frame depending on the value of the clock
+			TextureRegion currentFrame = idleRAnimation.getKeyFrame(clock, true);
+			game.batch.draw(currentFrame, x-16, y-16);
+		}
+		else if(direction == "L") {
+			TextureRegion currentFrame = idleLAnimation.getKeyFrame(clock, true);
+			game.batch.draw(currentFrame, x-16, y-16);
+		}
+	}
+	
+	/**
+     * Moves the player upwards.
+     */
+	public void moveUp() {
+		if(y > game.camera.viewportHeight - sprite.getHeight()/2) {
+			if(game.map.screen == 1) {
+				// If player was on bottom left, scroll camera to top left
+				y = 0 + sprite.getHeight();
+				game.map.screen = 3;
+			}
+			else if(game.map.screen == 2) {
+				// If player was on bottom right, scroll camera to top right
+				y = 0 + sprite.getHeight();
+				game.map.screen = 4;
+			}
+			else {
+				return;
+			}
+		}
+		
+		// If player can move to the region, move them there. Gdx.graphics.getDeltaTime() is essential for movement to be the same on all framerates
+		if (canMoveTo(x, y-sprite.getHeight()/2 + speed * Gdx.graphics.getDeltaTime())) {
+            y += speed * Gdx.graphics.getDeltaTime();
+        }
+	}
+	
+	/**
+     * Moves the player to the left.
+     */
+	public void moveLeft() {
+		direction = "L";
+		
+		if(x < 0 + sprite.getWidth()/2) {
+			if(game.map.screen == 2) {
+				// If player was on bottom right, scroll camera to bottom left
+				x = game.camera.viewportWidth - sprite.getWidth();
+				game.map.screen = 1;
+			}
+			else if(game.map.screen == 4) {
+				// If player was on top right, scroll camera to top left
+				x = game.camera.viewportWidth - sprite.getWidth();
+				game.map.screen = 3;
+			}
+			else {
+				return;
+			}
+		}
+		
+		if (canMoveTo(x - speed * Gdx.graphics.getDeltaTime(), y-sprite.getHeight()/2)) {
+            x -= speed * Gdx.graphics.getDeltaTime();
+        }
+	}
+	
+	/**
+     * Moves the player downwards.
+     */
+	public void moveDown() {
+		if(y < 0 + sprite.getHeight()/2) {
+			if(game.map.screen == 3) {
+				// If player was on top left, scroll camera to bottom left
+				y = game.camera.viewportHeight - sprite.getHeight();
+				game.map.screen = 1;
+			}
+			else if(game.map.screen == 4) {
+				// If player was on top right, scroll camera to bottom right
+				y = game.camera.viewportHeight - sprite.getHeight();
+				game.map.screen = 2;
+			}
+			else {
+				return;
+			}
+		}
+		
+		if (canMoveTo(x, y-sprite.getHeight()/2 - speed * Gdx.graphics.getDeltaTime())) {
+            y -= speed * Gdx.graphics.getDeltaTime();
+        }
+	}
+	
+	/**
+     * Moves the player to the right.
+     */
+	public void moveRight() {
+		direction = "R";
+		
+		if(x > game.camera.viewportWidth - sprite.getWidth()/2) {
+			if(game.map.screen == 1) {
+				// If player was on bottom left, scroll camera to bottom right
+				x = 0 + sprite.getWidth();
+				game.map.screen = 2;
+			}
+			else if(game.map.screen == 3) {
+				// If player was on top left, scroll camera to top right
+				x = 0 + sprite.getWidth();
+				game.map.screen = 4;
+			}
+			else {
+				return;
+			}
+		}
+		
+		if (canMoveTo(x + speed * Gdx.graphics.getDeltaTime(), y-sprite.getHeight()/2)) {
+            x += speed * Gdx.graphics.getDeltaTime();
+        }
+	}
+	
+	/**
+     * Initializes the animations of the player.
+     */
+	private void initializeAnimations() {
 		// Idle R animation
 		// Split the sprite sheet into multiple sprites
 		TextureRegion[][] idleRTexture = TextureRegion.split(idleRSheet,
@@ -68,7 +212,7 @@ public class Player {
 		}
 		// Create animation out of the individual frames
 		idleRAnimation = new Animation<TextureRegion>(0.2f, idleRFrames);
-		
+				
 		// Idle L animation
 		TextureRegion[][] idleLTexture = TextureRegion.split(idleLSheet,
 				idleLSheet.getWidth() / idleSheetCols,
@@ -81,7 +225,7 @@ public class Player {
 			}
 		}
 		idleLAnimation = new Animation<TextureRegion>(0.2f, idleLFrames);
-		
+				
 		// Walk R animation
 		TextureRegion[][] walkRTexture = TextureRegion.split(walkRSheet,
 				walkRSheet.getWidth() / walkSheetCols,
@@ -107,116 +251,14 @@ public class Player {
 			}
 		}
 		walkLAnimation = new Animation<TextureRegion>(0.2f, walkLFrames);
-		
-		// Initialize inaccessible regions
-        initializeInaccessibleRegions();
 	}
 	
-	public void idleAnimation() {
-		if(direction == "R") {
-			// Get current animation frame depending on the value of the clock
-			TextureRegion currentFrame = idleRAnimation.getKeyFrame(clock, true);
-			game.batch.draw(currentFrame, x-16, y-16);
-		}
-		else if(direction == "L") {
-			TextureRegion currentFrame = idleLAnimation.getKeyFrame(clock, true);
-			game.batch.draw(currentFrame, x-16, y-16);
-		}
-	}
-	
-	public void moveUp() {
-		if(y > game.camera.viewportHeight - sprite.getHeight()/2) {
-			if(game.map.screen == 1) {
-				// If player was on bottom left, scroll camera to top left
-				y = 0 + sprite.getHeight();
-				game.map.screen = 3;
-			}
-			else if(game.map.screen == 2) {
-				// If player was on bottom right, scroll camera to top right
-				y = 0 + sprite.getHeight();
-				game.map.screen = 4;
-			}
-			else {
-				return;
-			}
-		}
-		
-		// If player can move to the region, move them there. Gdx.graphics.getDeltaTime() is essential for movement to be the same on all framerates
-		if (canMoveTo(x, y-sprite.getHeight()/2 + speed * Gdx.graphics.getDeltaTime())) {
-            y += speed * Gdx.graphics.getDeltaTime();
-        }
-	}
-	
-	public void moveLeft() {
-		direction = "L";
-		
-		if(x < 0 + sprite.getWidth()/2) {
-			if(game.map.screen == 2) {
-				// If player was on bottom right, scroll camera to bottom left
-				x = game.camera.viewportWidth - sprite.getWidth();
-				game.map.screen = 1;
-			}
-			else if(game.map.screen == 4) {
-				// If player was on top right, scroll camera to top left
-				x = game.camera.viewportWidth - sprite.getWidth();
-				game.map.screen = 3;
-			}
-			else {
-				return;
-			}
-		}
-		
-		if (canMoveTo(x - speed * Gdx.graphics.getDeltaTime(), y-sprite.getHeight()/2)) {
-            x -= speed * Gdx.graphics.getDeltaTime();
-        }
-	}
-	
-	public void moveDown() {
-		if(y < 0 + sprite.getHeight()/2) {
-			if(game.map.screen == 3) {
-				// If player was on top left, scroll camera to bottom left
-				y = game.camera.viewportHeight - sprite.getHeight();
-				game.map.screen = 1;
-			}
-			else if(game.map.screen == 4) {
-				// If player was on top right, scroll camera to bottom right
-				y = game.camera.viewportHeight - sprite.getHeight();
-				game.map.screen = 2;
-			}
-			else {
-				return;
-			}
-		}
-		
-		if (canMoveTo(x, y-sprite.getHeight()/2 - speed * Gdx.graphics.getDeltaTime())) {
-            y -= speed * Gdx.graphics.getDeltaTime();
-        }
-	}
-	
-	public void moveRight() {
-		direction = "R";
-		
-		if(x > game.camera.viewportWidth - sprite.getWidth()/2) {
-			if(game.map.screen == 1) {
-				// If player was on bottom left, scroll camera to bottom right
-				x = 0 + sprite.getWidth();
-				game.map.screen = 2;
-			}
-			else if(game.map.screen == 3) {
-				// If player was on top left, scroll camera to top right
-				x = 0 + sprite.getWidth();
-				game.map.screen = 4;
-			}
-			else {
-				return;
-			}
-		}
-		
-		if (canMoveTo(x + speed * Gdx.graphics.getDeltaTime(), y-sprite.getHeight()/2)) {
-            x += speed * Gdx.graphics.getDeltaTime();
-        }
-	}
-	
+	/**
+     * Checks if the player can move to the specified target position.
+     * @param targetX The target x-coordinate of the player's position.
+     * @param targetY The target y-coordinate of the player's position.
+     * @return true If the player can move to the target position, false otherwise.
+     */
 	private boolean canMoveTo(float targetX, float targetY) {
         // Check if the target position lies within any of the inaccessible regions
 		if(game.map.screen == 1) {
@@ -253,6 +295,9 @@ public class Player {
 		}
     }
 	
+	/**
+     * Initializes the regions that the player should not be able to walk in.
+     */
 	private void initializeInaccessibleRegions() {
 		// Manually draw rectangles for all the regions that the player cannot move to
 		// Can add be easily modified if the map is to be changed

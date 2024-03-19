@@ -1,3 +1,7 @@
+/**
+ * Represents a Sniper Bug entity in the Bug Fixer minigame.
+ * Sniper Bug is an enemy that spawns in the Bug Fixer minigame and targets the player with ranged attacks.
+ */
 package com.heslington_hustle.screens.minigames.BugFixer;
 
 import com.badlogic.gdx.Gdx;
@@ -35,6 +39,13 @@ public class SniperBug {
 	
 	private boolean firstAttack;
 	
+	/**
+     * Constructs a Sniper Bug with the specified parameters.
+     * @param game The main game instance.
+     * @param bugFixer The Bug Fixer instance.
+     * @param x The x-coordinate of the Sniper Bug.
+     * @param y The y-coordinate of the Sniper Bug.
+     */
 	public SniperBug(HeslingtonHustle game, BugFixer bugFixer, float x, float y) {
 		this.game = game;
 		this.bugFixer = bugFixer;
@@ -44,6 +55,9 @@ public class SniperBug {
 		createBug();
 	}
 	
+	/**
+     * Creates the Sniper Bug's body, initializes animations, and sets initial parameters.
+     */
 	private void createBug() {
 		// Create body definition
 		BodyDef bodyDef = new BodyDef();
@@ -99,6 +113,10 @@ public class SniperBug {
 		firstAttack = false;
 	}
 	
+	/**
+     * Updates the Sniper Bug's state and triggers attacks.
+     * Called every frame in the BugFixer minigame's render method.
+     */
 	public void update() {
 		clock += Gdx.graphics.getDeltaTime();
 		animationClock += Gdx.graphics.getDeltaTime();
@@ -114,6 +132,9 @@ public class SniperBug {
 		}
 	}
 	
+	/**
+     * Draws the Sniper Bug's sprite based on its current state.
+     */
 	private void drawSprite() {
 		game.batch.begin();
 		
@@ -131,6 +152,9 @@ public class SniperBug {
 		game.batch.end();
 	}
 	
+	/**
+     * Triggers the Sniper Bug's attack by spawning a bullet in the direction of the player.
+     */
 	private void attack() {
 		timeSinceAttack = 0f;
 		
@@ -139,6 +163,9 @@ public class SniperBug {
 		bugFixer.enemyShot.play(game.volume);
 	}
 	
+	/**
+     * Destroys the Sniper Bug's body.
+     */
 	public void destroy() {
 		// Destroy this bug to save memory
 		bugFixer.world.destroyBody(body);

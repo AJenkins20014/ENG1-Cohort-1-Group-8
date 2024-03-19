@@ -1,3 +1,6 @@
+/**
+ * The PopUpText class represents text that pops up on the screen.
+ */
 package com.heslington_hustle.game;
 
 import com.badlogic.gdx.graphics.Color;
@@ -13,6 +16,17 @@ public class PopUpText {
 	public float scale;
 	public Color color;
 	
+	/**
+     * Constructs a new PopUpText object with the specified parameters.
+     * @param text The text content of the pop-up.
+     * @param x The x-coordinate of the pop-up position.
+     * @param y The y-coordinate of the pop-up position.
+     * @param targetWidth The target width of the pop-up text.
+     * @param align The alignment of the pop-up text.
+     * @param wrap Indicates whether the pop-up text should wrap if it exceeds the target width.
+     * @param scale The scale of the pop-up text.
+     * @param color The colour of the pop-up text.
+     */
 	public PopUpText(String text, float x, float y, float targetWidth, int align, boolean wrap, float scale, Color color) {
 		this.text = text;
 		this.x = x;
@@ -24,6 +38,13 @@ public class PopUpText {
 		this.color = color;
 	}
 	
+	/**
+     * Constructs a new PopUpText object with the specified parameters and default values.
+     * @param text The text content of the pop-up.
+     * @param x The x-coordinate of the pop-up position.
+     * @param y The y-coordinate of the pop-up position.
+     * @param scale The scale of the pop-up text.
+     */
 	public PopUpText(String text, float x, float y, float scale) {
 		this.text = text;
 		this.x = x;
@@ -35,6 +56,14 @@ public class PopUpText {
 		this.color = new Color(1,1,1,1);
 	}
 	
+	/**
+     * Constructs a new PopUpText object with the specified parameters.
+     * @param text The text content of the pop-up.
+     * @param x The x-coordinate of the pop-up position.
+     * @param y The y-coordinate of the pop-up position.
+     * @param scale The scale of the pop-up text.
+     * @param color The colour of the pop-up text.
+     */
 	public PopUpText(String text, float x, float y, float scale, Color color) {
 		this.text = text;
 		this.x = x;
@@ -46,6 +75,12 @@ public class PopUpText {
 		this.color = color;
 	}
 	
+	/**
+     * Constructs a new PopUpText object with the specified parameters.
+     * @param text The text content of the pop-up.
+     * @param x The x-coordinate of the pop-up position.
+     * @param y The y-coordinate of the pop-up position.
+     */
 	public PopUpText(String text, float x, float y) {
 		this.text = text;
 		this.x = x;
@@ -57,6 +92,11 @@ public class PopUpText {
 		this.color = new Color(1,1,1,1);
 	}
 	
+	/**
+     * Checks if this PopUpText object is equal to another object.
+     * @param text The PopUpText object to compare.
+     * @return true If the objects are equal, false otherwise.
+     */
 	public boolean equals(PopUpText text) {
 		// Check if a pop up is exactly the same as another to avoid spam
 		if(this == text) {

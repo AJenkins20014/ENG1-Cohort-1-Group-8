@@ -1,3 +1,8 @@
+/**
+ * Represents the Squash minigame screen.
+ * It extends the MinigameScreen class and implements the Screen interface.
+ * Players control a paddle to hit a ball against a wall, earning points for each hit.
+ */
 package com.heslington_hustle.screens.minigames.Squash;
 
 import com.badlogic.gdx.Gdx;
@@ -10,7 +15,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
@@ -45,12 +49,17 @@ public class Squash extends MinigameScreen implements Screen {
 	private float accumulator = 0f; // Clock for physics, incremented every frame
 
 	private float clock; // Clock, incremented every frame
-	private Sprite userPaddle; // Player paddle
+	private Sprite userPaddle;
 	private Sprite ballSprite;
 	
 	private Music backgroundMusic;
 	private Sound hit;
 
+	/**
+     * Constructs a Squash minigame screen.
+     * @param game The game instance.
+     * @param difficultyScalar The scalar value representing the game difficulty.
+     */
 	public Squash(HeslingtonHustle game, float difficultyScalar) {
 		super(game, difficultyScalar);
 		world = new World(new Vector2(0, 0), true); // Create world with no gravity
@@ -80,7 +89,7 @@ public class Squash extends MinigameScreen implements Screen {
 		
         // Check if the collision is between the ball and player paddle
         if ((bodyA == ball && bodyB == player) || (bodyA == player && bodyB == ball)) {
-            reverseBallDirection(ball);
+            paddleHit(ball);
         }
 					}
 		
@@ -101,31 +110,24 @@ public class Squash extends MinigameScreen implements Screen {
 				});
 	}
 
-	private void reverseBallDirection(Body ball) {
+	/**
+	 * Adds score when the ball hits the paddle and fixes issues with vertical velocity.
+	 * @param ball The ball body.
+	 */
+	private void paddleHit(Body ball) {
 		hit.play(game.volume);
 		score += 10;
 		
+		// Check if the ball has no vertical velocity and if so, apply it.
 		if(ball.getLinearVelocity().y < 50f && ball.getLinearVelocity().y > -50f) {
         	ball.applyLinearImpulse(0, 100000, ball.getPosition().x, ball.getPosition().y, true);
         }
-		
-		/*
-        // Reverse the horizontal velocity of the ball to change its direction
-        Vector2 velocity = ball.getLinearVelocity();
-        ball.setLinearVelocity(velocity.x * -1, velocity.y);
-
-		    // Factor by which the speed will increase upon collision
-			float speedIncreaseFactor = 3f;
-
-			// Calculate the new speed with an increase
-			float newSpeedX = -velocity.x * speedIncreaseFactor;
-			float newSpeedY = velocity.y * speedIncreaseFactor;
-		
-			// Set the new velocity to the ball with increased speed
-			ball.setLinearVelocity(newSpeedX, newSpeedY);
-		*/
     }
 	
+	/**
+     * Starts the game.
+     * Resets energy gained and score, creates game elements, and displays tutorial screen.
+     */
 	@Override
 	public void startGame() {
 		// Code to restart the game
@@ -153,6 +155,9 @@ public class Squash extends MinigameScreen implements Screen {
 		game.setScreen(new InformationScreen(game, "squashTutorial", this));
 	}
 	
+	/**
+     * Ends the game and displays the final score.
+     */
 	private void endGame() {
 		energyGained += score/5;
 		
@@ -172,6 +177,9 @@ public class Squash extends MinigameScreen implements Screen {
 		game.setScreen(new InformationScreen(game, "recreationGameScore", game.map, score, energyGained));
 	}
 	
+	/**
+     * Creates the player's paddle body in the game world.
+     */
 	private void createPaddle() {
 		// Create body definition
 		BodyDef bodyDef = new BodyDef();
@@ -198,6 +206,9 @@ public class Squash extends MinigameScreen implements Screen {
 		box.dispose();
 	}
 
+	/**
+     * Creates the ball body in the game world.
+     */
 	private void createBall() {
 		// Create body definition
 		BodyDef bodyDef = new BodyDef();
@@ -217,12 +228,16 @@ public class Squash extends MinigameScreen implements Screen {
 		fixtureDef.restitution = 1;
 
 		// Attach fixture to body
+		@SuppressWarnings("unused")
 		Fixture fixture = ball.createFixture(fixtureDef);
 
 		// Dispose hitbox
 		circle.dispose();
 	}
 	
+	/**
+     * Creates the boundaries of the game world.
+     */
 	private void createWalls() {
 		// Floor
 		BodyDef bodyDef = new BodyDef();  
@@ -254,6 +269,11 @@ public class Squash extends MinigameScreen implements Screen {
 		box.dispose();
 	}
 
+	/**
+     * Performs one logic step in the physics world with a fixed timestep.
+     * This method is called repeatedly to update the physics simulation.
+     * @param delta The time step for the physics simulation.
+     */
 	private void logicStep(float delta) {
 		// Define the base acceleration
 	    float baseAccelerationX = 10f; // Adjust this value as needed
@@ -275,7 +295,10 @@ public class Squash extends MinigameScreen implements Screen {
 	    world.step(Math.min(delta, 0.15f), 3, 3);
 	}
 
-
+	/**
+     * Renders the game screen.
+     * @param delta The time elapsed since the last frame.
+     */
 	@Override
 	public void render(float delta) {
 		if(minimised) return;
@@ -288,15 +311,13 @@ public class Squash extends MinigameScreen implements Screen {
 		game.batch.setProjectionMatrix(game.camera.combined);
 		game.camera.update();
 		
-		// Get mouse position in world coordinates
-		Vector3 mousePos = game.camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 1f));
-		
 		game.batch.begin();
 		
 		// Draw paddle
 		userPaddle.setPosition(player.getPosition().x - userPaddle.getWidth()/2, player.getPosition().y - userPaddle.getHeight()/2);
 		userPaddle.draw(game.batch);
 
+		// Draw ball
 		ballSprite.setPosition(ball.getPosition().x - ballSprite.getWidth()/2, ball.getPosition().y - ballSprite.getHeight()/2);
 		ballSprite.draw(game.batch);
 
@@ -324,6 +345,7 @@ public class Squash extends MinigameScreen implements Screen {
 		accumulator += Gdx.graphics.getDeltaTime();
 		clock += Gdx.graphics.getDeltaTime();
 
+		// End the game if the ball goes past the paddle
 		if (ball.getPosition().x <= 20) {
 			endGame();
 			return;
@@ -331,7 +353,6 @@ public class Squash extends MinigameScreen implements Screen {
 		
 		// Check if the user is issuing any move commands
 		movePlayer();
-		checkBallBounds();
 
 		// Update the physics world with a fixed timestep
 		while (accumulator >= fixedTimeStep) {
@@ -341,8 +362,10 @@ public class Squash extends MinigameScreen implements Screen {
 		
 		updateMusicVolume();
 	}
-
-// Add a method to start or reset the ball's movement
+	
+/**
+ * Starts or resets the ball's movement.
+ */
 private void startBallMovement() {
     float initialSpeed = 100000f; // Set this to your desired initial ball speed
     float angle = MathUtils.random(-MathUtils.PI / 4, MathUtils.PI / 4); // Bias towards horizontal movement
@@ -357,34 +380,9 @@ private void startBallMovement() {
     ball.setLinearVelocity(velocity);
 }
 
-private void checkBallBounds() {
-    Vector2 position = ball.getPosition();
-    Vector2 velocity = ball.getLinearVelocity();
-
-    // Vertical boundaries
-    float lowerBound = 10;
-    float upperBound = 350;
-    // Right horizontal boundary
-    float rightBound = 630;
-    
-    /*
-    // Check vertical boundaries
-    if (position.y <= lowerBound && velocity.y < 0) {
-        // Ball is moving down and has hit the bottom boundary
-        ball.setLinearVelocity(velocity.x, Math.abs(velocity.y));
-    } else if (position.y >= upperBound && velocity.y > 0) {
-        // Ball is moving up and has hit the top boundary
-        ball.setLinearVelocity(velocity.x, -Math.abs(velocity.y));
-    }
-
-    // Check right horizontal boundary
-    if (position.x >= rightBound && velocity.x > 0) {
-        // Ball is moving right and has hit the right boundary
-        ball.setLinearVelocity(-Math.abs(velocity.x), velocity.y);
-    }
-    */    
-}
-
+/**
+ * Moves the player's paddle based on user input.
+ */
 private void movePlayer() {
     float maxSpeed = 200000f; // Adjust this value as needed
     Vector2 velocity = player.getLinearVelocity();
@@ -400,6 +398,11 @@ private void movePlayer() {
     player.setAngularVelocity(0);
 }
 
+/**
+ * Called when the game window is resized.
+ * @param width The new width of the window.
+ * @param height The new height of the window.
+ */
 @Override
 public void resize(int width, int height) {
 	// Called when the game window is resized
@@ -413,18 +416,27 @@ public void resize(int width, int height) {
 	}
 }
 
+/**
+ * Called when the screen is hidden.
+ */
 @Override
 public void hide() {
 	// Stop music
 	backgroundMusic.stop();
 }
 
+/**
+ * Called when the screen is shown.
+ */
 @Override
 public void show() {
 	// Play music
 	backgroundMusic.play();
 }
 
+/**
+ * Updates the volume of the background music based on game settings.
+ */
 private void updateMusicVolume() {
 	float musicVolume = game.volume/2;
 	backgroundMusic.setVolume(musicVolume);

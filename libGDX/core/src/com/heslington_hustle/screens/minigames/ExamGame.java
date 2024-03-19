@@ -1,3 +1,8 @@
+/**
+ * Represents the exam minigame screen where players take an exam consisting of multiple minigames.
+ * It extends the MinigameScreen class and implements the Screen interface.
+ * Players' performance in the minigames affects their overall score and grade.
+ */
 package com.heslington_hustle.screens.minigames;
 
 import java.util.HashMap;
@@ -16,10 +21,18 @@ public class ExamGame extends MinigameScreen implements Screen {
 	public HashMap<String, Float> difficultyScalars = new HashMap<>(); // How difficult is each exam minigame (Minigame name | DifficultyScalar)
 	private int currentMinigame; // Index of current mingiame
 	
+	/**
+	 * Constructs an ExamGame minigame screen.
+	 * @param game The game instance.
+	 * @param difficultyScalar The scalar value representing the overall difficulty of the exam.
+	 */
 	public ExamGame(HeslingtonHustle game, float difficultyScalar) {
 		super(game, difficultyScalar);
 	}
 	
+	/**
+     * Starts the exam by initializing necessary variables and loading the first minigame.
+     */
 	@Override
 	public void startGame() {
 		// Code to start the exam
@@ -61,13 +74,7 @@ public class ExamGame extends MinigameScreen implements Screen {
 			float studyPoints = game.studyPoints.get(minigames[i]);
 			studyPointsTotal += studyPoints;
 			
-			/* Either studying a minigame will make it easier when it shows up in the exam?
-			 * OR
-			 * Studying a minigame will give you a multiplier to your score with difficulty remaining constant?		
-			 */
-			
-			
-			// OPTION 1 - Studying a minigame will make it easier when it shows up in the exam
+			// Studying a minigame will make it easier when it shows up in the exam
 			
 			// Very Easy difficulty
 			if(studyPoints > 300f) { 
@@ -90,31 +97,6 @@ public class ExamGame extends MinigameScreen implements Screen {
 				difficultyScalars.put(minigames[i], 2f);
 			}
 			
-			/*
-			// OPTION 2 - Studying a minigame will give you a multiplier to your score with difficulty remaining constant
-			
-			// 2x multiplier
-			if(studyPoints > 300f) { 
-				difficultyScalars.put(minigames[i], 2f);
-			}
-			// 1.5x multiplier
-			else if(studyPoints > 200f) {
-				difficultyScalars.put(minigames[i], 1.5f);
-			}
-			// No Multiplier - studied this minigame 2-3 times with average performance
-			else if(studyPoints > 120f) {
-				difficultyScalars.put(minigames[i], 1f);
-			}
-			// 0.5x multiplier
-			else if(studyPoints > 60f) {
-				difficultyScalars.put(minigames[i], 0.5f);
-			}
-			// 0.25x multiplier
-			else {
-				difficultyScalars.put(minigames[i], 0.25f);
-			}
-			*/	
-			
 			// Display game screen
 			game.setScreen(this);
 		}
@@ -136,6 +118,9 @@ public class ExamGame extends MinigameScreen implements Screen {
 		loadNextMinigame();
 	}
 	
+	/**
+     * Ends the exam and calculates the final score and grade.
+     */
 	private void endGame() {
 		if(score > scoreCap) {
 			score = scoreCap;
@@ -170,6 +155,9 @@ public class ExamGame extends MinigameScreen implements Screen {
 		
 	}
 	
+	/**
+     * Loads the next study minigame in the exam.
+     */
 	public void loadNextMinigame() {
 		// Remember only to load study minigames, you aren't being tested on recreation :)
 		Set<String> keySet = game.studyPoints.keySet(); // Get set of minigame names
@@ -198,25 +186,5 @@ public class ExamGame extends MinigameScreen implements Screen {
 		else {
 			endGame();
 		}	
-	}
-	
-	@Override
-	public void render(float delta) {
-		
-	}
-	
-	@Override 
-	public void show() {
-		
-	}
-	
-	@Override
-	public void hide() {
-		
-	}
-	
-	@Override
-	public void dispose() {
-		
 	}
 }

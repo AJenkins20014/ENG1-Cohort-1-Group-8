@@ -1,3 +1,7 @@
+/**
+ * Represents a screen displaying information or tutorials in the game. 
+ * Implements the Screen interface.
+ */
 package com.heslington_hustle.screens;
 
 import com.badlogic.gdx.Gdx;
@@ -9,7 +13,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Align;
 import com.heslington_hustle.game.HeslingtonHustle;
-import com.heslington_hustle.game.PopUpText;
 
 public class InformationScreen implements Screen{
 	private HeslingtonHustle game;
@@ -18,15 +21,27 @@ public class InformationScreen implements Screen{
 	private int score;
 	private float resourcesGained; // Study points / energy
 	
-	// Should be used for tutorials and game over screens for minigames
+	/**
+     * Constructs an InformationScreen for tutorials and game over screens for minigames.
+     * @param game The game instance.
+     * @param type The type of information screen.
+     * @param nextScreen The next screen to transition to after this one.
+     */
 	public InformationScreen(HeslingtonHustle game, String type, Screen nextScreen) {
 		this.game = game;
 		this.type = type;
 		this.nextScreen = nextScreen;
 	}
 	
+	/**
+     * Constructs an InformationScreen for minigame results.
+     * @param game The game instance.
+     * @param type The type of information screen.
+     * @param nextScreen The next screen to transition to after this one.
+     * @param score The score achieved in a minigame.
+     * @param resourcesGained The resources gained in a minigame.
+     */
 	public InformationScreen(HeslingtonHustle game, String type, Screen nextScreen, int score, float resourcesGained) {
-		// For minigame results
 		this.game = game;
 		this.type = type;
 		this.nextScreen = nextScreen;
@@ -34,6 +49,10 @@ public class InformationScreen implements Screen{
 		this.resourcesGained = resourcesGained;
 	}
 
+	/**
+     * Renders the information screen.
+     * @param delta The time elapsed since the last frame.
+     */
 	@Override
 	public void render(float delta) {
 		// Clear the screen
@@ -97,6 +116,9 @@ public class InformationScreen implements Screen{
 		game.batch.end();
 	}
 	
+	/**
+     * Loads the main tutorial screen.
+     */
 	public void loadMainTutorial() {
 		// Display the tutorial for the game in general
 		game.font.getData().setScale(0.4f);
@@ -112,8 +134,10 @@ public class InformationScreen implements Screen{
 		game.font.draw(game.batch, "Interact", 390, 110, 100, Align.left, false);
 	}
 	
+	/**
+     * Loads the BugFixer minigame tutorial screen.
+     */
 	public void loadBugFixerTutorial() {
-		// Display the tutorial for the BugFixer minigame
 		game.font.getData().setScale(1.2f); // Set font size
 		game.font.setColor(new Color(222/255f, 158/255f, 65/255f, 1));
 		game.font.draw(game.batch, "BugFixer", 250, 330, 100, Align.center, false);
@@ -129,8 +153,10 @@ public class InformationScreen implements Screen{
 		game.font.draw(game.batch, "Shoot", 420, 110, 100, Align.left, false);
 	}
 	
+	/**
+     * Loads the BookStacker minigame tutorial screen.
+     */
 	public void loadBookStackerTutorial() {
-		// Display the tutorial for the BookStacker minigame
 		game.font.getData().setScale(1.2f); // Set font size
 		game.font.setColor(new Color(222/255f, 158/255f, 65/255f, 1));
 		game.font.draw(game.batch, "BookStacker", 250, 330, 100, Align.center, false);
@@ -143,8 +169,10 @@ public class InformationScreen implements Screen{
 		game.font.draw(game.batch, "Drop", 300, 110, 100, Align.left, false);
 	}
 	
+	/**
+     * Loads the ColourMatch minigame tutorial screen.
+     */
 	public void loadColourMatchTutorial() {
-		// Display the tutorial for the BugFixer minigame
 		game.font.getData().setScale(1.2f); // Set font size
 		game.font.setColor(new Color(222/255f, 158/255f, 65/255f, 1));
 		game.font.draw(game.batch, "ColourMatch", 250, 330, 100, Align.center, false);
@@ -157,8 +185,10 @@ public class InformationScreen implements Screen{
 		game.font.draw(game.batch, "Click", 300, 110, 100, Align.left, false);
 	}
 	
+	/**
+     * Loads the SwiftSwimmer minigame tutorial screen.
+     */
 	public void loadSwiftSwimmerTutorial() {
-		// Display the tutorial for the Swift Swimmer minigame
 		game.font.getData().setScale(1.2f); // Set font size
 		game.font.setColor(new Color(222/255f, 158/255f, 65/255f, 1));
 		game.font.draw(game.batch, "SwiftSwimmer", 250, 330, 100, Align.center, false);
@@ -171,8 +201,10 @@ public class InformationScreen implements Screen{
 		game.font.draw(game.batch, "Click as fast as possible to swim", 150, 110, 100, Align.left, false);
 	}
 	
+	/**
+     * Loads the DrunkDancer minigame tutorial screen.
+     */
 	public void loadDrunkDancerTutorial() {
-		// Display the tutorial for the DrunkDancer minigame
 		game.font.getData().setScale(1.2f); // Set font size
 		game.font.setColor(new Color(222/255f, 158/255f, 65/255f, 1));
 		game.font.draw(game.batch, "DrunkDancer", 250, 330, 100, Align.center, false);
@@ -186,8 +218,11 @@ public class InformationScreen implements Screen{
 		game.batch.draw(new Texture("UI/TutorialArrowKeys.png"), 290, 90);
 		game.font.draw(game.batch, "Dance", 370, 110, 100, Align.left, false);
 	}
+	
+	/**
+     * Loads the Squash minigame tutorial screen.
+     */
 	public void loadSquashTutorial() {
-		// Display the tutorial for the Squash minigame
 		game.font.getData().setScale(1.2f); // Set font size
 		game.font.setColor(new Color(222/255f, 158/255f, 65/255f, 1));
 		game.font.draw(game.batch, "Squash", 250, 330, 100, Align.center, false);
@@ -200,8 +235,10 @@ public class InformationScreen implements Screen{
 		game.font.draw(game.batch, "Move", 300, 110, 100, Align.left, false);
 	}
 	
+	/**
+     * Loads the game over screen for study minigames.
+     */
 	public void loadStudyGameScore() {
-		// Display the game over screen for study minigames
 		game.font.getData().setScale(1.2f); // Set font size
 		game.font.setColor(new Color(222/255f, 158/255f, 65/255f, 1));
 		game.font.draw(game.batch, "Game Over!", 250, 330, 100, Align.center, false);
@@ -209,7 +246,6 @@ public class InformationScreen implements Screen{
 		game.font.setColor(new Color(1, 1, 1, 1));	
 		game.font.draw(game.batch, "Final score: " + Integer.toString(score), 250, 260, 100, Align.center, false);
 		
-		// TODO - Change accordingly
 		if(resourcesGained < 30f) {
 			game.font.draw(game.batch, "You don't feel very productive...", 250, 200, 100, Align.center, false);
 		}
@@ -234,16 +270,17 @@ public class InformationScreen implements Screen{
 		}
 	}
 	
+	/**
+     * Loads the game over screen for recreation minigames.
+     */
 	public void loadRecreationGameScore() {
-		// Display the game over screen for recreation minigames
 		game.font.getData().setScale(1.2f); // Set font size
 		game.font.setColor(new Color(222/255f, 158/255f, 65/255f, 1));
 		game.font.draw(game.batch, "Game Over!", 250, 330, 100, Align.center, false);
 		game.font.getData().setScale(0.4f);
 		game.font.setColor(new Color(1, 1, 1, 1));	
 		game.font.draw(game.batch, "Final score: " + Integer.toString(score), 250, 260, 100, Align.center, false);
-		
-		// TODO - Change accordingly
+
 		if(resourcesGained < 30f) {
 			game.font.draw(game.batch, "You don't feel very well rested...", 250, 200, 100, Align.center, false);
 		}
@@ -261,33 +298,51 @@ public class InformationScreen implements Screen{
 		}
 	}
 
+	/**
+     * Called when the screen size changes.
+     * @param width The new width.
+     * @param height The new height.
+     */
 	@Override
 	public void resize(int width, int height) {
 		
 	}
 	
+	/**
+     * Called when this screen becomes displayed.
+     */
 	@Override
 	public void show() {
-		// Called when this screen becomes displayed
 		game.menuMusic.play();
 	}
 
+	/**
+     * Called when the game is paused.
+     */
 	@Override
 	public void pause() {
 		
 	}
 
+	/**
+     * Called when the game is resumed from a paused state.
+     */
 	@Override
 	public void resume() {
 		
 	}
 
+	/**
+     * Called when this screen stops being displayed.
+     */
 	@Override
 	public void hide() {
-		// Called when this screen stops being displayed
 		game.menuMusic.pause();
 	}
 
+	/**
+     * Called when the screen resources should be disposed.
+     */
 	@Override
 	public void dispose() {
 		
