@@ -359,6 +359,7 @@ private void checkBallBounds() {
 private void movePlayer() {
     float maxSpeed = 100f; // Adjust this value as needed
     Vector2 velocity = player.getLinearVelocity();
+    Vector2 position = player.getPosition();
 
     if (Gdx.input.isKeyPressed(Keys.W)) {
         player.setLinearVelocity(velocity.x, maxSpeed);
@@ -367,6 +368,13 @@ private void movePlayer() {
     } else if (velocity.y != 0) {
         // If no key is pressed and there is vertical movement, stop the paddle
         player.setLinearVelocity(velocity.x, 0);
+    }
+    //Player screenbounds
+    if (position.y < 0) {
+        player.setTransform(position.x, 0, 0);
+    }
+    else if (position.y > 360) {
+        player.setTransform(position.x, 360, 0);
     }
 }
 
