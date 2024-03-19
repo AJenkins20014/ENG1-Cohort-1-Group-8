@@ -182,19 +182,6 @@ public class DrunkDancer extends MinigameScreen implements Screen {
 			checkQTE(Keys.D);
 		}
 		
-		// Call update methods for all QTEs and check for destruction
-		for(int i = 0; i < QTEs.size(); i++) {	
-			if(QTEs.get(i).y < -50f) {
-				QTEs.get(i).destroy();
-				health -= 15f;
-				miss.play(game.volume);
-				performance = "Too late!";
-			}
-			else {
-				QTEs.get(i).update();
-			}
-		}
-		
 		drawUI();
 		
 		// Check if player has paused the game
@@ -209,6 +196,21 @@ public class DrunkDancer extends MinigameScreen implements Screen {
 			
 		if(game.paused) return;
 		// Anything that shouldn't happen while the game is paused should go here
+		
+		game.batch.begin();
+		// Call update methods for all QTEs and check for destruction
+		for(int i = 0; i < QTEs.size(); i++) {	
+			if(QTEs.get(i).y < -50f) {
+				QTEs.get(i).destroy();
+				health -= 15f;
+				miss.play(game.volume);
+				performance = "Too late!";
+			}
+			else {
+				QTEs.get(i).update();
+			}
+		}
+		game.batch.end();
 		
 		if(health <= 0f) {
 			endGame();
