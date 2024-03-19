@@ -33,12 +33,7 @@ public class ColourBlock {
 		this.sprite.dispose();
 	}
 	public Boolean inBounds(float mouseX, float mouseY) {
-		System.out.println(mouseX);
-		System.out.println(mouseY);
-		System.out.println(this.x);
-		System.out.println(this.y);
 		if(mouseX>=this.x && mouseX <=this.x+100 && mouseY>=this.y && mouseY <=this.y+100) {
-			System.out.println(2);
 			return true;
 		}
 		return false;
