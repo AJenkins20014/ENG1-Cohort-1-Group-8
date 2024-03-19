@@ -67,6 +67,11 @@ public class Player {
 		this.y = 360-185;
 		this.direction = "R"; // Starting direction to face is right
 		
+		this.idleLSheet = idleLSheet;
+		this.idleRSheet = idleRSheet;
+		this.walkLSheet = walkLSheet;
+		this.walkRSheet = walkRSheet;
+		
 		// Initialize animations
 		initializeAnimations();
 		
