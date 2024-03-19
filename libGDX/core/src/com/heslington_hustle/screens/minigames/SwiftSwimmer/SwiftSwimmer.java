@@ -18,6 +18,7 @@ import com.heslington_hustle.screens.InformationScreen;
 import com.heslington_hustle.screens.MinigameScreen;
 
 public class SwiftSwimmer extends MinigameScreen implements Screen {
+	public float maxtime;
 	private float clock = 0;
 	private boolean minimised;
 	private float energyGained;
@@ -50,6 +51,7 @@ public class SwiftSwimmer extends MinigameScreen implements Screen {
 	public void startGame() {
 		loadAnimations();
 		clock = 0;
+		maxtime = 16 - difficultyScalar*4;
 		// Code to restart the game
 		energyGained = 20f; // From worst possible performance
 		
@@ -126,7 +128,7 @@ public class SwiftSwimmer extends MinigameScreen implements Screen {
 		
 		
 		//Ends game after 15 seconds
-		if(clock > 15) {
+		if(clock > maxtime) {
 			endGame();
 		}
 		

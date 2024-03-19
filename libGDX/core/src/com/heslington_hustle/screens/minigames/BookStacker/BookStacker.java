@@ -30,6 +30,7 @@ public class BookStacker extends MinigameScreen implements Screen {
 	private float maxStudyPointsGained;
 	public static float fallSpeed;
 	private int score;
+	static float diff;
 	public static Boolean changeHeightandSpeed = false;
 	public static Boolean blockDrop;
 	public static int currentLength; //Length of book
@@ -53,6 +54,7 @@ public class BookStacker extends MinigameScreen implements Screen {
 
 	public BookStacker(HeslingtonHustle game, float difficultyScalar) {
 		super(game, difficultyScalar);
+		 diff = difficultyScalar;
 		this.studyPointsGained = 15f; // From worst possible performance
 		this.maxStudyPointsGained = 100f; // From best possible performance
 		

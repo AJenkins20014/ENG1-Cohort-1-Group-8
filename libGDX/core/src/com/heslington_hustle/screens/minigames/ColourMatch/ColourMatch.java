@@ -81,7 +81,9 @@ public class ColourMatch extends MinigameScreen implements Screen {
 	    blueBlock = new ColourBlock(game, Colour.BLUE,220,50);
 	    greenBlock = new ColourBlock(game, Colour.GREEN,120,150);
 	    yellowBlock = new ColourBlock(game, Colour.YELLOW,220,150);
-	    addToSequence();
+	    for(int i =0;i== Math.ceil(difficultyScalar*4);i++) {
+	    	addToSequence();
+	    }
 	}
 	
 	private void endGame() {

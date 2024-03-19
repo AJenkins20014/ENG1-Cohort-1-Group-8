@@ -65,7 +65,7 @@ public class BookSegment {
 			
 		}
 		//Moves blocks to side, speeds up blocks movement as more blocks fall
-		if (BookStacker.clock >= 0.75*BookStacker.fallSpeed){
+		if (BookStacker.clock >= 0.75*BookStacker.fallSpeed*1/BookStacker.diff){
 			if(this.state == State.MOVING){
 				move();
 			} 
