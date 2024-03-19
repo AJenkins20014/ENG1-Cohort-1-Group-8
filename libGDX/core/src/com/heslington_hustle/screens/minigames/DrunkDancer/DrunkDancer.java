@@ -269,10 +269,16 @@ public class DrunkDancer extends MinigameScreen implements Screen {
      * Generates a new QuickTimeEvent.
      */
 	private void newQTE() {
-		List<Integer> keys = List.of(Keys.A, Keys.W, Keys.S, Keys.D);
+		System.out.print("1");
+		List<Integer> keys = new ArrayList<>();
+		keys.add(Keys.A);
+		keys.add(Keys.W);
+		keys.add(Keys.S);
+		keys.add(Keys.D);
         int randomIndex = new Random().nextInt(keys.size());
         int input = keys.get(randomIndex);
 		
+        System.out.print("2");
 		QTEs.add(new QuickTimeEvent(game, this, input, QTESpeed));
 	}
 	

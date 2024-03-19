@@ -32,6 +32,7 @@ public class QuickTimeEvent {
 		this.speed = speed;
 		this.y = 360;
 		
+		System.out.print("3");
 		if(input == Keys.A) {
 			this.x = 145f;
 			this.sprite = new Texture("DrunkDancerMinigame/LeftArrow.png");
@@ -48,6 +49,7 @@ public class QuickTimeEvent {
 			this.x = 416f;
 			this.sprite = new Texture("DrunkDancerMinigame/RightArrow.png");
 		}
+		System.out.print("4");
 	}
 	
 	/**
