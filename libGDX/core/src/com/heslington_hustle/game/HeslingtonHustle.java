@@ -28,7 +28,7 @@ import com.heslington_hustle.screens.minigames.BookStacker.BookStacker;
 import com.heslington_hustle.screens.minigames.BugFixer.BugFixer;
 import com.heslington_hustle.screens.minigames.DrunkDancer.DrunkDancer;
 import com.heslington_hustle.screens.minigames.ColourMatch.ColourMatch;
-import com.heslington_hustle.screens.minigames.RecreationGame1.RecreationGame1;
+import com.heslington_hustle.screens.minigames.Squash.Squash;
 import com.heslington_hustle.screens.minigames.SwiftSwimmer.SwiftSwimmer;
 
 public class HeslingtonHustle extends Game {
@@ -123,11 +123,11 @@ public class HeslingtonHustle extends Game {
 	private void initialiseMinigames() {
 		// Replace these with new minigames as they are added
 		minigames[0] = new BugFixer(this, 1);
-		minigames[1] = new BookStacker(this, 1); // TODO - Study game 1
-		minigames[2] = new ColourMatch(this, 1); // TODO - Study game 2
-		minigames[3] = new SwiftSwimmer(this, 1); // TODO - Recreation game 1
-		minigames[4] = new RecreationGame1(this, 1); // TODO - Recreation game 2
-		minigames[5] = new DrunkDancer(this, 1); // TODO - Recreation game 3
+minigames[1] = new BookStacker(this, 1); // TODO - Study game 1
+minigames[2] = new ColourMatch(this, 1); // TODO - Study game 2
+minigames[3] = new SwiftSwimmer(this, 1); // TODO - Recreation game 1
+minigames[4] = new Squash(this, 1); // TODO - Recreation game 2
+minigames[5] = new DrunkDancer(this, 1); // TODO - Recreation game 3
 		// etc...
 	}
 	
