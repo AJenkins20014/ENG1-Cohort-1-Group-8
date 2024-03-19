@@ -1,27 +1,23 @@
+/**
+ * Represents the Book Stacker minigame screen.
+ * This minigame requires players to stack falling books to build a tower as high as possible.
+ * It extends the MinigameScreen class and implements the Screen interface.
+ */
 package com.heslington_hustle.screens.minigames.BookStacker;
-
-
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Cursor;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Align;
 import com.heslington_hustle.game.HeslingtonHustle;
-import com.heslington_hustle.game.PopUpText;
 import com.heslington_hustle.screens.InformationScreen;
 import com.heslington_hustle.screens.MinigameScreen;
 import com.heslington_hustle.screens.minigames.BookStacker.BookSegment.Position;
 import com.heslington_hustle.screens.minigames.BookStacker.BookSegment.State;
-import com.heslington_hustle.screens.minigames.BugFixer.ScatterBug;
-import com.heslington_hustle.screens.minigames.BugFixer.SniperBug;
 
 public class BookStacker extends MinigameScreen implements Screen {
 	public Texture background;
@@ -52,6 +48,11 @@ public class BookStacker extends MinigameScreen implements Screen {
 	private Music backgroundMusic;
 	public static Sound bookStack;
 
+	/**
+     * Constructs a new BookStacker instance.
+     * @param game The HeslingtonHustle game instance.
+     * @param difficultyScalar The scalar value to adjust the difficulty of the minigame.
+     */
 	public BookStacker(HeslingtonHustle game, float difficultyScalar) {
 		super(game, difficultyScalar);
 		 diff = difficultyScalar;
@@ -65,6 +66,9 @@ public class BookStacker extends MinigameScreen implements Screen {
 		bookStack = Gdx.audio.newSound(Gdx.files.internal("BookStackerMinigame/BookStack.mp3"));
 	}
 	
+	/**
+     * Starts the Book Stacker minigame.
+     */
 	@Override
 	public void startGame() {
 		background = new Texture("BookStackerMinigame/Background.png");
@@ -91,6 +95,9 @@ public class BookStacker extends MinigameScreen implements Screen {
 		spawnBook(8,0,State.MOVING); // spawns first row to drop
 	}
 	
+	/**
+     * Ends the Book Stacker minigame.
+     */
 	private void endGame() {
 		// Calculate final score
 		studyPointsGained += score/8;
@@ -135,13 +142,13 @@ public class BookStacker extends MinigameScreen implements Screen {
 		game.setScreen(new InformationScreen(game, "studyGameScore", game.map, score, studyPointsGained));
 	}
 	
+	/**
+	 * Spawns in a row of books and assigns edges
+	 * @param int i - y level of books
+	 * @param int jPassed - starting x for books to spawn at
+	 * @param State state - the state the book is in
+	 */
 	public void spawnBook(int i,int jPassed,BookSegment.State state) {
-		/*
-		 * Spawns in a row of books aned assigns edges
-		 * @param int i - y level of books
-		 * @param int jPassed - starting x for books to spawn at
-		 * @param State state - the state the book is in
-		 */
 		for(int j = jPassed; j<currentLength+jPassed;j++) {
 			if(j == jPassed) {
 				position = Position.LEFT_END;
@@ -157,6 +164,11 @@ public class BookStacker extends MinigameScreen implements Screen {
 			bookGrid[i][j] = segment;
 		}
 	}
+	
+	/**
+     * Renders the Book Stacker minigame screen.
+     * @param delta The time elapsed since the last frame.
+     */
 	@Override
 	public void render(float delta) {
 		//If all blocks miss tower end game
@@ -186,9 +198,6 @@ public class BookStacker extends MinigameScreen implements Screen {
 		game.batch.setProjectionMatrix(game.camera.combined);
 		game.camera.update();
 		renderBackground();
-		
-		// Get mouse position in world coordinates
-		Vector3 mousePos = game.camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 1f));
 		
 		//Counts all blocks have fallen and spawns in new segments
 		if(BookSegment.counter == currentLength) {
@@ -227,11 +236,10 @@ public class BookStacker extends MinigameScreen implements Screen {
 		}
 	}
 	
-	
+	/**
+	 * Used to remove segments that are unusable
+	 */
 	public void wipe() {
-		/*
-		 * //Used to remove segments that are unusable
-		 */
 		for (int i = currentHeight-1; i>=0;i--) {
 			for (int j = 0; j <16 ; j++) {
 				if (bookGrid[i][j] instanceof BookSegment) {
@@ -244,6 +252,11 @@ public class BookStacker extends MinigameScreen implements Screen {
 		
 	}
 	
+	/**
+     * Called when the screen size changes.
+     * @param width The new width.
+     * @param height The new height.
+     */
 	@Override
 	public void resize(int width, int height) {
 		if(width == 0 && height == 0) {
@@ -254,10 +267,11 @@ public class BookStacker extends MinigameScreen implements Screen {
 			minimised = false;
 		}
 	}
+	
+	/**
+	 * Removes center of tower for replayability
+	 */
 	public void removeCenter(){
-		/*
-		 * Removes center of tower for replayability
-		 */
 		//Stops new blocks from spawning
 		blockDrop = true;
 		//Removes centre blocks
@@ -281,29 +295,36 @@ public class BookStacker extends MinigameScreen implements Screen {
 		blockDrop = false;
 	}
 	
+	/**
+     * Called when this screen stops being displayed.
+     */
 	@Override
 	public void hide() {
 		// Stop music
 		backgroundMusic.stop();
 	}
 	
+	/**
+     * Called when this screen becomes displayed.
+     */
 	@Override
 	public void show() {
 		// Play music
 		backgroundMusic.play();
 	}
 	
+	/**
+     * Updates the volume of the background music based on the game's volume setting.
+     */
 	private void updateMusicVolume() {
 		float musicVolume = game.volume/2;
 		backgroundMusic.setVolume(musicVolume);
 	}
-
-	@Override
-	public void dispose() {
-		
-	}
+	
+	/**
+     * Renders the background of the Book Stacker minigame.
+     */
 	private void renderBackground() {
-		// TODO Auto-generated method stub
 		game.batch.begin();
 		game.batch.draw(background,0,0);
 		game.batch.end();

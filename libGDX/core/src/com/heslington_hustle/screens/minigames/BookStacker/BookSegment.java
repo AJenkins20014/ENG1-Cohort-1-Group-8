@@ -1,3 +1,6 @@
+/**
+ * Represents a segment of a book in the Book Stacker minigame.
+ */
 package com.heslington_hustle.screens.minigames.BookStacker;
 
 import com.badlogic.gdx.Gdx;
@@ -26,6 +29,15 @@ public class BookSegment {
 	public State state;
 	public Position  position;
 	public static int counter;
+	
+	/**
+     * Constructs a new BookSegment object.
+     * @param game The game instance.
+     * @param i The row index of the book segment.
+     * @param j The column index of the book segment.
+     * @param position The position of the book segment within a row.
+     * @param state The state of the book segment.
+     */
 	public BookSegment(HeslingtonHustle game,int i,int j,Position position,State state) {
 		this.game = game;
 		this.sprite = new Texture("BookStackerMinigame/book.png");
@@ -39,22 +51,42 @@ public class BookSegment {
 		
 	}
 
+	/**
+     * Gets the y-coordinate of the book segment.
+     * @return The y-coordinate of the book segment.
+     */
 	public float getY() {
 		return y;
 	}
 
+	/**
+     * Sets the y-coordinate of the book segment.
+     * @param y the y-coordinate to set
+     */
 	public void setY(float y) {
 		this.y = y;
 	}
 
+	/**
+     * Gets the x-coordinate of the book segment.
+     * @return The x-coordinate of the book segment.
+     */
 	public float getX() {
 		return x;
 	}
 
+	/**
+     * Sets the x-coordinate of the book segment.
+     * @param x the x-coordinate to set
+     */
 	public void setX(float x) {
 		this.x = x;
 	}
 
+	/**
+     * Updates the state of the book segment.
+     * Called every frame in the BookStacker render method.
+     */
 	public void update() {
 		//Drops block if mouse clicked and block moving
 		if(Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)&& this.state == State.MOVING && BookStacker.blockDrop == false) {
@@ -80,11 +112,10 @@ public class BookSegment {
 		drawSprite();
 	}
 	
+	/**
+	 * Used to move blocks left and right
+	 */
 	private void move() {
-		/*
-		 * Used to move blocks left and right
-		 */
-		
 		if(BookStacker.currentLength > 2){
 		
 			// direction right on right and edge swap move left
@@ -188,10 +219,11 @@ public class BookSegment {
 				
 		}
 	}
+	
+	/*
+	 * Enacts gravity on blocks.
+	 */
 	public void fall() {
-		/*
-		 * Enacts gravity on blocks
-		 */
 		//STOP FALLING
 		if(this.i == BookStacker.currentHeight){
 			this.state = State.STATIONARY;
@@ -219,22 +251,22 @@ public class BookSegment {
 		
 	}
 	
+	/**
+     * Draws the book segment sprite.
+     */
 	private void drawSprite() {
-		// TODO Auto-generated method stub
 		game.batch.begin();
 		game.batch.draw(sprite,x,y);
 		game.batch.end();
 	}
 		
+	/**
+	 * Disposes of blocks
+	 */
 	public void kill() {
-		/*
-		 * Disposes of blocks
-		 */
 		BookStacker.clock = 0; // This resets clock after a move is made
 		this.sprite.dispose();
 		 BookStacker.bookGrid[this.i][this.j] = null;
-		
-	
 	}
 
 }

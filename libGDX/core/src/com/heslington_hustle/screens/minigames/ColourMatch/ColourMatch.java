@@ -1,10 +1,14 @@
+/**
+ * Represents the Colour Match minigame screen.
+ * This minigame requires players to memorize and replicate sequences of colored blocks.
+ * It extends the MinigameScreen class and implements the Screen interface.
+ */
 package com.heslington_hustle.screens.minigames.ColourMatch;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
@@ -46,6 +50,11 @@ public class ColourMatch extends MinigameScreen implements Screen {
 	
 	private Music backgroundMusic;
 	
+	/**
+     * Constructs a new ColourMatch object with the specified game instance and difficulty scalar.
+     * @param game The HeslingtonHustle game instance.
+     * @param difficultyScalar The scalar value representing the difficulty level of the minigame.
+     */
 	public ColourMatch(HeslingtonHustle game, float difficultyScalar) {
 		super(game, difficultyScalar);
 		this.studyPointsGained = 15f; // From worst possible performance
@@ -56,9 +65,11 @@ public class ColourMatch extends MinigameScreen implements Screen {
 		backgroundMusic.setLooping(true);
 	}
 	
+	/**
+     * Starts the Colour Match minigame.
+     */
 	@Override
 	public void startGame() {
-		
 		// Code to restart the game
 		studyPointsGained = 15f;
 		background = new Texture("ColourMatchMinigame/Background.png");
@@ -69,6 +80,7 @@ public class ColourMatch extends MinigameScreen implements Screen {
 		blockShown = false;
 		pointer = 0;
 		clock = 0;
+		
 		// If in borderless, set to fullscreen to pause game if unfocused
 		if(game.isBorderless) {
 			Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode());
@@ -86,6 +98,9 @@ public class ColourMatch extends MinigameScreen implements Screen {
 	    }
 	}
 	
+	/**
+     * Ends the Colour Match minigame.
+     */
 	private void endGame() {
 		// Calculate final score
 		studyPointsGained += score/2;
@@ -130,6 +145,10 @@ public class ColourMatch extends MinigameScreen implements Screen {
 		game.setScreen(new InformationScreen(game, "studyGameScore", game.map, score, studyPointsGained));
 	}
 	
+	/**
+     * Renders the Colour Match minigame screen.
+     * @param delta The time elapsed since the last frame.
+     */
 	@Override
 	public void render(float delta) {
 		clock += Gdx.graphics.getDeltaTime();
@@ -188,33 +207,35 @@ public class ColourMatch extends MinigameScreen implements Screen {
 	    }
 	}
 	
+	/**
+	 * Used to draw the background on screen
+	 */
 	private void renderBackground() {
-		/**
-		 * Used to draw the background on screen
-		 */
 		game.batch.begin();
 		game.batch.draw(background,0,0);
 		game.batch.end();
 	}
 
+	/**
+	 *Used to add a colour to the sequence
+	 */
 	public void addToSequence() {
-		/**
-		 *Used to add a colour to the sequence
-		 */
 		sequence.add(generateColour()) ;
-		
 	}
 	
-	//Gets a Colour for the sequence
+	/**
+	 * Generates a random colour to be added to the sequence to guess
+	 */
 	public Colour generateColour() {
-		/**
-		 * Generates a random colour to be added to the sequence to guess
-		 * 
-		 */
 		int random = MathUtils.random.nextInt(4);
 		        return colourList[random];
 	}
 
+	/**
+     * Called when the screen size changes.
+     * @param width The new width.
+     * @param height The new height.
+     */
 	@Override
 	public void resize(int width, int height) {
 		if(width == 0 && height == 0) {
@@ -226,10 +247,10 @@ public class ColourMatch extends MinigameScreen implements Screen {
 		}
 	}
 
+	/**
+	 * Draws all blocks on screen including sequence block if exists
+	 */
 	public void renderBlocks() {
-		/**
-		 * Draws all blocks on screen including sequence block if exists
-		 */
 		redBlock.drawSprite();
 		blueBlock.drawSprite();
 		yellowBlock.drawSprite();
@@ -238,14 +259,11 @@ public class ColourMatch extends MinigameScreen implements Screen {
 			sequenceBlock.drawSprite();
 		}
 	}
-	@Override
-	public void dispose() {
-		
-	}
+
+	/**
+	 * Used to display the sequence to  be guessed
+	 */
 	public void displaySequence() {
-		/**
-		 * Used to display the sequence to  be guessed
-		 */
 		if(clock > (0.5-(0.025*sequence.size)) && toDisplaySequence == true) { //If sequence is playing and enough time has passed between blocks shown
 	    	if(pointer > sequence.size-1) { //Code to end showing sequence
 	    		toDisplaySequence = false;
@@ -266,10 +284,11 @@ public class ColourMatch extends MinigameScreen implements Screen {
 	    	
 	    }
 	}
+	
+	/**
+	 * Checks if the correct colour is pressed, and ends the game if not, or progresses game if it is
+	 */
 	public void readPlayerInputSequence() {
-		/**
-		 * Checks if the correct colour is pressed, and ends the game if not, or progresses game if it is
-		 */
 		if(Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
 			game.menuClick.play(game.volume);
 			 switch(sequence.get(sequencePressed)) {
@@ -288,18 +307,27 @@ public class ColourMatch extends MinigameScreen implements Screen {
 		}
 	}
 	
+	/**
+     * Called when this screen stops being displayed.
+     */
 	@Override
 	public void hide() {
 		// Stop music
 		backgroundMusic.stop();
 	}
 	
+	/**
+     * Called when this screen becomes displayed.
+     */
 	@Override
 	public void show() {
 		// Play music
 		backgroundMusic.play();
 	}
 	
+	/**
+     * Updates the volume of the background music based on the game's volume setting.
+     */
 	private void updateMusicVolume() {
 		float musicVolume = game.volume/2;
 		backgroundMusic.setVolume(musicVolume);

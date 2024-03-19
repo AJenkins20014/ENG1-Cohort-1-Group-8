@@ -1,3 +1,8 @@
+/**
+ * Represents the Swift Swimmer minigame screen.
+ * This minigame requires players click as fast as possible to swim laps and gain score.
+ * It extends the MinigameScreen class and implements the Screen interface.
+ */
 package com.heslington_hustle.screens.minigames.SwiftSwimmer;
 
 import com.badlogic.gdx.Gdx;
@@ -5,15 +10,12 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.Input.Keys;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Align;
 import com.heslington_hustle.game.HeslingtonHustle;
-import com.heslington_hustle.game.PopUpText;
 import com.heslington_hustle.screens.InformationScreen;
 import com.heslington_hustle.screens.MinigameScreen;
 
@@ -32,6 +34,11 @@ public class SwiftSwimmer extends MinigameScreen implements Screen {
 	public static Animation<TextureRegion> swimAnimation;
 	private Texture swimSheet;
 
+	/**
+	 * Constructs a new SwiftSwimmer minigame screen.
+	 * @param game The HeslingtonHustle game instance.
+	 * @param difficultyScalar The difficulty scalar.
+	 */
 	public SwiftSwimmer(HeslingtonHustle game, float difficultyScalar) {
 		super(game, difficultyScalar);
 		this.energyGained = 20f; // From worst possible performance
@@ -47,6 +54,9 @@ public class SwiftSwimmer extends MinigameScreen implements Screen {
 		splash = Gdx.audio.newSound(Gdx.files.internal("SwiftSwimmerMinigame/Splash.mp3"));
 	}
 	
+	/**
+     * Starts the Swift Swimmer minigame.
+     */
 	@Override
 	public void startGame() {
 		loadAnimations();
@@ -69,6 +79,9 @@ public class SwiftSwimmer extends MinigameScreen implements Screen {
 		
 	}
 	
+	/**
+     * Ends the Swift Swimmer minigame.
+     */
 	private void endGame() {
 		Gdx.input.setCursorPosition(320, 170);
 		//Calculates score and energy gained from laps done
@@ -98,6 +111,10 @@ public class SwiftSwimmer extends MinigameScreen implements Screen {
 		
 	}
 	
+	/**
+     * Renders the Book Stacker minigame screen.
+     * @param delta The time elapsed since the last frame.
+     */
 	@Override
 	public void render(float delta) {
 		
@@ -110,9 +127,6 @@ public class SwiftSwimmer extends MinigameScreen implements Screen {
 		// Set projection matrix of the batch to the camera
 		game.batch.setProjectionMatrix(game.camera.combined);
 		game.camera.update();
-		
-		// Get mouse position in world coordinates
-		Vector3 mousePos = game.camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 1f));
 
 		// Draw background
 		game.batch.begin();
@@ -155,6 +169,9 @@ public class SwiftSwimmer extends MinigameScreen implements Screen {
 		swimmer.Swim();
 	}
 	
+	/**
+     * Loads the swim animation.
+     */
 	private void loadAnimations(){
 		// Load animations
 		if(game.player.avatarNumber == 0) {
@@ -183,6 +200,11 @@ public class SwiftSwimmer extends MinigameScreen implements Screen {
 		
 	}
 	
+	/**
+     * Called when the screen size changes.
+     * @param width The new width.
+     * @param height The new height.
+     */
 	@Override
 	public void resize(int width, int height) {
 		if(width == 0 && height == 0) {
@@ -194,26 +216,29 @@ public class SwiftSwimmer extends MinigameScreen implements Screen {
 		}
 	}
 	
+	/**
+     * Called when this screen stops being displayed.
+     */
 	@Override
 	public void hide() {
 		// Stop music
 		backgroundMusic.stop();
 	}
 	
+	/**
+     * Called when this screen becomes displayed.
+     */
 	@Override
 	public void show() {
 		// Play music
 		backgroundMusic.play();
 	}
 	
+	/**
+     * Updates the volume of the background music based on the game's volume setting.
+     */
 	private void updateMusicVolume() {
 		float musicVolume = game.volume/2;
 		backgroundMusic.setVolume(musicVolume);
 	}
-	
-	@Override
-	public void dispose() {
-		
-	}
-
 }

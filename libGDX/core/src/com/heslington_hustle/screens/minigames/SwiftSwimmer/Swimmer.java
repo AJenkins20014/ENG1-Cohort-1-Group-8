@@ -1,8 +1,10 @@
+/**
+ * Represents the swimmer in the Swift Swimmer minigame.
+ */
 package com.heslington_hustle.screens.minigames.SwiftSwimmer;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.heslington_hustle.game.HeslingtonHustle;
 
@@ -17,6 +19,10 @@ public class Swimmer {
 	public boolean doesLapCount;
 	private int clickCount;
 	
+	/**
+     * Constructs a new Swimmer object.
+     * @param game The HeslingtonHustle game instance.
+     */
 	public Swimmer(HeslingtonHustle game) {
 		doesLapCount = false; //Fixes error where lap marked as completed after first stroke
 		laps = 0;
@@ -28,10 +34,10 @@ public class Swimmer {
 		this.clickCount = 0;
 	}
 	
+	/**
+	 * Code used to move the swimmer and animate movement
+	 */
 	public void Swim() {
-		/**
-		 * Code used to move the swimmer and animate movement
-		 */
 		if(Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)){
 			boundaryChecks();
 			this.x += this.speed;
@@ -43,10 +49,11 @@ public class Swimmer {
 		drawSprite();
 		
 	}
+	
+	/**
+	 * Runs swimmer animation
+	 */
 	public void drawSprite() {
-		/**
-		 * Runs swimmer animation
-		 */
 		game.batch.begin();
 		currentFrame = SwiftSwimmer.swimAnimation.getKeyFrame(frame, true);
 		if(speed < 0 && clickCount != 0){
@@ -57,11 +64,12 @@ public class Swimmer {
 		}
 		game.batch.end();
 	}
+	
+	/**
+	 * Changes player direction and increments laps
+	 * if the player is at the end of the screen
+	 */
 	private void boundaryChecks() {
-		/**
-		 * Changes player direction and increments laps
-		 * if the player is at the end of the screen
-		 */
 		if(this.x > 550 || this.x < 50){
 			speed = -speed;
 			if(doesLapCount == true) {
