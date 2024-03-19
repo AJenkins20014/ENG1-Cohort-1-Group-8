@@ -59,17 +59,17 @@ public class SwiftSwimmer extends MinigameScreen implements Screen {
 		}
 		
 		
-		// Display tutorial - TODO: create a tutorial in InformationScreen and rename the string in the constructor below to fit
+		// Display tutorial
 	    game.setScreen(new InformationScreen(game,"swiftSwimmerTutorial", this));
 	    
 	    //Declares a swimmer
 		swimmer = new Swimmer(game);
 		
-		// Temporary - TODO: REMOVE
 	}
 	
 	private void endGame() {
 		Gdx.input.setCursorPosition(320, 170);
+		//Calculates score and energy gained from laps done
 		score = swimmer.laps*75;
 		energyGained += score/15;
 
@@ -120,11 +120,12 @@ public class SwiftSwimmer extends MinigameScreen implements Screen {
 		
 		game.batch.begin();
 		game.font.getData().setScale(0.3f); // Set font size
+		//Shows remaining time and laps completed
 		game.font.draw(game.batch, "Time Remaining: " + Integer.toString((int)Math.round(15 - Math.ceil(clock) )), 100, 350, 100, Align.center, false);
 		game.font.draw(game.batch, "Laps Completed: " + Integer.toString((swimmer.laps)), 400, 350, 100, Align.center, false);
 		
 		
-		//Move Swimmer
+		//Ends game after 15 seconds
 		if(clock > 15) {
 			endGame();
 		}

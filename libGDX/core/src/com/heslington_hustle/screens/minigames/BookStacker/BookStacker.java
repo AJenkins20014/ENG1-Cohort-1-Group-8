@@ -85,8 +85,8 @@ public class BookStacker extends MinigameScreen implements Screen {
 		// Display tutorial
 	    game.setScreen(new InformationScreen(game, "bookStackerTutorial", this));
 	   
-		spawnBook(0,5,State.STATIONARY); //  Bottom Platform
-		spawnBook(8,0,State.MOVING);
+		spawnBook(0,5,State.STATIONARY); // spawns Bottom Platform
+		spawnBook(8,0,State.MOVING); // spawns first row to drop
 	}
 	
 	private void endGame() {
@@ -134,6 +134,12 @@ public class BookStacker extends MinigameScreen implements Screen {
 	}
 	
 	public void spawnBook(int i,int jPassed,BookSegment.State state) {
+		/*
+		 * Spawns in a row of books aned assigns edges
+		 * @param int i - y level of books
+		 * @param int jPassed - starting x for books to spawn at
+		 * @param State state - the state the book is in
+		 */
 		for(int j = jPassed; j<currentLength+jPassed;j++) {
 			if(j == jPassed) {
 				position = Position.LEFT_END;
@@ -144,6 +150,7 @@ public class BookStacker extends MinigameScreen implements Screen {
 			else {
 				position = Position.MIDDLE;
 			}
+			//Creates segment and adds to grid
 			BookSegment segment= new BookSegment(game,i,j,position,state);
 			bookGrid[i][j] = segment;
 		}
@@ -156,7 +163,7 @@ public class BookStacker extends MinigameScreen implements Screen {
 		}
 		//increment clock
 		clock += Gdx.graphics.getDeltaTime();
-		//Increases tower height and speed after row placed
+		//Increases tower height and speed after row placed + Increments score
 		if(changeHeightandSpeed) {
 			currentHeight+=1;
 			score += 10*currentLength;
@@ -180,8 +187,8 @@ public class BookStacker extends MinigameScreen implements Screen {
 		
 		// Get mouse position in world coordinates
 		Vector3 mousePos = game.camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 1f));
-		//Counts all blocks have fallen and spawns in new segments
 		
+		//Counts all blocks have fallen and spawns in new segments
 		if(BookSegment.counter == currentLength) {
 			spawnBook(8,0,State.MOVING);
 			BookSegment.counter = 0;
@@ -190,6 +197,7 @@ public class BookStacker extends MinigameScreen implements Screen {
 
 		game.batch.begin();
 		
+		//Display score
 		game.font.getData().setScale(0.3f); // Set font size
 		game.font.draw(game.batch, "Score: " + Integer.toString((score)), 400, 350, 100, Align.center, false);
 		// Check if player has paused the game
@@ -217,8 +225,11 @@ public class BookStacker extends MinigameScreen implements Screen {
 		}
 	}
 	
-	//Used to remove segments that are unusable
+	
 	public void wipe() {
+		/*
+		 * //Used to remove segments that are unusable
+		 */
 		for (int i = currentHeight-1; i>=0;i--) {
 			for (int j = 0; j <16 ; j++) {
 				if (bookGrid[i][j] instanceof BookSegment) {
@@ -242,8 +253,12 @@ public class BookStacker extends MinigameScreen implements Screen {
 		}
 	}
 	public void removeCenter(){
+		/*
+		 * Removes center of tower for replayability
+		 */
 		//Stops new blocks from spawning
 		blockDrop = true;
+		//Removes centre blocks
 		for (int i = 4; i >= 1; i--) {
 			for (int j = 0; j < columns; j++) {
 				if (bookGrid[i][j] instanceof BookSegment) {
@@ -254,6 +269,7 @@ public class BookStacker extends MinigameScreen implements Screen {
 		
 		}
 		currentHeight = 1; //0 INDEXED
+		//Drops top row
 		for (int j = 0; j < columns; j++) {
 			if (bookGrid[4][j] instanceof BookSegment) {
 				((BookSegment) bookGrid[4][j]).fall();

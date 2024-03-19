@@ -29,6 +29,9 @@ public class Swimmer {
 	}
 	
 	public void Swim() {
+		/**
+		 * Code used to move the swimmer and animate movement
+		 */
 		if(Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)){
 			boundaryChecks();
 			this.x += this.speed;
@@ -41,6 +44,9 @@ public class Swimmer {
 		
 	}
 	public void drawSprite() {
+		/**
+		 * Runs swimmer animation
+		 */
 		game.batch.begin();
 		currentFrame = SwiftSwimmer.swimAnimation.getKeyFrame(frame, true);
 		if(speed < 0 && clickCount != 0){
@@ -52,6 +58,10 @@ public class Swimmer {
 		game.batch.end();
 	}
 	private void boundaryChecks() {
+		/**
+		 * Changes player direction and increments laps
+		 * if the player is at the end of the screen
+		 */
 		if(this.x > 550 || this.x < 50){
 			speed = -speed;
 			if(doesLapCount == true) {

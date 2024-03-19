@@ -56,7 +56,7 @@ public class BookSegment {
 	}
 
 	public void update() {
-		
+		//Drops block if mouse clicked and block moving
 		if(Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)&& this.state == State.MOVING && BookStacker.blockDrop == false) {
 				this.state = State.FALLING;
 				BookStacker.changeHeightandSpeed = true;
@@ -64,12 +64,14 @@ public class BookSegment {
 			
 			
 		}
+		//Moves blocks to side, speeds up blocks movement as more blocks fall
 		if (BookStacker.clock >= 0.75*BookStacker.fallSpeed){
 			if(this.state == State.MOVING){
 				move();
 			} 
 			
 		}
+		//Drops blocks if falling
 		if (BookStacker.clock >=0.01){
 			if(this.state == State.FALLING) {
 				fall();
@@ -79,6 +81,9 @@ public class BookSegment {
 	}
 	
 	private void move() {
+		/*
+		 * Used to move blocks left and right
+		 */
 		
 		if(BookStacker.currentLength > 2){
 		
@@ -184,6 +189,9 @@ public class BookSegment {
 		}
 	}
 	public void fall() {
+		/*
+		 * Enacts gravity on blocks
+		 */
 		//STOP FALLING
 		if(this.i == BookStacker.currentHeight){
 			this.state = State.STATIONARY;
@@ -219,6 +227,9 @@ public class BookSegment {
 	}
 		
 	public void kill() {
+		/*
+		 * Disposes of blocks
+		 */
 		BookStacker.clock = 0; // This resets clock after a move is made
 		this.sprite.dispose();
 		 BookStacker.bookGrid[this.i][this.j] = null;
