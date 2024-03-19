@@ -71,6 +71,7 @@ public class ColourMatch extends MinigameScreen implements Screen {
 	@Override
 	public void startGame() {
 		// Code to restart the game
+		score = 0;
 		studyPointsGained = 15f;
 		background = new Texture("ColourMatchMinigame/Background.png");
 		sequencePressed = 0;
@@ -103,7 +104,7 @@ public class ColourMatch extends MinigameScreen implements Screen {
      */
 	private void endGame() {
 		// Calculate final score
-		studyPointsGained += score/2;
+		studyPointsGained += score/4;
 		
 		 //Check minigame high score
 		if(!exam) {
@@ -117,6 +118,8 @@ public class ColourMatch extends MinigameScreen implements Screen {
 			studyPointsGained = maxStudyPointsGained;
 		}
 		
+		System.out.print("Colour Match study points gained: " + studyPointsGained + "\n");
+		
 		// Reset window back to borderless
 		if(game.isBorderless) {
 			Gdx.graphics.setUndecorated(true);
@@ -124,7 +127,9 @@ public class ColourMatch extends MinigameScreen implements Screen {
 		}
 		
 		if(exam) {
-			game.exam.score += studyPointsGained/33;
+			System.out.print("Colour Match difficulty Scalar: " + difficultyScalar + "\n");
+			game.exam.score += studyPointsGained/3;
+			System.out.print("Exam score after Colour Match: " + game.exam.score + "\n");
 			game.exam.loadNextMinigame();
 			return;
 		}

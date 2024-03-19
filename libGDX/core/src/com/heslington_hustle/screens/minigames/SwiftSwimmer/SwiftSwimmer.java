@@ -98,6 +98,31 @@ public class SwiftSwimmer extends MinigameScreen implements Screen {
 			energyGained = maxEnergyGained;
 		}
 		
+		// Check if this activity has been done today, and if so reduce energy gained
+		if(game.recreationActivitiesToday.get("Swift Swimmer") > 3) {
+			energyGained /= 3;
+		}
+		if(game.recreationActivitiesToday.get("Swift Swimmer") > 2) {
+			energyGained /= 2;
+		}
+		if(game.recreationActivitiesToday.get("Swift Swimmer") > 1) {
+			energyGained /= 1.5;
+		}
+		else if(game.recreationActivitiesToday.get("Swift Swimmer") > 0) {
+			energyGained /= 1.25;
+		}
+		
+		// Increase count of activity done today
+		if(!game.recreationActivitiesToday.containsKey("Swift Swimmer")) {
+			game.recreationActivitiesToday.put("Swift Swimmer", 1);
+		}
+		else{
+			game.recreationActivitiesToday.put("Swift Swimmer", game.recreationActivitiesToday.get("Swift Swimmer")+1);
+		}
+		
+		System.out.print("Swift Swimmer energy gained: " + energyGained + "\n");
+		
+		// Add energy
 		game.energyBar.addEnergy(energyGained);
 		
 		// Reset window back to borderless

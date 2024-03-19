@@ -73,6 +73,8 @@ public class Bed extends Object {
 				game.time = 8; // Set time to 8am
 				game.day++; // Cycle day
 				game.timesEatenToday = 0;
+				game.recreationActivitiesToday.clear();
+				System.out.print("Day: " + game.day + "\n");
 				if(game.day > 7) {
 					startExam();
 				}

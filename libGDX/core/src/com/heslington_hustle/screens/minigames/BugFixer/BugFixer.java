@@ -163,10 +163,22 @@ public class BugFixer extends MinigameScreen implements Screen {
      */
 	private void endGame() {
 		// Add difficulty modifier to score
-		score = (int) (score*(1/difficultyScalar));
+		if(difficultyScalar == 0.25f) {
+			score = (int) (score*2);
+		}
+		else if(difficultyScalar == 0.5f) {
+			score = (int) (score*1.5);
+		}
+		else if(difficultyScalar == 1.5f) {
+			score = (int) (score/1.5);
+		}
+		else if(difficultyScalar == 2f) {
+			score = (int) (score/2);
+		}
+		
 		
 		// Calculate final score
-		studyPointsGained += clock/3;
+		studyPointsGained += clock/4;
 		studyPointsGained += score/10;
 		
 		// Check BugFixer high score
@@ -177,10 +189,11 @@ public class BugFixer extends MinigameScreen implements Screen {
 			}
 		}
 		
-		
 		if(studyPointsGained > maxStudyPointsGained) {
 			studyPointsGained = maxStudyPointsGained;
 		}
+		
+		System.out.print("BugFixer study points gained: " + studyPointsGained + "\n");
 		
 		// Set game back to borderless if the user had it set
 		if(game.isBorderless) {
@@ -192,7 +205,9 @@ public class BugFixer extends MinigameScreen implements Screen {
 		Gdx.graphics.setCursor(game.cursor);
 		
 		if(exam) {
-			game.exam.score += studyPointsGained/33;
+			System.out.print("BugFixer difficulty Scalar: " + difficultyScalar + "\n");
+			game.exam.score += studyPointsGained/3;
+			System.out.print("BugFixer score after BookStacker: " + game.exam.score + "\n");
 			game.exam.loadNextMinigame();
 			return;
 		}

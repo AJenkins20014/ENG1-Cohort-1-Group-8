@@ -120,7 +120,7 @@ public class Squash extends MinigameScreen implements Screen {
 		
 		// Check if the ball has no vertical velocity and if so, apply it.
 		if(ball.getLinearVelocity().y < 50f && ball.getLinearVelocity().y > -50f) {
-        	ball.applyLinearImpulse(0, 100000, ball.getPosition().x, ball.getPosition().y, true);
+        	ball.applyLinearImpulse(0, 50000, ball.getPosition().x, ball.getPosition().y, true);
         }
     }
 	
@@ -159,7 +159,7 @@ public class Squash extends MinigameScreen implements Screen {
      * Ends the game and displays the final score.
      */
 	private void endGame() {
-		energyGained += score/5;
+		energyGained += score/6;
 		
 		// Check minigame high score
 		if(game.prefs.getInteger("squashHighScore", 0) < score) {
@@ -171,6 +171,31 @@ public class Squash extends MinigameScreen implements Screen {
 			energyGained = maxEnergyGained;
 		}
 		
+		// Check if this activity has been done today, and if so reduce energy gained
+		if(game.recreationActivitiesToday.get("Squash") > 3) {
+			energyGained /= 3;
+		}
+		if(game.recreationActivitiesToday.get("Squash") > 2) {
+			energyGained /= 2;
+		}
+		if(game.recreationActivitiesToday.get("Squash") > 1) {
+			energyGained /= 1.5;
+		}
+		else if(game.recreationActivitiesToday.get("Squash") > 0) {
+			energyGained /= 1.25;
+		}
+		
+		// Increase count of activity done today
+		if(!game.recreationActivitiesToday.containsKey("Squash")) {
+			game.recreationActivitiesToday.put("Squash", 1);
+		}
+		else{
+			game.recreationActivitiesToday.put("Squash", game.recreationActivitiesToday.get("Squash")+1);
+		}
+		
+		System.out.print("Squash energy gained: " + energyGained + "\n");
+		
+		// Add energy
 		game.energyBar.addEnergy(energyGained);
 
 		// Display final score

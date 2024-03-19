@@ -6,6 +6,9 @@
  */
 package com.heslington_hustle.game;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -60,6 +63,7 @@ public class HeslingtonHustle extends Game {
 	public HashMap<String, Float> studyPoints = new HashMap<>(); // Is used to calculate final score and alter exam difficulty (Minigame Name | Study Points)
 	public int[] timesStudied = new int[7]; // Number of times studied per day.
 	public int timesEatenToday; // Number of times eaten on the current day
+	public HashMap<String, Integer> recreationActivitiesToday = new HashMap<>(); // Is used to keep track of what recreational activities have been done on the current day (Minigame Name | Times Completed)
 	
 	public MinigameScreen[] minigames = new MinigameScreen[7];
 	public ExamGame exam = new ExamGame(this, 1f);
@@ -80,6 +84,10 @@ public class HeslingtonHustle extends Game {
 	public Music mapMusic;
 	public Sound menuClick;
 	public Cursor cursor;
+	
+	// Creates a file with console contents for debugging
+	//public FileOutputStream fileOutputStream;
+	//public PrintStream printStream;
 	
 	/**
      * Initializes the game.
@@ -124,6 +132,23 @@ public class HeslingtonHustle extends Game {
 		// Load textures
 		blackScreen = new Sprite(new Texture("UI/BlackScreen.png"));
 		fadeClock = 3;
+		
+		/*
+		// Set fileOutputStream for debugging
+		try {
+            // Create a FileOutputStream to write to a file
+            fileOutputStream = new FileOutputStream("console_output.txt");
+            
+            // Create a PrintStream that writes to the FileOutputStream
+            printStream = new PrintStream(fileOutputStream);
+            
+            // Redirect System.out to the PrintStream
+            System.setOut(printStream);
+            
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        */
 		
 		// Display start menu
 		this.setScreen(new StartScreen(this));

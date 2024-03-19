@@ -100,7 +100,7 @@ public class BookStacker extends MinigameScreen implements Screen {
      */
 	private void endGame() {
 		// Calculate final score
-		studyPointsGained += score/8;
+		studyPointsGained += score/10;
 		
 		// Check minigame high score
 		if(!exam) {
@@ -114,6 +114,8 @@ public class BookStacker extends MinigameScreen implements Screen {
 			studyPointsGained = maxStudyPointsGained;
 		}
 		
+		System.out.print("BookStacker study points gained: " + studyPointsGained + "\n");
+		
 		// Reset window back to borderless
 		if(game.isBorderless) {
 			Gdx.graphics.setUndecorated(true);
@@ -121,7 +123,9 @@ public class BookStacker extends MinigameScreen implements Screen {
 		}
 		
 		if(exam) {
-			game.exam.score += studyPointsGained/33;
+			System.out.print("BookStacker difficulty Scalar: " + difficultyScalar + "\n");
+			game.exam.score += studyPointsGained/3;
+			System.out.print("Exam score after BookStacker: " + game.exam.score + "\n");
 			game.exam.loadNextMinigame();
 			return;
 		}

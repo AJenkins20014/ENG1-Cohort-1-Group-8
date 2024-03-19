@@ -170,8 +170,10 @@ public class CharacterSelectScreen implements Screen{
 		game.day = 1;
 		game.time = 8;
 		game.studyPoints.clear();
+		game.recreationActivitiesToday.clear();
 		game.timesStudied = new int[7];
 		game.timesEatenToday = 0;
+		System.out.print("Day: " + game.day + "\n");
 		game.setScreen(new InformationScreen(game, "mainTutorial", new Map(game, 3)));
 	}
 

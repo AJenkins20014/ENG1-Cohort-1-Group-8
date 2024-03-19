@@ -77,19 +77,19 @@ public class ExamGame extends MinigameScreen implements Screen {
 			// Studying a minigame will make it easier when it shows up in the exam
 			
 			// Very Easy difficulty
-			if(studyPoints > 300f) { 
+			if(studyPoints > 500f) { 
 				difficultyScalars.put(minigames[i], 0.25f);
 			}
 			// Easy difficulty
-			else if(studyPoints > 200f) {
+			else if(studyPoints > 400f) {
 				difficultyScalars.put(minigames[i], 0.5f);
 			}
-			// Default difficulty - studied this minigame 2-3 times with average performance
-			else if(studyPoints > 120f) {
+			// Default difficulty
+			else if(studyPoints > 300f) {
 				difficultyScalars.put(minigames[i], 1f);
 			}
 			// Hard difficulty
-			else if(studyPoints > 60f) {
+			else if(studyPoints > 200f) {
 				difficultyScalars.put(minigames[i], 1.5f);
 			}
 			// Very hard difficulty
@@ -103,6 +103,7 @@ public class ExamGame extends MinigameScreen implements Screen {
 		
 		// Average starting score will be around 420?
 		score = studyPointsTotal/20; // Temporary calculation
+		System.out.print("Initial exam score: " + score + "\n");
 		if(score > scoreCap) {
 			score = scoreCap;
 		}
