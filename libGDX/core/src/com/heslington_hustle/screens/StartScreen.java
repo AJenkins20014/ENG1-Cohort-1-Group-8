@@ -43,9 +43,10 @@ public class StartScreen implements Screen {
 		// Draw high scores - TODO: Add high scores for other minigames
 		game.font.getData().setScale(0.4f); // Set font size
 		game.font.setColor(new Color(232/255f, 193/255f, 112/255f, 1));
-		game.font.draw(game.batch, "High Score: " + Integer.toString(game.prefs.getInteger("highScore", 0)), 470, 190, 140, Align.right, false);
-		game.font.draw(game.batch, "BugFixer High Score: " + Integer.toString(game.prefs.getInteger("bugFixerHighScore", 0)), 470, 160, 140, Align.right, false);
-		game.font.draw(game.batch, "BookStacker High Score: " + Integer.toString(game.prefs.getInteger("bookStackerHighScore", 0)), 470, 130, 140, Align.right, false);
+		game.font.draw(game.batch, "High Score: " + Integer.toString(game.prefs.getInteger("highScore", 0)), 470, 210, 140, Align.right, false);
+		game.font.draw(game.batch, "BugFixer High Score: " + Integer.toString(game.prefs.getInteger("bugFixerHighScore", 0)), 470, 190, 140, Align.right, false);
+		game.font.draw(game.batch, "BookStacker High Score: " + Integer.toString(game.prefs.getInteger("bookStackerHighScore", 0)), 470, 160, 140, Align.right, false);
+		game.font.draw(game.batch, "ColourMatch High Score: " + Integer.toString(game.prefs.getInteger("colourMatchHighScore", 0)), 470, 130, 140, Align.right, false);
 		game.font.draw(game.batch, "SwiftSwimmer High Score: " + Integer.toString(game.prefs.getInteger("swiftSwimmerHighScore", 0)), 470, 100, 140, Align.right, false);
 		game.font.draw(game.batch, "DrunkDancer High Score: " + Integer.toString(game.prefs.getInteger("drunkDancerHighScore", 0)), 470, 70, 140, Align.right, false);
 		game.font.draw(game.batch, "Squash High Score: " + Integer.toString(game.prefs.getInteger("squashHighScore", 0)), 470, 40, 140, Align.right, false);

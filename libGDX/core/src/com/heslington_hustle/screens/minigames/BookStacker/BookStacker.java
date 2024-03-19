@@ -177,6 +177,7 @@ public class BookStacker extends MinigameScreen implements Screen {
 		game.batch.setProjectionMatrix(game.camera.combined);
 		game.camera.update();
 		renderBackground();
+		
 		// Get mouse position in world coordinates
 		Vector3 mousePos = game.camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 1f));
 		//Counts all blocks have fallen and spawns in new segments
@@ -198,7 +199,8 @@ public class BookStacker extends MinigameScreen implements Screen {
 					
 		game.batch.begin();
 		
-		
+		game.font.getData().setScale(0.3f); // Set font size
+		game.font.draw(game.batch, "Score: " + Integer.toString((score)), 400, 350, 100, Align.center, false);
 		// Check if player has paused the game
 		if(Gdx.input.isKeyJustPressed(Keys.ESCAPE)) {
 			game.togglePause();

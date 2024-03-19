@@ -123,7 +123,8 @@ public class SwiftSwimmer extends MinigameScreen implements Screen {
 		swimmer.Swim();
 		game.batch.begin();
 		game.font.getData().setScale(0.3f); // Set font size
-		game.font.draw(game.batch, "Time Remaining: " + Integer.toString((int)Math.round(15 - Math.ceil(clock) )), 400, 350, 100, Align.center, false);
+		game.font.draw(game.batch, "Time Remaining: " + Integer.toString((int)Math.round(15 - Math.ceil(clock) )), 100, 350, 100, Align.center, false);
+		game.font.draw(game.batch, "Laps Completed: " + Integer.toString((swimmer.laps)), 400, 350, 100, Align.center, false);
 		
 		
 		//Move Swimmer

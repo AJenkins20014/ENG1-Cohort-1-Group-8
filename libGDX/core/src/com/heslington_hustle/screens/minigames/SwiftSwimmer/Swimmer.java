@@ -14,9 +14,11 @@ public class Swimmer {
 	public int speed;
 	private TextureRegion currentFrame;
 	private int frame;
+	public boolean doesLapCount;
 	private int clickCount;
 	
 	public Swimmer(HeslingtonHustle game) {
+		doesLapCount = false; //Fixes error where lap marked as completed after first stroke
 		laps = 0;
 		this.game = game;
 		this.speed = -50; //Starts in change boundary at side
@@ -52,7 +54,12 @@ public class Swimmer {
 	private void boundaryChecks() {
 		if(this.x > 550 || this.x < 50){
 			speed = -speed;
-			laps += 1;	
+			if(doesLapCount == true) {
+				laps += 1;	
+			}
+			else {
+				doesLapCount = true;
+			}
 		}
 		
 	}

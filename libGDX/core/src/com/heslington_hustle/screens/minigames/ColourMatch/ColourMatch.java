@@ -81,13 +81,13 @@ public class ColourMatch extends MinigameScreen implements Screen {
 		// Calculate final score
 		//studyPointsGained += score;
 		
-		/*
-		// Check minigame high score
-		if(game.prefs.getInteger("thisMinigameHighScore", 0) < score) {
-			game.prefs.putInteger("thisMinigameHighScore", score);
+	
+		 //Check minigame high score
+		if(game.prefs.getInteger("colourMatchHighScore", 0) < score) {
+			game.prefs.putInteger("colourMatchHighScore", score);
 			game.prefs.flush();
 		}
-		*/
+	
 		
 		if(studyPointsGained > maxStudyPointsGained) {
 			studyPointsGained = maxStudyPointsGained;
@@ -136,6 +136,7 @@ public class ColourMatch extends MinigameScreen implements Screen {
 	    //Display Sequence
 	    displaySequence();
 	    readPlayerInputSequence();
+	  
 	    if(sequencePressed  == sequence.size) {
 	    	toDisplaySequence = true;
 	    	sequencePressed = 0;
@@ -146,8 +147,9 @@ public class ColourMatch extends MinigameScreen implements Screen {
 	    
 		game.batch.begin();
 		
-		
-		// CODE TO RENDER SPRITES GOES HERE
+		game.font.getData().setScale(0.3f); // Set font size
+		game.font.draw(game.batch, "Score: " + Integer.toString((score)), 400, 350, 100, Align.center, false);
+
 		
 		
 		// Check if player has paused the game
