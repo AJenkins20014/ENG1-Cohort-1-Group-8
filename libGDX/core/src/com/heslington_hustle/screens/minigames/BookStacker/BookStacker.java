@@ -24,6 +24,7 @@ import com.heslington_hustle.screens.minigames.BugFixer.ScatterBug;
 import com.heslington_hustle.screens.minigames.BugFixer.SniperBug;
 
 public class BookStacker extends MinigameScreen implements Screen {
+	public Texture background;
 	private boolean minimised;
 	private float studyPointsGained;
 	private float maxStudyPointsGained;
@@ -64,6 +65,7 @@ public class BookStacker extends MinigameScreen implements Screen {
 	
 	@Override
 	public void startGame() {
+		background = new Texture("BookStackerMinigame/Background.png");
 		// Code to restart the game
 		score = 0;
 		fallSpeed = 1;
@@ -174,7 +176,7 @@ public class BookStacker extends MinigameScreen implements Screen {
 		// Set projection matrix of the batch to the camera
 		game.batch.setProjectionMatrix(game.camera.combined);
 		game.camera.update();
-		
+		renderBackground();
 		// Get mouse position in world coordinates
 		Vector3 mousePos = game.camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 1f));
 		//Counts all blocks have fallen and spawns in new segments
@@ -280,7 +282,12 @@ public class BookStacker extends MinigameScreen implements Screen {
 	public void dispose() {
 		
 	}
-	
+	private void renderBackground() {
+		// TODO Auto-generated method stub
+		game.batch.begin();
+		game.batch.draw(background,0,0);
+		game.batch.end();
+	}
 
 }
 

@@ -18,6 +18,7 @@ import com.heslington_hustle.screens.InformationScreen;
 import com.heslington_hustle.screens.MinigameScreen;
 
 public class ColourMatch extends MinigameScreen implements Screen {
+	public Texture background;
 	public int sequencePressed;
 	public boolean clicked;
 	Vector3 mousePos;
@@ -51,6 +52,7 @@ public class ColourMatch extends MinigameScreen implements Screen {
 	
 	@Override
 	public void startGame() {
+		background = new Texture("ColourMatchMinigame/Background.png");
 		sequencePressed = 0;
 		sequence = new Array<Colour>();
 		toDisplaySequence = true;
@@ -125,6 +127,7 @@ public class ColourMatch extends MinigameScreen implements Screen {
 		// Set projection matrix of the batch to the camera
 		game.batch.setProjectionMatrix(game.camera.combined);
 		game.camera.update();
+		renderBackground();
 		renderBlocks();
 		// Get mouse position in world coordinates
 		Vector3 mousePos = game.camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 1f));
@@ -162,6 +165,13 @@ public class ColourMatch extends MinigameScreen implements Screen {
 		// Anything that shouldn't happen while the game is paused should go here
 	}
 	
+	private void renderBackground() {
+		// TODO Auto-generated method stub
+		game.batch.begin();
+		game.batch.draw(background,0,0);
+		game.batch.end();
+	}
+
 	public void addToSequence() {
 		sequence.add(generateColour()) ;
 		
