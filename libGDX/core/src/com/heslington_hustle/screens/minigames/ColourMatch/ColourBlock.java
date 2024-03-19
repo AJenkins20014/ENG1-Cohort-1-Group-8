@@ -24,7 +24,6 @@ public class ColourBlock {
 		}
 	}
 	public void drawSprite() {
-		// TODO Auto-generated method stub
 		game.batch.begin();
 		game.batch.draw(sprite,x,y);
 		game.batch.end();

@@ -111,16 +111,13 @@ public class SwiftSwimmer extends MinigameScreen implements Screen {
 		
 		// Get mouse position in world coordinates
 		Vector3 mousePos = game.camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 1f));
-		//Increment delta time
-		clock += Gdx.graphics.getDeltaTime();
-		
+
 		// Draw background
 		game.batch.begin();
 		game.batch.draw(background, 0, 0);
 		game.batch.end();
 		
-		//Move Swimmer
-		swimmer.Swim();
+		
 		game.batch.begin();
 		game.font.getData().setScale(0.3f); // Set font size
 		game.font.draw(game.batch, "Time Remaining: " + Integer.toString((int)Math.round(15 - Math.ceil(clock) )), 100, 350, 100, Align.center, false);
@@ -131,10 +128,6 @@ public class SwiftSwimmer extends MinigameScreen implements Screen {
 		if(clock > 15) {
 			endGame();
 		}
-		
-		
-		// CODE TO RENDER SPRITES GOES HERE
-		
 		
 		// Check if player has paused the game
 		if(Gdx.input.isKeyJustPressed(Keys.ESCAPE)) {
@@ -151,6 +144,12 @@ public class SwiftSwimmer extends MinigameScreen implements Screen {
 				
 		if(game.paused) return;
 		// Anything that shouldn't happen while the game is paused should go here
+		
+		//Increment delta time
+		clock += Gdx.graphics.getDeltaTime();
+		
+		//Move Swimmer
+		swimmer.Swim();
 	}
 	
 	private void loadAnimations(){

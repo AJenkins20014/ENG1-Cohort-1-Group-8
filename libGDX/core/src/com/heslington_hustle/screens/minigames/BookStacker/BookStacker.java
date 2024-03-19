@@ -187,16 +187,7 @@ public class BookStacker extends MinigameScreen implements Screen {
 			BookSegment.counter = 0;
 			wipe();
 		}
-		
-		//Render Books
-			for (int i = 0; i < rows; i++) {
-				for (int j = 0; j < columns; j++) {
-					if (bookGrid[i][j] instanceof BookSegment) {
-						((BookSegment) bookGrid[i][j]).update();
-				    }
-				 }
-			}
-					
+
 		game.batch.begin();
 		
 		game.font.getData().setScale(0.3f); // Set font size
@@ -215,6 +206,15 @@ public class BookStacker extends MinigameScreen implements Screen {
 		
 		if(game.paused) return;
 		// Anything that shouldn't happen while the game is paused should go here
+		
+		//Render Books
+		for (int i = 0; i < rows; i++) {
+			for (int j = 0; j < columns; j++) {
+				if (bookGrid[i][j] instanceof BookSegment) {
+					((BookSegment) bookGrid[i][j]).update();
+			    }
+			 }
+		}
 	}
 	
 	//Used to remove segments that are unusable

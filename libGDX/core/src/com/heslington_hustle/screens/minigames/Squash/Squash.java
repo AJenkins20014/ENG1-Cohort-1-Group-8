@@ -344,7 +344,7 @@ public class Squash extends MinigameScreen implements Screen {
 
 // Add a method to start or reset the ball's movement
 private void startBallMovement() {
-    float initialSpeed = 200000f; // Set this to your desired initial ball speed
+    float initialSpeed = 100000f; // Set this to your desired initial ball speed
     float angle = MathUtils.random(-MathUtils.PI / 4, MathUtils.PI / 4); // Bias towards horizontal movement
 
     // Ensure the ball starts moving to the right by adding π/2 to the angle if it's negative

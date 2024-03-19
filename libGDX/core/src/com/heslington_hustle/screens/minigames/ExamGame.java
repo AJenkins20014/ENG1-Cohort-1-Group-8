@@ -48,6 +48,9 @@ public class ExamGame extends MinigameScreen implements Screen {
 		if(!game.studyPoints.containsKey("BookStacker")) {
 			game.studyPoints.put("BookStacker", 0f);
 		}
+		if(!game.studyPoints.containsKey("ColourMatch")) {
+			game.studyPoints.put("ColourMatch", 0f);
+		}
 		// etc...
 		
 		// Calculate starting score and difficulty scalars based on amount studied in the game
@@ -155,10 +158,6 @@ public class ExamGame extends MinigameScreen implements Screen {
 			grade = "First!";
 		}
 		
-		// Debug
-		System.out.print("Score: " + score + "\n");
-		System.out.print("Grade: " + grade + "\n");
-		
 		// Check if high score was beaten
 		if(game.prefs.getInteger("highScore", 0) < Math.round(score) || ((game.prefs.getInteger("highScore", 0) == 0) && Math.round(score) > 0)) {
 			game.prefs.putInteger("highScore", Math.round(score));
@@ -176,8 +175,8 @@ public class ExamGame extends MinigameScreen implements Screen {
 		Set<String> keySet = game.studyPoints.keySet(); // Get set of minigame names
 		String[] minigames = keySet.toArray(new String[0]); // Convert set to array for indexing
 		
-		// Check if this is the last minigame - TODO: Add rest of minigames
-		if(currentMinigame < 2) { // TODO: Change to no. of minigames
+		// Check if this is the last minigame
+		if(currentMinigame < 3) {
 			// Check minigame name and load relevant minigame
 			if(minigames[currentMinigame] == "BugFixer") {
 				game.minigames[0].startGame();
@@ -188,6 +187,11 @@ public class ExamGame extends MinigameScreen implements Screen {
 				game.minigames[1].startGame();
 				game.minigames[1].difficultyScalar = difficultyScalars.get(minigames[currentMinigame]);
 				game.minigames[1].exam = true;
+			}
+			if(minigames[currentMinigame] == "ColourMatch") {
+				game.minigames[2].startGame();
+				game.minigames[2].difficultyScalar = difficultyScalars.get(minigames[currentMinigame]);
+				game.minigames[2].exam = true;
 			}
 			currentMinigame++;
 		}

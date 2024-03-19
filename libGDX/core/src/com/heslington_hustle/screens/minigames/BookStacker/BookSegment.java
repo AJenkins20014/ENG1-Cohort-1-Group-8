@@ -65,7 +65,6 @@ public class BookSegment {
 			
 		}
 		if (BookStacker.clock >= 0.75*BookStacker.fallSpeed){
-			// TODO Auto-generated method stub
 			if(this.state == State.MOVING){
 				move();
 			} 
@@ -74,7 +73,6 @@ public class BookSegment {
 		if (BookStacker.clock >=0.01){
 			if(this.state == State.FALLING) {
 				fall();
-			
 			}
 		}
 		drawSprite();

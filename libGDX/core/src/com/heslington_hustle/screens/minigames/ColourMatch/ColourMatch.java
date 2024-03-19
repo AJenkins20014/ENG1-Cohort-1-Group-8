@@ -68,7 +68,7 @@ public class ColourMatch extends MinigameScreen implements Screen {
 			Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode());
 		}
 		
-		// Display tutorial - TODO: create a tutorial in InformationScreen and rename the string in the constructor below to fit
+		// Display tutorial
 	    game.setScreen(new InformationScreen(game, "colourMatchTutorial", this));
 	    redBlock = new ColourBlock(game, Colour.RED,120,50);
 	    blueBlock = new ColourBlock(game, Colour.BLUE,220,50);
@@ -79,16 +79,16 @@ public class ColourMatch extends MinigameScreen implements Screen {
 	
 	private void endGame() {
 		// Calculate final score
-		//studyPointsGained += score;
+		studyPointsGained += score/2;
 		
-	
 		 //Check minigame high score
-		if(game.prefs.getInteger("colourMatchHighScore", 0) < score) {
-			game.prefs.putInteger("colourMatchHighScore", score);
-			game.prefs.flush();
+		if(!exam) {
+			if(game.prefs.getInteger("colourMatchHighScore", 0) < score) {
+				game.prefs.putInteger("colourMatchHighScore", score);
+				game.prefs.flush();
+			}
 		}
 	
-		
 		if(studyPointsGained > maxStudyPointsGained) {
 			studyPointsGained = maxStudyPointsGained;
 		}
@@ -99,12 +99,18 @@ public class ColourMatch extends MinigameScreen implements Screen {
 			Gdx.graphics.setWindowedMode(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		}
 		
+		if(exam) {
+			game.exam.score += studyPointsGained/33;
+			game.exam.loadNextMinigame();
+			return;
+		}
+		
 		// Add studyPoints score to total score for this minigame
-		if(game.studyPoints.containsKey("thisMinigame")) {
-			game.studyPoints.put("thisMinigame", (game.studyPoints.get("thisMinigame") + studyPointsGained));
+		if(game.studyPoints.containsKey("ColourMatch")) {
+			game.studyPoints.put("ColourMatch", (game.studyPoints.get("ColourMatch") + studyPointsGained));
 		}
 		else {
-			game.studyPoints.put("thisMinigame", studyPointsGained);
+			game.studyPoints.put("ColourMatch", studyPointsGained);
 		}
 		
 		// Update amount of times studied today
@@ -129,14 +135,11 @@ public class ColourMatch extends MinigameScreen implements Screen {
 		game.camera.update();
 		renderBackground();
 		renderBlocks();
+		
 		// Get mouse position in world coordinates
 		Vector3 mousePos = game.camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 1f));
 	    this.mousePos = mousePos;
 	    
-	    //Display Sequence
-	    displaySequence();
-	    readPlayerInputSequence();
-	  
 	    if(sequencePressed  == sequence.size) {
 	    	toDisplaySequence = true;
 	    	sequencePressed = 0;
@@ -150,8 +153,7 @@ public class ColourMatch extends MinigameScreen implements Screen {
 		game.font.getData().setScale(0.3f); // Set font size
 		game.font.draw(game.batch, "Score: " + Integer.toString((score)), 400, 350, 100, Align.center, false);
 
-		
-		
+
 		// Check if player has paused the game
 		if(Gdx.input.isKeyJustPressed(Keys.ESCAPE)) {
 			game.togglePause();
@@ -165,10 +167,16 @@ public class ColourMatch extends MinigameScreen implements Screen {
 				
 		if(game.paused) return;
 		// Anything that shouldn't happen while the game is paused should go here
+		
+		//Display Sequence
+	    displaySequence();
+	    
+	    if(!toDisplaySequence) {
+	    	readPlayerInputSequence();
+	    }
 	}
 	
 	private void renderBackground() {
-		// TODO Auto-generated method stub
 		game.batch.begin();
 		game.batch.draw(background,0,0);
 		game.batch.end();
@@ -212,7 +220,6 @@ public class ColourMatch extends MinigameScreen implements Screen {
 	public void displaySequence() {
 		if(clock > (0.5-(0.01*sequence.size)) && toDisplaySequence == true) {
 	    	if(pointer > sequence.size-1) {
-	    		System.out.println("Hi");
 	    		toDisplaySequence = false;
 	    		pointer = 0;
 	    	}
