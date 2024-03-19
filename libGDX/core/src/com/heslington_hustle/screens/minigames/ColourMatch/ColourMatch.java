@@ -41,7 +41,6 @@ public class ColourMatch extends MinigameScreen implements Screen {
 		GREEN
 	}
 	public Colour[] colourList = {Colour.RED,Colour.BLUE,Colour.GREEN,Colour.YELLOW};
-	public int sequenceLength = 0;
 	public ColourBlock redBlock;
 	public ColourBlock blueBlock;
 	public ColourBlock yellowBlock;
