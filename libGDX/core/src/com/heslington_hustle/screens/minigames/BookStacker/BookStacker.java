@@ -124,7 +124,7 @@ public class BookStacker extends MinigameScreen implements Screen {
 		
 		if(exam) {
 			System.out.print("BookStacker difficulty Scalar: " + difficultyScalar + "\n");
-			game.exam.score += studyPointsGained/3;
+			game.exam.score += studyPointsGained/5;
 			System.out.print("Exam score after BookStacker: " + game.exam.score + "\n");
 			game.exam.loadNextMinigame();
 			return;

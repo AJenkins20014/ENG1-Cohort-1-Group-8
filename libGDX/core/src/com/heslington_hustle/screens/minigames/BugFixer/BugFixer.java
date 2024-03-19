@@ -206,8 +206,8 @@ public class BugFixer extends MinigameScreen implements Screen {
 		
 		if(exam) {
 			System.out.print("BugFixer difficulty Scalar: " + difficultyScalar + "\n");
-			game.exam.score += studyPointsGained/3;
-			System.out.print("BugFixer score after BookStacker: " + game.exam.score + "\n");
+			game.exam.score += studyPointsGained/5;
+			System.out.print("Exam score after BugFixer: " + game.exam.score + "\n");
 			game.exam.loadNextMinigame();
 			return;
 		}
@@ -471,7 +471,7 @@ public class BugFixer extends MinigameScreen implements Screen {
 	private void checkEnemySpawn() {
 		// Decrease time between enemy spawns as game progresses
 		if(clock < 3f) {
-			spawnTimer = 2f/difficultyScalar;
+			spawnTimer = 1.25f/difficultyScalar;
 		}
 		else if (clock < 7f) {
 			spawnTimer = 1f/difficultyScalar;

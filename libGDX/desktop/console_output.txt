@@ -1,2 +1,2 @@
 Day: 1
-1234
+Squash energy gained: 53.0

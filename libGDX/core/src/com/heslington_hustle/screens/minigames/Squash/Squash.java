@@ -45,7 +45,7 @@ public class Squash extends MinigameScreen implements Screen {
 	private int score;
 	public Body player;
 	public Body ball;
-	private float fixedTimeStep = 1 / 500f; // Time step for physics - adjust as needed
+	private float fixedTimeStep = 1 / 1000f; // Time step for physics - adjust as needed
 	private float accumulator = 0f; // Clock for physics, incremented every frame
 
 	private float clock; // Clock, incremented every frame
@@ -119,7 +119,7 @@ public class Squash extends MinigameScreen implements Screen {
 		score += 10;
 		
 		// Check if the ball has no vertical velocity and if so, apply it.
-		if(ball.getLinearVelocity().y < 50f && ball.getLinearVelocity().y > -50f) {
+		if(ball.getLinearVelocity().y < 70f && ball.getLinearVelocity().y > -70f) {
         	ball.applyLinearImpulse(0, 50000, ball.getPosition().x, ball.getPosition().y, true);
         }
     }
@@ -159,7 +159,7 @@ public class Squash extends MinigameScreen implements Screen {
      * Ends the game and displays the final score.
      */
 	private void endGame() {
-		energyGained += score/6;
+		energyGained += score/6.5f;
 		
 		// Check minigame high score
 		if(game.prefs.getInteger("squashHighScore", 0) < score) {
@@ -248,9 +248,9 @@ public class Squash extends MinigameScreen implements Screen {
 		// Create fixture definition
 		FixtureDef fixtureDef = new FixtureDef();
 		fixtureDef.shape = circle;
-		fixtureDef.density = 1f;
+		fixtureDef.density = 2f;
 		fixtureDef.friction = 0;
-		fixtureDef.restitution = 1;
+		fixtureDef.restitution = 1f;
 
 		// Attach fixture to body
 		@SuppressWarnings("unused")
@@ -301,7 +301,7 @@ public class Squash extends MinigameScreen implements Screen {
      */
 	private void logicStep(float delta) {
 		// Define the base acceleration
-	    float baseAccelerationX = 10f; // Adjust this value as needed
+	    float baseAccelerationX = 5f; // Adjust this value as needed
 	    float baseAccelerationY = 0f; // Adjust this value as needed
 
 	    // Retrieve the ball's current velocity
@@ -392,7 +392,7 @@ public class Squash extends MinigameScreen implements Screen {
  * Starts or resets the ball's movement.
  */
 private void startBallMovement() {
-    float initialSpeed = 100000f; // Set this to your desired initial ball speed
+    float initialSpeed = 300000f; // Set this to your desired initial ball speed
     float angle = MathUtils.random(-MathUtils.PI / 4, MathUtils.PI / 4); // Bias towards horizontal movement
 
     // Ensure the ball starts moving to the right by adding π/2 to the angle if it's negative
@@ -409,7 +409,7 @@ private void startBallMovement() {
  * Moves the player's paddle based on user input.
  */
 private void movePlayer() {
-    float maxSpeed = 200000f; // Adjust this value as needed
+    float maxSpeed = 400000f; // Adjust this value as needed
     Vector2 velocity = player.getLinearVelocity();
 
     if (Gdx.input.isKeyPressed(Keys.W)) {

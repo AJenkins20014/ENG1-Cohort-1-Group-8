@@ -73,6 +73,9 @@ public class InformationScreen implements Screen{
 		if(type == "mainTutorial") {
 			loadMainTutorial();
 		}
+		else if(type == "inDepthTutorial") {
+			loadInDepthTutorial();
+		}
 		else if(type == "bugFixerTutorial") {
 			loadBugFixerTutorial();
 		}
@@ -102,7 +105,7 @@ public class InformationScreen implements Screen{
 		game.font.getData().setScale(0.6f); // Set font size
 		game.font.setColor(new Color(1, 1, 1, 1));	
 		game.layout.setText(game.font, "Continue!", new Color(1, 1, 1, 1), 100, Align.center, false);
-		if(mousePos.x < 250 + game.layout.width && mousePos.x > 250 - game.layout.width && mousePos.y < 40 + game.layout.height && mousePos.y > 40 - game.layout.height) {
+		if(mousePos.x < 270 + game.layout.width && mousePos.x > 270 - game.layout.width && mousePos.y < 40 + game.layout.height && mousePos.y > 40 - game.layout.height) {
 			game.layout.setText(game.font, "Continue!", new Color(232/255f, 193/255f, 112/255f, 1), 100, Align.center, false);
 			if(Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
 				// Button clicked
@@ -110,7 +113,7 @@ public class InformationScreen implements Screen{
 				game.setScreen(nextScreen);
 			}
 		}
-		game.font.draw(game.batch, game.layout, 250, 40);
+		game.font.draw(game.batch, game.layout, 270, 40);
 		
 		// Stop drawing on screen
 		game.batch.end();
@@ -124,7 +127,7 @@ public class InformationScreen implements Screen{
 		game.font.getData().setScale(0.4f);
 		game.font.setColor(new Color(1, 1, 1, 1));	
 		game.font.draw(game.batch, "You wake up after a long night out. You glance at your phone and realise the date - only 1 week before exams start! "
-				+ "You really shouldn't have left it so late again! Oh well, late is better than never, you rush out of the door with determination, time to get to work!", 50, 300, 500, Align.center, true);
+				+ "You really shouldn't have left it so late again! Oh well, better late than never, you rush out of the door with determination, time to get to work!", 50, 300, 500, Align.center, true);
 		
 		game.font.getData().setScale(0.5f);
 		game.batch.draw(new Texture("UI/TutorialMove.png"), 60, 90);
@@ -132,6 +135,13 @@ public class InformationScreen implements Screen{
 		
 		game.batch.draw(new Texture("UI/TutorialInteract.png"), 350, 105);
 		game.font.draw(game.batch, "Interact", 390, 110, 100, Align.left, false);
+	}
+	
+	/**
+	 * Loads the tutorial with most mechanics explained.
+	 */
+	public void loadInDepthTutorial() {
+		game.batch.draw(new Texture("UI/TutorialMain.png"), 0, 0);
 	}
 	
 	/**
@@ -282,19 +292,19 @@ public class InformationScreen implements Screen{
 		game.font.draw(game.batch, "Final score: " + Integer.toString(score), 250, 260, 100, Align.center, false);
 
 		if(resourcesGained < 30f) {
-			game.font.draw(game.batch, "You don't feel very well rested...", 250, 200, 100, Align.center, false);
+			game.font.draw(game.batch, "You don't feel very energised...", 250, 200, 100, Align.center, false);
 		}
 		else if(resourcesGained < 40f) {
-			game.font.draw(game.batch, "You feel slightly well rested", 250, 200, 100, Align.center, false);
+			game.font.draw(game.batch, "You feel slightly energised", 250, 200, 100, Align.center, false);
 		}
 		else if(resourcesGained < 50f) {
-			game.font.draw(game.batch, "You feel well rested", 250, 200, 100, Align.center, false);
+			game.font.draw(game.batch, "You feel energised", 250, 200, 100, Align.center, false);
 		}
 		else if(resourcesGained < 60f) {
-			game.font.draw(game.batch, "You feel very well rested", 250, 200, 100, Align.center, false);
+			game.font.draw(game.batch, "You feel very energised", 250, 200, 100, Align.center, false);
 		}
 		else {
-			game.font.draw(game.batch, "You feel extremely well rested!", 250, 200, 100, Align.center, false);
+			game.font.draw(game.batch, "You feel extremely energised!", 250, 200, 100, Align.center, false);
 		}
 	}
 

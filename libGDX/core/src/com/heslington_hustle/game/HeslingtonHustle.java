@@ -226,7 +226,7 @@ public class HeslingtonHustle extends Game {
 		// Volume settings
 		layout.setText(font, "Volume:   " + Integer.toString(Math.round(volume*10)), new Color(1, 1, 1, 1), 100, Align.left, false);
 		font.draw(batch, layout, 200, 180);
-		if(volume > 0) {
+		if(volume > 0.1f) {
 			if(mousePos.x < 375 && mousePos.x > 345 && mousePos.y < 180 && mousePos.y > 180 - layout.height) {
 				layout.setText(font, "<", new Color(232/255f, 193/255f, 112/255f, 1), 100, Align.bottomLeft, false);
 				font.draw(batch, layout, 345, 180);

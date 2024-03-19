@@ -113,11 +113,12 @@ public class CharacterSelectScreen implements Screen{
 		game.font.setColor(new Color(1, 1, 1, 1));			
 		game.layout.setText(game.font, "Select Avatar", new Color(1, 1, 1, 1), 100, Align.bottomLeft, false);
 		game.font.draw(game.batch, game.layout, 20, 220);
-		game.batch.draw(avatars[avatarIndex], 100, 130);
+		game.batch.draw(avatars[avatarIndex], 100, 100);
+		
 		if(avatarIndex > 0) {
-			if(mousePos.x < 60 && mousePos.x > 30 && mousePos.y < 100 && mousePos.y > 100 - game.layout.height) {
+			if(mousePos.x < 60 && mousePos.x > 30 && mousePos.y < 120 && mousePos.y > 120 - game.layout.height) {
 				game.layout.setText(game.font, "<", new Color(232/255f, 193/255f, 112/255f, 1), 100, Align.bottomLeft, false);
-				game.font.draw(game.batch, game.layout, 30, 100);
+				game.font.draw(game.batch, game.layout, 30, 120);
 				if(Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
 					// Previous Avatar
 					game.menuClick.play(game.volume);
@@ -126,14 +127,14 @@ public class CharacterSelectScreen implements Screen{
 			}
 			else {
 				game.layout.setText(game.font, "<", new Color(1, 1, 1, 1), 100, Align.bottomLeft, false);
-				game.font.draw(game.batch, game.layout, 30, 100);
+				game.font.draw(game.batch, game.layout, 30, 120);
 			}
 		}
 		
 		if(avatarIndex < 3) {
-			if(mousePos.x < 200 + avatars[avatarIndex].getWidth()/2 && mousePos.x > 170 + avatars[avatarIndex].getWidth()/2 && mousePos.y < 100 && mousePos.y > 100 - game.layout.height) {
+			if(mousePos.x < 200 + avatars[avatarIndex].getWidth()/2 && mousePos.x > 170 + avatars[avatarIndex].getWidth()/2 && mousePos.y < 120 && mousePos.y > 120 - game.layout.height) {
 				game.layout.setText(game.font, ">", new Color(232/255f, 193/255f, 112/255f, 1), 100, Align.bottomLeft, false);
-				game.font.draw(game.batch, game.layout, 170 + avatars[avatarIndex].getWidth()/2, 100);
+				game.font.draw(game.batch, game.layout, 170 + avatars[avatarIndex].getWidth()/2, 120);
 				if(Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
 					// Next Avatar
 					game.menuClick.play(game.volume);
@@ -142,7 +143,7 @@ public class CharacterSelectScreen implements Screen{
 			}
 			else {
 				game.layout.setText(game.font, ">", new Color(1, 1, 1, 1), 100, Align.bottomLeft, false);
-				game.font.draw(game.batch, game.layout, 170 + avatars[avatarIndex].getWidth()/2, 100);
+				game.font.draw(game.batch, game.layout, 170 + avatars[avatarIndex].getWidth()/2, 120);
 			}
 		}
 		
@@ -174,7 +175,8 @@ public class CharacterSelectScreen implements Screen{
 		game.timesStudied = new int[7];
 		game.timesEatenToday = 0;
 		System.out.print("Day: " + game.day + "\n");
-		game.setScreen(new InformationScreen(game, "mainTutorial", new Map(game, 3)));
+		game.setScreen(new InformationScreen(game, "mainTutorial", new InformationScreen(game, "inDepthTutorial", new Map(game, 3))));
+		
 	}
 
 	/**

@@ -310,7 +310,7 @@ public class OptionsScreen implements Screen {
 		// Volume settings
 		game.layout.setText(game.font, "Volume:   " + Integer.toString(Math.round(game.volume*10)), new Color(1, 1, 1, 1), 100, Align.bottomLeft, false);
 		game.font.draw(game.batch, game.layout, 10, 100);
-		if(game.volume > 0) {
+		if(game.volume > 0.1f) {
 			if(mousePos.x < 135 && mousePos.x > 115 && mousePos.y < 100 && mousePos.y > 100 - game.layout.height) {
 				game.layout.setText(game.font, "<", new Color(232/255f, 193/255f, 112/255f, 1), 100, Align.bottomLeft, false);
 				game.font.draw(game.batch, game.layout, 115, 100);
@@ -356,22 +356,20 @@ public class OptionsScreen implements Screen {
 		// Back and apply settings
 		game.layout.setText(game.font, "Back", new Color(232/255f, 193/255f, 112/255f, 1), 100, Align.bottomLeft, false);
 		game.font.draw(game.batch, game.layout, 10, 50);
-		if(game.volume > 0) {
-			if(mousePos.x < 10 + game.layout.width && mousePos.x > 10 && mousePos.y < 50 && mousePos.y > 50 - game.layout.height) {
-				game.font.draw(game.batch, game.layout, 10, 50);
-				if(Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
-					// Go back to start screen and save setting to prefs
-					game.menuClick.play(game.volume);
-					game.prefs.flush();
-					if(windowModeIndex == 1) game.isBorderless = true;
-					else game.isBorderless = false;
-					game.setScreen(new StartScreen(game));
-				}
+		if(mousePos.x < 10 + game.layout.width && mousePos.x > 10 && mousePos.y < 50 && mousePos.y > 50 - game.layout.height) {
+			game.font.draw(game.batch, game.layout, 10, 50);
+			if(Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
+				// Go back to start screen and save setting to prefs
+				game.menuClick.play(game.volume);
+				game.prefs.flush();
+				if(windowModeIndex == 1) game.isBorderless = true;
+				else game.isBorderless = false;
+				game.setScreen(new StartScreen(game));
 			}
-			else {
-				game.layout.setText(game.font, "Back", new Color(1, 1, 1, 1), 100, Align.bottomLeft, false);
-				game.font.draw(game.batch, game.layout, 10, 50);
-			}
+		}
+		else {
+			game.layout.setText(game.font, "Back", new Color(1, 1, 1, 1), 100, Align.bottomLeft, false);
+			game.font.draw(game.batch, game.layout, 10, 50);
 		}
 
 		// Stop drawing

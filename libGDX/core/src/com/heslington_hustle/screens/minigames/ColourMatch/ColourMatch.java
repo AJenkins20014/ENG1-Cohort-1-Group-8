@@ -103,7 +103,7 @@ public class ColourMatch extends MinigameScreen implements Screen {
      */
 	private void endGame() {
 		// Calculate final score
-		studyPointsGained += score/4;
+		studyPointsGained += score/5;
 		
 		 //Check minigame high score
 		if(!exam) {
@@ -127,7 +127,7 @@ public class ColourMatch extends MinigameScreen implements Screen {
 		
 		if(exam) {
 			System.out.print("Colour Match difficulty Scalar: " + difficultyScalar + "\n");
-			game.exam.score += studyPointsGained/3;
+			game.exam.score += studyPointsGained/5;
 			System.out.print("Exam score after Colour Match: " + game.exam.score + "\n");
 			game.exam.loadNextMinigame();
 			return;
