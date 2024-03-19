@@ -90,7 +90,6 @@ public class BookStacker extends MinigameScreen implements Screen {
 	private void endGame() {
 		// Calculate final score
 		studyPointsGained += score/8;
-		System.out.print(studyPointsGained);
 		
 		// Check minigame high score
 		if(!exam) {
@@ -244,7 +243,6 @@ public class BookStacker extends MinigameScreen implements Screen {
 		for (int i = 4; i >= 1; i--) {
 			for (int j = 0; j < columns; j++) {
 				if (bookGrid[i][j] instanceof BookSegment) {
-					System.out.println(i);
 					((BookSegment) bookGrid[i][j]).kill();
 					
 			    }

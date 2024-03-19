@@ -17,12 +17,11 @@ public class ColourBlock {
 		this.x = x;
 		this.y = y;
 		switch(this.colour) {
-			case RED: this.sprite = new Texture("ColourMatchMinigame/red.png");
-			case GREEN:this.sprite = new Texture("ColourMatchMinigame/green.png");
-			case BLUE:this.sprite = new Texture("ColourMatchMinigame/blue.png");
-			case YELLOW:this.sprite = new Texture("ColourMatchMinigame/yellow.png");
+			case RED: this.sprite = new Texture("ColourMatchMinigame/red.png");break;
+			case GREEN:this.sprite = new Texture("ColourMatchMinigame/green.png");break;
+			case BLUE:this.sprite = new Texture("ColourMatchMinigame/blue.png");break;
+			case YELLOW:this.sprite = new Texture("ColourMatchMinigame/yellow.png");break;
 		}
-		drawSprite();
 	}
 	public void drawSprite() {
 		// TODO Auto-generated method stub
@@ -30,6 +29,14 @@ public class ColourBlock {
 		game.batch.draw(sprite,x,y);
 		game.batch.end();
 	}
-
+	public void kill() {
+		this.sprite.dispose();
+	}
+	public Boolean inBounds(float mouseX, float mouseY) {
+		if(mouseX>=this.x && mouseX <=this.x+100 && mouseY>=this.y && mouseY <=this.y+100) {
+			return true;
+		}
+		return false;
+	}
 }
 	
