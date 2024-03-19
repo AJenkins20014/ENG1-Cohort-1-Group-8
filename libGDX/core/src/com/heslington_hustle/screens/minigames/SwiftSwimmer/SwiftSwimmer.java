@@ -71,7 +71,7 @@ public class SwiftSwimmer extends MinigameScreen implements Screen {
 	private void endGame() {
 		Gdx.input.setCursorPosition(320, 170);
 		score = swimmer.laps*75;
-		energyGained = score/15;
+		energyGained += score/15;
 
 		// Check minigame high score
 		if(game.prefs.getInteger("swiftSwimmerHighScore", 0) < score) {

@@ -75,6 +75,9 @@ public class InformationScreen implements Screen{
 		else if(type == "swiftSwimmerTutorial") {
 			loadSwiftSwimmerTutorial();
 		}
+		else if(type == "squashTutorial") {
+			loadSquashTutorial();
+		}
 		
 		// Continue button
 		game.font.getData().setScale(0.6f); // Set font size
@@ -182,6 +185,19 @@ public class InformationScreen implements Screen{
 		game.font.draw(game.batch, "or", 200, 110, 100, Align.center, false);
 		game.batch.draw(new Texture("UI/TutorialArrowKeys.png"), 290, 90);
 		game.font.draw(game.batch, "Dance", 370, 110, 100, Align.left, false);
+	}
+	public void loadSquashTutorial() {
+		// Display the tutorial for the Squash minigame
+		game.font.getData().setScale(1.2f); // Set font size
+		game.font.setColor(new Color(222/255f, 158/255f, 65/255f, 1));
+		game.font.draw(game.batch, "Squash", 250, 330, 100, Align.center, false);
+		game.font.getData().setScale(0.4f);
+		game.font.setColor(new Color(1, 1, 1, 1));	
+		game.font.draw(game.batch, "Hit the ball with the paddle!", 50, 260, 500, Align.center, true);
+		
+		game.font.getData().setScale(0.5f);
+		game.batch.draw(new Texture("UI/TutorialUpDown.png"), 230, 90);
+		game.font.draw(game.batch, "Move", 300, 110, 100, Align.left, false);
 	}
 	
 	public void loadStudyGameScore() {

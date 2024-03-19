@@ -88,7 +88,7 @@ public class DrunkDancer extends MinigameScreen implements Screen {
 	}
 	
 	public void endGame() {
-		energyGained = score/20;
+		energyGained += score/20;
 		
 		// Check minigame high score
 		if(game.prefs.getInteger("drunkDancerHighScore", 0) < score) {
