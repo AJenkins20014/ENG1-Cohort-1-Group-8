@@ -3,9 +3,9 @@ package com.heslington_hustle.screens.minigames.ColourMatch;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.ai.btree.decorator.Random;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.Input.Keys;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.MathUtils;
@@ -13,7 +13,6 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 import com.heslington_hustle.game.HeslingtonHustle;
-import com.heslington_hustle.game.PopUpText;
 import com.heslington_hustle.screens.InformationScreen;
 import com.heslington_hustle.screens.MinigameScreen;
 
@@ -44,10 +43,17 @@ public class ColourMatch extends MinigameScreen implements Screen {
 	public ColourBlock yellowBlock;
 	public ColourBlock greenBlock;
 	public ColourBlock sequenceBlock;
+	
+	private Music backgroundMusic;
+	
 	public ColourMatch(HeslingtonHustle game, float difficultyScalar) {
 		super(game, difficultyScalar);
 		this.studyPointsGained = 15f; // From worst possible performance
 		this.maxStudyPointsGained = 100f; // From best possible performance
+		
+		// Load sounds
+		backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("Music/ColourMatchMusic.ogg"));
+		backgroundMusic.setLooping(true);
 	}
 	
 	@Override
@@ -164,6 +170,7 @@ public class ColourMatch extends MinigameScreen implements Screen {
 		
 		game.batch.end();
 		
+		updateMusicVolume();
 				
 		if(game.paused) return;
 		// Anything that shouldn't happen while the game is paused should go here
@@ -240,6 +247,7 @@ public class ColourMatch extends MinigameScreen implements Screen {
 	}
 	public void readPlayerInputSequence() {
 		if(Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
+			game.menuClick.play(game.volume);
 			 switch(sequence.get(sequencePressed)) {
 				case RED:this.clicked = redBlock.inBounds(mousePos.x,mousePos.y);break;
 				case GREEN:this.clicked = greenBlock.inBounds(mousePos.x,mousePos.y);break;
@@ -254,5 +262,22 @@ public class ColourMatch extends MinigameScreen implements Screen {
 			 }
 			
 		}
+	}
+	
+	@Override
+	public void hide() {
+		// Stop music
+		backgroundMusic.stop();
+	}
+	
+	@Override
+	public void show() {
+		// Play music
+		backgroundMusic.play();
+	}
+	
+	private void updateMusicVolume() {
+		float musicVolume = game.volume/2;
+		backgroundMusic.setVolume(musicVolume);
 	}
 }
