@@ -86,8 +86,8 @@ public class HeslingtonHustle extends Game {
 	public Cursor cursor;
 	
 	// Creates a file with console contents for debugging
-	//public FileOutputStream fileOutputStream;
-	//public PrintStream printStream;
+	public FileOutputStream fileOutputStream;
+	public PrintStream printStream;
 	
 	/**
      * Initializes the game.
@@ -133,7 +133,6 @@ public class HeslingtonHustle extends Game {
 		blackScreen = new Sprite(new Texture("UI/BlackScreen.png"));
 		fadeClock = 3;
 		
-		/*
 		// Set fileOutputStream for debugging
 		try {
             // Create a FileOutputStream to write to a file
@@ -148,7 +147,7 @@ public class HeslingtonHustle extends Game {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        */
+        
 		
 		// Display start menu
 		this.setScreen(new StartScreen(this));

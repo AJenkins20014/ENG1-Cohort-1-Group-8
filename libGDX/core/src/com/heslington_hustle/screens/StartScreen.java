@@ -142,14 +142,14 @@ public class StartScreen implements Screen {
 	 * Exits the game.
 	 */
 	private void exit() {
-		/*
+		
         game.printStream.close();
         try {
 			game.fileOutputStream.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		*/
+		
 		Gdx.app.exit();
 	}
 

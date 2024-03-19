@@ -112,6 +112,11 @@ public class DrunkDancer extends MinigameScreen implements Screen {
 			energyGained = maxEnergyGained;
 		}
 		
+		// Add game to hashmap
+		if(!game.recreationActivitiesToday.containsKey("Drunk Dancer")) {
+			game.recreationActivitiesToday.put("Drunk Dancer", 1);
+		}
+		
 		// Check if this activity has been done today, and if so reduce energy gained
 		if(game.recreationActivitiesToday.get("Drunk Dancer") > 3) {
 			energyGained /= 3;
@@ -127,12 +132,7 @@ public class DrunkDancer extends MinigameScreen implements Screen {
 		}
 		
 		// Increase count of activity done today
-		if(!game.recreationActivitiesToday.containsKey("Drunk Dancer")) {
-			game.recreationActivitiesToday.put("Drunk Dancer", 1);
-		}
-		else{
-			game.recreationActivitiesToday.put("Drunk Dancer", game.recreationActivitiesToday.get("Drunk Dancer")+1);
-		}
+		game.recreationActivitiesToday.put("Drunk Dancer", game.recreationActivitiesToday.get("Drunk Dancer")+1);
 		
 		System.out.print("Drunk Dancer energy gained: " + energyGained + "\n");
 		

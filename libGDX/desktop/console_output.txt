@@ -1,0 +1,2 @@
+Day: 1
+Swift Swimmer energy gained: 60.0

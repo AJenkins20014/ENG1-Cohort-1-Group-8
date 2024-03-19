@@ -171,6 +171,11 @@ public class Squash extends MinigameScreen implements Screen {
 			energyGained = maxEnergyGained;
 		}
 		
+		// Add game to hashmap
+		if(!game.recreationActivitiesToday.containsKey("Squash")) {
+			game.recreationActivitiesToday.put("Squash", 0);
+		}
+		
 		// Check if this activity has been done today, and if so reduce energy gained
 		if(game.recreationActivitiesToday.get("Squash") > 3) {
 			energyGained /= 3;
@@ -186,12 +191,7 @@ public class Squash extends MinigameScreen implements Screen {
 		}
 		
 		// Increase count of activity done today
-		if(!game.recreationActivitiesToday.containsKey("Squash")) {
-			game.recreationActivitiesToday.put("Squash", 1);
-		}
-		else{
-			game.recreationActivitiesToday.put("Squash", game.recreationActivitiesToday.get("Squash")+1);
-		}
+		game.recreationActivitiesToday.put("Squash", game.recreationActivitiesToday.get("Squash")+1);
 		
 		System.out.print("Squash energy gained: " + energyGained + "\n");
 		

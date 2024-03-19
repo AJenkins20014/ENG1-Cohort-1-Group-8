@@ -98,6 +98,11 @@ public class SwiftSwimmer extends MinigameScreen implements Screen {
 			energyGained = maxEnergyGained;
 		}
 		
+		// Add game to hashmap
+		if(!game.recreationActivitiesToday.containsKey("Swift Swimmer")) {
+			game.recreationActivitiesToday.put("Swift Swimmer", 0);
+		}
+		
 		// Check if this activity has been done today, and if so reduce energy gained
 		if(game.recreationActivitiesToday.get("Swift Swimmer") > 3) {
 			energyGained /= 3;
@@ -113,12 +118,7 @@ public class SwiftSwimmer extends MinigameScreen implements Screen {
 		}
 		
 		// Increase count of activity done today
-		if(!game.recreationActivitiesToday.containsKey("Swift Swimmer")) {
-			game.recreationActivitiesToday.put("Swift Swimmer", 1);
-		}
-		else{
-			game.recreationActivitiesToday.put("Swift Swimmer", game.recreationActivitiesToday.get("Swift Swimmer")+1);
-		}
+		game.recreationActivitiesToday.put("Swift Swimmer", game.recreationActivitiesToday.get("Swift Swimmer")+1);
 		
 		System.out.print("Swift Swimmer energy gained: " + energyGained + "\n");
 		
@@ -162,7 +162,7 @@ public class SwiftSwimmer extends MinigameScreen implements Screen {
 		game.batch.begin();
 		game.font.getData().setScale(0.3f); // Set font size
 		//Shows remaining time and laps completed
-		game.font.draw(game.batch, "Time Remaining: " + Integer.toString((int)Math.round(15 - Math.ceil(clock) )), 100, 350, 100, Align.center, false);
+		game.font.draw(game.batch, "Time Remaining: " + Integer.toString((int)Math.round((16 - difficultyScalar*4) - Math.ceil(clock) )), 100, 350, 100, Align.center, false);
 		game.font.draw(game.batch, "Laps Completed: " + Integer.toString((swimmer.laps)), 400, 350, 100, Align.center, false);
 		
 		

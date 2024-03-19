@@ -40,7 +40,7 @@ public class BookSegment {
      */
 	public BookSegment(HeslingtonHustle game,int i,int j,Position position,State state) {
 		this.game = game;
-		this.sprite = new Texture("BookStackerMinigame/book.png");
+		this.sprite = new Texture("BookStackerMinigame/Book.png");
 		this.i = i;
 		this.j = j;
 		this.setX(j*40);
