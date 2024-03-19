@@ -152,6 +152,9 @@ public class CharacterSelectScreen implements Screen{
 		game.energyBar = new EnergyBar(100f);
 		game.day = 1;
 		game.time = 8;
+		game.studyPoints.clear();
+		game.timesStudied = new int[7];
+		game.timesEatenToday = 0;
 		game.setScreen(new InformationScreen(game, "mainTutorial", new Map(game, 3)));
 	}
 
