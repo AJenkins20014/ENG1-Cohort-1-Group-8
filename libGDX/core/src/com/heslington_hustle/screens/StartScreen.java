@@ -16,6 +16,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Align;
 import com.heslington_hustle.game.HeslingtonHustle;
 
+@SuppressWarnings("unused")
 public class StartScreen implements Screen {
 
 	private HeslingtonHustle game;
@@ -142,13 +143,15 @@ public class StartScreen implements Screen {
 	 * Exits the game.
 	 */
 	private void exit() {
-		
+		// Close print stream
+		/*
         game.printStream.close();
         try {
 			game.fileOutputStream.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		*/
 		
 		Gdx.app.exit();
 	}

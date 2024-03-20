@@ -40,6 +40,7 @@ import com.heslington_hustle.screens.minigames.ColourMatch.ColourMatch;
 import com.heslington_hustle.screens.minigames.Squash.Squash;
 import com.heslington_hustle.screens.minigames.SwiftSwimmer.SwiftSwimmer;
 
+@SuppressWarnings("unused")
 public class HeslingtonHustle extends Game {
 	
 	// Default values
@@ -134,6 +135,7 @@ public class HeslingtonHustle extends Game {
 		fadeClock = 3;
 		
 		// Set fileOutputStream for debugging
+		/*
 		try {
             // Create a FileOutputStream to write to a file
             fileOutputStream = new FileOutputStream("console_output.txt");
@@ -147,7 +149,7 @@ public class HeslingtonHustle extends Game {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        
+        */
 		
 		// Display start menu
 		this.setScreen(new StartScreen(this));
